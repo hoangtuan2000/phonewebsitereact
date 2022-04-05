@@ -1,0 +1,89 @@
+/************/
+body {
+  background-image: url(./asset/imagePublic/backgroundWeb.jpg);
+}
+
+/************/
+.backgroundBlue {
+  background-color: #0a54a8;
+}
+
+.backgroundGray {
+  background-color: #e9ecef;
+}
+
+/************ card Product ************/
+.cardProduct {
+  transition: transform 0.5s;
+}
+
+.cardProduct img {
+  height: 280px;
+  object-fit: contain;
+}
+
+.cardProduct .card-title {
+  font-size: 16px;
+}
+
+.cardProduct h6 {
+  text-decoration: line-through;
+  opacity: 0.5;
+  color: black;
+}
+
+.cardProduct h5 {
+  color: red;
+}
+
+.cardProduct a {
+  text-decoration: none;
+  color: black;    
+}
+
+.cardProduct a:hover {
+  color: blue;    
+}
+
+.cardProduct:hover{
+  transform: scale(1.05);
+  border-radius: 10px;
+  color: blue;
+}
+
+/************ Footer ************/
+.footer {
+  color: white;
+  font-size: 14px;
+}
+
+.footer a {
+  color: white;
+}
+
+.footer a:hover {
+  color: rgb(51, 255, 0);
+}
+
+
+
+
+/*************************** Class Of Library ***************************/
+
+/****** Class Of React Slick ******/
+/* class of small image react slick product detail */
+.slick-thumb li{
+  margin-right: 30px;
+  filter: grayscale(100%);
+}
+
+.slick-thumb li.slick-active{
+  filter: grayscale(0%);
+}
+
+/* class of button next and prev react slick product detail */
+.slick-arrow .slick-prev,
+.slick-arrow .slick-next {
+  width: 20px;
+  height: 20px;
+}
