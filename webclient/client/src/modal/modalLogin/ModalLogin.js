@@ -13,8 +13,6 @@ import styles from './modalLoginStyle.module.css'
 // const ModalLogin = (show, onHide, handleGetUserLogin) => {
 function ModalLogin(props) {
 
-    Axios.defaults.withCredentials = true
-
     const dispatch = useDispatch()
 
     // input value email, password
@@ -101,6 +99,7 @@ function ModalLogin(props) {
                     <FormControl
                         id='inputPassword'
                         placeholder='Password'
+                        type='password'
                         onChange={(e) => {
                             setPassword(e.target.value)
                             setEmailFail('')

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AOS from 'aos';
+import Axios from 'axios'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "slick-carousel/slick/slick.css";
@@ -27,6 +28,10 @@ AOS.init({
 });
 
 function App() {
+
+  // send automatic cookie to auth
+  Axios.defaults.withCredentials = true
+
   return (
     <>
       <BrowserRouter>

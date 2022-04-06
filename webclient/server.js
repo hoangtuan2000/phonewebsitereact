@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors(
     {
         origin: 'http://localhost:3000', // port of front-end 'http://localhost:3000'
-        credentials: true
+        credentials: true //pass header
     }
 ))
 
@@ -25,6 +25,7 @@ app.use(session({
 	saveUninitialized: false,
     cookie: {
         // expires: 60
+        httpOnly: true, //not accessible via function document.cookie
         maxAge: 60000
     }
 }));

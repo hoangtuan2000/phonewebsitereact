@@ -61,8 +61,7 @@ const logout = async (req, res) => {
 }
 
 const getLogin = async (req, res) => {
-    console.log(req.session.user)
-
+    console.log(req.session.user);
     if (req.session.user) {
         authLogin.isLogin = true
         authLogin.user = req.session.user[0]
@@ -75,13 +74,7 @@ const getLogin = async (req, res) => {
 }
 
 const test = async (req, res) => {
-    console.log('test')
-    console.log(req.session.user)
-    if(req.session.user){
-        res.send(authLogin)
-    }else{
-        res.send('ko co user')
-    }
+    res.redirect('http://localhost:3000/smartphone')
 }
 
 

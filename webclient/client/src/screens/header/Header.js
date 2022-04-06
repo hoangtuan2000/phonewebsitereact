@@ -26,9 +26,11 @@ function Header() {
             .then((response) => {
                 let user = response.data.user
                 let isLogin = response.data.isLogin
-                if (Object.entries(user).length !== 0 && isLogin) {
-                    dispatch(saveUserLogin(user))
+                if (Object.entries(response.data.user).length !== 0 && response.data.isLogin) {
+                    console.log('getLogin save');
+                    dispatch(saveUserLogin(response.data.user))
                 } else {
+                    console.log('getLogin delete');
                     dispatch(saveUserLogin({}))
                 }
             })
@@ -37,11 +39,24 @@ function Header() {
             })
     }, [])
 
-    console.log(useSelector((state) => state.userLogin.infoUser));
+    const test = () => {
+        const url = URL + '/auth/test'
+        Axios.post(url)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
     return (
         <Navbar className='p-0 backgroundBlue' collapseOnSelect expand='lg' variant='dark'>
             <Container>
+
+                <button onClick={test}>
+                    test
+                </button>
 
                 <NavLink className="navbar-brand my-1" to='/'>
                     HT Shop
