@@ -9,7 +9,7 @@ import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
 
 function PromotionalProducts(props) {
 
-    const products = props.topProducts
+    const products = props.promotionalProducts
 
     // variable of React Slick library
     const settings = {
@@ -25,7 +25,7 @@ function PromotionalProducts(props) {
         <>
             <Row>
                 <Col className='p-0 pb-3' data-aos="zoom-in">
-                    <div className='backgroundBlue rounded' >
+                    <div className='backgroundRed rounded' >
                         <h4 className='my-2 mx-3'
                             style={
                                 { color: 'white' }}
@@ -34,7 +34,7 @@ function PromotionalProducts(props) {
                         </h4>
                         <Slider {...settings} >
                             {
-                                props.topProducts.map((product) => {
+                                props.promotionalProducts.map((product) => {
                                     return (
                                         <div className='p-2 pb-3 cardProduct' key={product.id_sp} style={{width: '220px'}}>
                                             <Link to={`/product-detail/${product.id_sp}`}>

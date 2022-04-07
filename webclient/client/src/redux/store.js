@@ -19,11 +19,11 @@ const persistConfig = {
   storage,
 }
 
-const persistedReducer = persistReducer(persistConfig, userLoginReducer)
+const userLoginpersistedReducer = persistReducer(persistConfig, userLoginReducer)
 
 export const store = configureStore({
   reducer: {
-    userLogin: persistedReducer
+    userLogin: userLoginpersistedReducer
   },
   middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

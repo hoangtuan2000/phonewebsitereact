@@ -5,7 +5,7 @@ let windowHeight  = window.innerHeight*60/100 //get 60% screen size
 function NoProductsFound(props) {
     return (
         <>
-            <Col className="bg-light rounded text-center">
+            <Col className="bg-light rounded text-center" data-aos="fade-up">
                 <div style={{height: windowHeight}}>
                     <h1>
                         {props.content}

@@ -34,6 +34,18 @@ app.use(session({
 const productRouter = require('./routers/productRouter.js')
 app.use('/api/products', productRouter)
 
+// Smartphones Routers
+const smartphoneRouter = require('./routers/smartphoneRouter.js')
+app.use('/api/products', smartphoneRouter)
+
+// Headphones Routers
+const headphoneRouter = require('./routers/headphoneRouter.js')
+app.use('/api/products', headphoneRouter)
+
+// Phonecases Routers
+const phonecaseRouter = require('./routers/phonecaseRouter.js')
+app.use('/api/products', phonecaseRouter)
+
 //Login/Register Router
 const authRouter = require('./routers/authRouter.js')
 app.use('/auth', authRouter)

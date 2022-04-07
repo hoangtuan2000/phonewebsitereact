@@ -29,7 +29,7 @@ AOS.init({
 
 function App() {
 
-  // send automatic cookie to auth
+  // send automatic cookie to auth Login Backend
   Axios.defaults.withCredentials = true
 
   return (

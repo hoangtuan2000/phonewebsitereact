@@ -1,13 +1,9 @@
 const productController = require('../controllers/productController.js')
 const router = require('express').Router()
+
 router.get('/getAllProducts', productController.getAllProducts)
-router.get('/getAllSmartphones', productController.getAllSmartphones)
-router.get('/getAllHeadphones', productController.getAllHeadphones)
-router.get('/getAllPhonecases', productController.getAllPhonecases)
-router.get('/getTopProducts', productController.getTopProducts)
-router.get('/getTopSmartphones', productController.getTopSmartphones)
-router.get('/getTopHeadphones', productController.getTopHeadphones)
-router.get('/getTopPhonecases', productController.getTopPhonecases)
+router.get('/getPromotionalProducts', productController.getPromotionalProducts)
 router.get('/getOneProduct/:idProduct', productController.getOneProduct)
 router.get('/getImagesProduct/:idProduct', productController.getImagesProduct)
+
 module.exports = router
