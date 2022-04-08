@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Navbar, Container, Nav, InputGroup, FormControl, Button, Dropdown, OverlayTrigger, Tooltip, Modal, Image } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartPlus, faHeadphonesSimple, faMobile, faMobileScreenButton, faLock, faEnvelope, faRightToBracket, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faCartPlus, faHeadphonesSimple, faMobile, faMobileScreenButton, faLock, faEnvelope, faRightToBracket, faSearch, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { NavLink, Link } from 'react-router-dom'
 import Axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
@@ -159,6 +159,15 @@ function Header() {
                         {
                             Object.entries(userLogin).length === 0 && (
                                 <>
+                                    {/* register */}
+                                    <NavLink
+                                        to='register'
+                                        className='nav-link'
+                                    >
+                                        <FontAwesomeIcon icon={faUserPlus} className='me-1' />
+                                        Đăng Ký
+                                    </NavLink>
+
                                     {/* button login */}
                                     <span
                                         className='nav-link'
@@ -166,7 +175,7 @@ function Header() {
                                         onClick={() => setModalShow(true)}
                                     >
                                         <FontAwesomeIcon icon={faRightToBracket} className='me-1' />
-                                        Login
+                                        Đăng Nhập
                                     </span>
 
                                     {/* call tag modal login */}

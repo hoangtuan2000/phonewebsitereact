@@ -86,10 +86,9 @@ function Home() {
                 <MostPopularProducts
                     titlePromotion={'Điện Thoại Nổi Bậc'}
                     products={highPriceSmartphones}
-                    type={'smartphone'}
+                    page={'smartphone'}
                 />
             }
-
 
             {
                 highPriceHeadphones.length > 0
@@ -97,7 +96,7 @@ function Home() {
                 <MostPopularProducts
                     titlePromotion={'Tai Nghe Nổi Bậc'}
                     products={highPriceHeadphones}
-                    type={'headphone'}
+                    page={'headphone'}
                 />
             }
 
@@ -108,7 +107,7 @@ function Home() {
                 <MostPopularProducts
                     titlePromotion={'Ốp Lưng Nổi Bậc'}
                     products={highPricePhonecases}
-                    type={'phonecase'}
+                    page={'phonecase'}
                 />
             }
 

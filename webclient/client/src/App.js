@@ -15,6 +15,7 @@ import Home from './screens/home/Home'
 import Smartphone from './screens/smartphone/Smartphone'
 import Headphone from './screens/headphone/Headphone'
 import Phonecase from './screens/phonecase/Phonecase'
+import Register from './screens/register/Register';
 import Cart from './screens/cart/Cart'
 import Account from './screens/account/Account'
 import Policy from './screens/policy/Policy'
@@ -44,6 +45,7 @@ function App() {
           <Route path='smartphone' element={<Smartphone />} />
           <Route path='headphone' element={<Headphone />} />
           <Route path='phonecase' element={<Phonecase />} />
+          <Route path='register' element={<Register />} />
 
           {/* protected router */}
           <Route element={<ProtectRoutes />}>

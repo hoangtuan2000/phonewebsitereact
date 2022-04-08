@@ -1,6 +1,5 @@
 import { Row, Col, Card, Badge, OverlayTrigger, Tooltip, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
-import Slider from "react-slick";
 
 import { URL } from '../../config/config'
 import { nameProductFormat } from '../../functions/stringFormat'
@@ -11,7 +10,7 @@ function MostPopularProducts(props) {
 
   const products = props.products
 
-  console.log(products);
+  // console.log(props.type, products);
 
   return (
     <>
@@ -25,8 +24,8 @@ function MostPopularProducts(props) {
               {props.titlePromotion}
             </h4>
 
-            <Link to={props.type}>
-              <button className='my-2 mx-3 float-end btn btn-light rounded-pill'>
+            <Link to={props.page} className='float-end'>
+              <button className='my-2 mx-3 btn btn-light rounded-pill'>
                 Xem Tất Cả Sản Phẩm
               </button>
             </Link>

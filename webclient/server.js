@@ -50,6 +50,10 @@ app.use('/api/products', phonecaseRouter)
 const authRouter = require('./routers/authRouter.js')
 app.use('/auth', authRouter)
 
+//Address Router
+const addressRouter = require('./routers/addressRouter.js')
+app.use('/address', addressRouter)
+
 // static images folder
 app.use(express.static('./public'))
 
