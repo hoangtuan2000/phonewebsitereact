@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Slider from "react-slick";
 
 import { URL } from '../../config/config'
-import { nameProductFormat } from '../../functions/stringFormat'
+import { nameProductFormat } from '../../functions/stringFormatFunction'
 import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
 
 

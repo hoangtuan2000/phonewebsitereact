@@ -7,7 +7,7 @@ import Slider from '../slider/Slider'
 import PromotionalProducts from '../../components/promotionalProducts/PromotionalProducts'
 import MostPopularProducts from '../../components/mostPopularProducts/MostPopularProducts'
 import NoProductsFound from '../../components/noProductsFound/NoProductsFound'
-import { nameProductFormat } from '../../functions/stringFormat'
+import { nameProductFormat } from '../../functions/stringFormatFunction'
 import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import { URL } from '../../config/config'
 

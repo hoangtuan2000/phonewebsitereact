@@ -4,13 +4,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faKey, faLocationDot, faPhone, faUser } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react"
 import Axios from 'axios'
+
 import { URL } from '../../config/config'
+import { validateUserFullname, validateUserEmail, validateUserPassword, validateUserPasswordAgain } from '../../functions/validateFormFunction'
 
 function Register() {
 
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
     const [wards, setWards] = useState([])
+
+    const [fullnameRegister, setFullnameRegister] = useState('')
+    const [emailRegister, setEmailRegister] = useState('')
+    const [passwordRegister, setPasswordRegister] = useState('')
+    const [passwordAgainRegister, setPasswordAgainRegister] = useState('')
+    const [phoneNumberRegister, setPhoneNumberRegister] = useState('')
+    const [addressRegister, setAddressRegister] = useState('')
+    const [provinceRegister, setProvinceRegister] = useState('')
+    const [districtRegister, setDistrictRegister] = useState('')
+    const [wardRegister, setWardRegister] = useState('')
 
 
     useEffect(() => {
@@ -52,6 +64,27 @@ function Register() {
             })
     }
 
+    const checkFullname = (fullname) => {
+        setFullnameRegister(fullname)
+        validateUserFullname(fullname, 'notificationFullnameFail')
+    }
+
+    const checkEmail = (email) => {
+        setEmailRegister(email);
+        validateUserEmail(email, 'notificationEmailFail')
+    }
+
+    const checkPassword = (password) => {
+        setPasswordRegister(password);
+        validateUserPassword(password, 'notificationPasswordFail')
+    }
+
+    const registerUser = () => {
+        // validateUserFullname(fullnameRegister, 'abc')
+        // validateUserEmail('email@example.name', 'dsd')
+    }
+
+
     return (
         <>
             <Container>
@@ -78,11 +111,10 @@ function Register() {
                                             id="fullnameRegister"
                                             type="text"
                                             placeholder="Nhập Họ Tên"
+                                            onChange={(e) => checkFullname(e.target.value)}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger">
-                                        abc
-                                    </Form.Text>
+                                    <Form.Text className="text-danger" id="notificationFullnameFail">gkj</Form.Text>
                                 </Form.Group>
 
                                 <Form.Group className="mb-2">
@@ -97,11 +129,10 @@ function Register() {
                                             id="emailRegister"
                                             type="text"
                                             placeholder="Nhập Email"
+                                            onChange={(e) => checkEmail(e.target.value)}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger">
-                                        abc
-                                    </Form.Text>
+                                    <Form.Text className="text-danger" id="notificationEmailFail"></Form.Text>
                                 </Form.Group>
 
                                 <Form.Group className="mb-2">
@@ -116,11 +147,13 @@ function Register() {
                                             id="passwordRegister"
                                             type="password"
                                             placeholder="Nhập Mật Khẩu"
+                                            onChange={(e) => {
+                                                setPasswordRegister(e.target.value);
+                                                validateUserPassword(e.target.value, 'notificationPasswordFail')
+                                            }}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger">
-                                        abc
-                                    </Form.Text>
+                                    <Form.Text className="text-danger" id="notificationPasswordFail"></Form.Text>
                                 </Form.Group>
 
                                 <Form.Group className="mb-2">
@@ -135,11 +168,13 @@ function Register() {
                                             id="passwordAgainRegister"
                                             type="password"
                                             placeholder="Nhập Lại Mật Khẩu"
+                                            onChange={(e) => {
+                                                setPasswordAgainRegister(e.target.value);
+                                                validateUserPasswordAgain(passwordRegister, e.target.value, 'notificationPasswordAgainFail')
+                                            }}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger">
-                                        abc
-                                    </Form.Text>
+                                    <Form.Text className="text-danger" id="notificationPasswordAgainFail"></Form.Text>
                                 </Form.Group>
 
                                 <Form.Group className="mb-2">
@@ -154,11 +189,10 @@ function Register() {
                                             id="phoneNumberRegister"
                                             type="text"
                                             placeholder="Nhập Số Điện Thoại"
+                                            onChange={(e) => setPhoneNumberRegister(e.target.value)}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger">
-                                        abc
-                                    </Form.Text>
+                                    <Form.Text className="text-danger"></Form.Text>
                                 </Form.Group>
 
                                 <Form.Group className="mb-2">
@@ -173,11 +207,10 @@ function Register() {
                                             id="addressRegister"
                                             type="text"
                                             placeholder="Nhập Số Nhà Tên Đường"
+                                            onChange={(e) => setAddressRegister(e.target.value)}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger">
-                                        abc
-                                    </Form.Text>
+                                    <Form.Text className="text-danger"></Form.Text>
                                 </Form.Group>
 
                                 <Form.Label htmlFor="provinceRegister">
@@ -187,7 +220,12 @@ function Register() {
                                     id="provinceRegister"
                                     defaultValue=''
                                     className="mb-2"
-                                    onChange={(e) => getDistrictsProvince(e)}
+                                    onChange={(e) => {
+                                        getDistrictsProvince(e);
+                                        setProvinceRegister(e.target.value)
+                                    }
+                                    }
+                                // onChange={(e) => setProvinceRegister(e.target.value)}
                                 >
                                     <option value='' disabled>Chọn tỉnh thành phố</option>
                                     {
@@ -207,7 +245,10 @@ function Register() {
                                     defaultValue=''
                                     className="mb-2"
                                     disabled
-                                    onChange={(e) => getWardsDistrict(e)}
+                                    onChange={(e) => {
+                                        getWardsDistrict(e);
+                                        setDistrictRegister(e.target.value)
+                                    }}
                                 >
                                     <option value=''>Chọn quận huyện</option>
                                     {
@@ -227,6 +268,7 @@ function Register() {
                                     defaultValue=''
                                     className="mb-2"
                                     disabled
+                                    onChange={(e) => setDistrictRegister(e.target.value)}
                                 >
                                     <option value=''>Chọn xã phường</option>
                                     {
@@ -261,6 +303,7 @@ function Register() {
                                         style={{
                                             fontSize: '20px'
                                         }}
+                                        onClick={registerUser}
                                     >
                                         Đăng Ký
                                     </Button>

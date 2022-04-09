@@ -2,7 +2,7 @@ import { Row, Col, Card, Badge, OverlayTrigger, Tooltip, Button } from 'react-bo
 import { Link } from 'react-router-dom';
 
 import { URL } from '../../config/config'
-import { nameProductFormat } from '../../functions/stringFormat'
+import { nameProductFormat } from '../../functions/stringFormatFunction'
 import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
 
 
