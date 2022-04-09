@@ -6,7 +6,12 @@ import { useEffect, useState } from "react"
 import Axios from 'axios'
 
 import { URL } from '../../config/config'
-import { validateUserFullname, validateUserEmail, validateUserPassword, validateUserPasswordAgain } from '../../functions/validateFormFunction'
+import {
+    validateUserFullname, validateUserEmail, validateUserPassword, validateUserPasswordAgain, validateUserPhoneNumber, validateUserAddress,
+    validateUserProvince,
+    validateUserDistrict,
+    validateUserWard
+} from '../../functions/validateFormFunction'
 
 function Register() {
 
@@ -66,24 +71,63 @@ function Register() {
 
     const checkFullname = (fullname) => {
         setFullnameRegister(fullname)
-        validateUserFullname(fullname, 'notificationFullnameFail')
+        return validateUserFullname(fullname, 'notificationFullnameFail')
     }
 
     const checkEmail = (email) => {
         setEmailRegister(email);
-        validateUserEmail(email, 'notificationEmailFail')
+        return validateUserEmail(email, 'notificationEmailFail')
     }
 
     const checkPassword = (password) => {
         setPasswordRegister(password);
-        validateUserPassword(password, 'notificationPasswordFail')
+        return validateUserPassword(password, 'notificationPasswordFail')
+        // set password again => empty when enter again password
+        setPasswordAgainRegister('')
+        document.getElementById('passwordAgainRegister').value = ''
+        document.getElementById('notificationPasswordAgainFail').innerHTML = ''
+    }
+
+    const checkPasswordAgain = (passwordAgain) => {
+        setPasswordAgainRegister(passwordAgain);
+        return validateUserPasswordAgain(passwordRegister, passwordAgain, 'notificationPasswordAgainFail')
+    }
+
+    const checkPhoneNumber = (phoneNumber) => {
+        setPhoneNumberRegister(phoneNumber);
+        return validateUserPhoneNumber(phoneNumber, 'notificationPhoneNumberFail')
+    }
+
+    const checkAddress = (address) => {
+        setAddressRegister(address);
+        return validateUserAddress(address, 'notificationAddressFail')
+    }
+
+    const checkProvince = (province) => {
+        setProvinceRegister(province);
+        return validateUserProvince(province, 'provinceRegister')
+    }
+
+    const checkDistrict = (district) => {
+        setDistrictRegister(district);
+        return validateUserDistrict(district, 'districtRegister')
+    }
+
+    const checkWard = (ward) => {
+        setWardRegister(ward);
+        return validateUserWard(ward, 'wardRegister')
     }
 
     const registerUser = () => {
-        // validateUserFullname(fullnameRegister, 'abc')
-        // validateUserEmail('email@example.name', 'dsd')
+        if (
+            checkFullname(fullnameRegister) && checkEmail(emailRegister) &&
+            checkPassword(passwordRegister) && checkPasswordAgain(passwordAgainRegister) &&
+            checkPhoneNumber(phoneNumberRegister) && checkAddress(addressRegister) &&
+            checkProvince(provinceRegister) && checkDistrict(districtRegister) && checkWard(wardRegister)
+        ) {
+            console.log('ok')
+        }
     }
-
 
     return (
         <>
@@ -147,10 +191,7 @@ function Register() {
                                             id="passwordRegister"
                                             type="password"
                                             placeholder="Nhập Mật Khẩu"
-                                            onChange={(e) => {
-                                                setPasswordRegister(e.target.value);
-                                                validateUserPassword(e.target.value, 'notificationPasswordFail')
-                                            }}
+                                            onChange={(e) => checkPassword(e.target.value)}
                                         />
                                     </div>
                                     <Form.Text className="text-danger" id="notificationPasswordFail"></Form.Text>
@@ -168,10 +209,7 @@ function Register() {
                                             id="passwordAgainRegister"
                                             type="password"
                                             placeholder="Nhập Lại Mật Khẩu"
-                                            onChange={(e) => {
-                                                setPasswordAgainRegister(e.target.value);
-                                                validateUserPasswordAgain(passwordRegister, e.target.value, 'notificationPasswordAgainFail')
-                                            }}
+                                            onChange={(e) => checkPasswordAgain(e.target.value)}
                                         />
                                     </div>
                                     <Form.Text className="text-danger" id="notificationPasswordAgainFail"></Form.Text>
@@ -189,10 +227,10 @@ function Register() {
                                             id="phoneNumberRegister"
                                             type="text"
                                             placeholder="Nhập Số Điện Thoại"
-                                            onChange={(e) => setPhoneNumberRegister(e.target.value)}
+                                            onChange={(e) => checkPhoneNumber(e.target.value)}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger"></Form.Text>
+                                    <Form.Text className="text-danger" id="notificationPhoneNumberFail"></Form.Text>
                                 </Form.Group>
 
                                 <Form.Group className="mb-2">
@@ -207,10 +245,10 @@ function Register() {
                                             id="addressRegister"
                                             type="text"
                                             placeholder="Nhập Số Nhà Tên Đường"
-                                            onChange={(e) => setAddressRegister(e.target.value)}
+                                            onChange={(e) => checkAddress(e.target.value)}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger"></Form.Text>
+                                    <Form.Text className="text-danger" id="notificationAddressFail"></Form.Text>
                                 </Form.Group>
 
                                 <Form.Label htmlFor="provinceRegister">
@@ -222,10 +260,9 @@ function Register() {
                                     className="mb-2"
                                     onChange={(e) => {
                                         getDistrictsProvince(e);
-                                        setProvinceRegister(e.target.value)
+                                        checkProvince(e.target.value)
                                     }
                                     }
-                                // onChange={(e) => setProvinceRegister(e.target.value)}
                                 >
                                     <option value='' disabled>Chọn tỉnh thành phố</option>
                                     {
@@ -247,7 +284,7 @@ function Register() {
                                     disabled
                                     onChange={(e) => {
                                         getWardsDistrict(e);
-                                        setDistrictRegister(e.target.value)
+                                        checkDistrict(e.target.value)
                                     }}
                                 >
                                     <option value=''>Chọn quận huyện</option>
@@ -268,7 +305,7 @@ function Register() {
                                     defaultValue=''
                                     className="mb-2"
                                     disabled
-                                    onChange={(e) => setDistrictRegister(e.target.value)}
+                                    onChange={(e) => checkWard(e.target.value)}
                                 >
                                     <option value=''>Chọn xã phường</option>
                                     {
@@ -297,6 +334,8 @@ function Register() {
 
                                 <div className="text-center">
                                     <Button
+                                        id='buttonRegister'
+                                        // disabled
                                         variant="primary"
                                         type="button"
                                         className="w-50"

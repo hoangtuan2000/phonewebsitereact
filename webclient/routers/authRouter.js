@@ -4,6 +4,6 @@ const router = require('express').Router()
 router.post('/login', authController.login)
 router.post('/logout', authController.logout)
 router.get('/getlogin', authController.getLogin)
-router.post('/test', authController.test)
+router.post('/register', authController.register)
 
 module.exports = router

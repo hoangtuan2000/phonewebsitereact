@@ -1,4 +1,14 @@
 const db = require('../models')
+const bcrypt = require('bcrypt')
+
+const {
+    validateUserFullname,
+    validateUserEmail,
+    validateUserPassword,
+    validateUserPhoneNumber,
+    validateUserAddress,
+    validateUserWard
+} = require('../functionServer/validateInfoUserFunctionServer')
 
 var authLogin = {
     isLogin: false,
@@ -73,8 +83,43 @@ const getLogin = async (req, res) => {
     }
 }
 
-const test = async (req, res) => {
-    res.redirect('http://localhost:3000/smartphone')
+const register = async (req, res) => {
+    let fullnameRegister = req.body.fullnameRegister
+    let emailRegister = req.body.emailRegister
+    let passwordRegister = req.body.passwordRegister
+    let phoneNumberRegister = req.body.phoneNumberRegister
+    let addressRegister = req.body.addressRegister
+    let wardRegister = req.body.wardRegister
+
+    const saltRounds = 5
+    let isRegister = { register: false }
+
+    if (
+        validateUserFullname(fullnameRegister) && validateUserEmail(emailRegister) && validateUserPassword(passwordRegister) &&
+        validateUserPhoneNumber(phoneNumberRegister) && validateUserAddress(addressRegister) && validateUserWard(wardRegister)
+    ) {
+        bcrypt.hash(passwordRegister, saltRounds, (err, hash) => {
+            if (err) {
+                res.send(isRegister)
+            } else {
+                // console.log(hash);
+                const sql = ''
+                db.query(sql, [username, hash], (err, result) => {
+                    if (err) {
+                        res.send(err)
+                    }
+                    else {
+                        res.send(result)
+                    }
+                })
+            }
+        })
+
+    } else {
+        res.send(isRegister)
+    }
+
+
 }
 
 
@@ -82,5 +127,5 @@ module.exports = {
     login,
     logout,
     getLogin,
-    test
+    register
 }
