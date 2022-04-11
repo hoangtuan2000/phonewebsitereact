@@ -24,21 +24,27 @@ const login = async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
 
+    // trước khi truy vấn reset lại giá trị nếu còn lưu trước đó
+    authLogin.isLogin = false
+    authLogin.message.emailFail = ''
+    authLogin.message.passwordFail = ''
+    authLogin.message.otherFail = ''
+    authLogin.user = {}
+
     if (email && password) {
         const sqlSelectEmail = 'SELECT * FROM khachhang WHERE email_kh = ?'
-        db.query(sqlSelectEmail, email, (err, resultEmail) => {
+        db.query(sqlSelectEmail, email, (err, result) => {
             if (err) {
                 authLogin.message.otherFail = 'Có Lỗi Xảy Ra Bên Phía Server'
                 res.send(authLogin)
             } else {
-                if (resultEmail.length > 0) {
-                    const sqlSelectUser = 'SELECT * FROM khachhang WHERE email_kh = ? AND password_kh = ?'
-                    db.query(sqlSelectUser, [email, password], (err, result) => {
-                        if (err) {
-                            authLogin.message.otherFail = 'Có Lỗi Xảy Ra Bên Phía Server'
+                if (result.length > 0) {
+                    bcrypt.compare(password, result[0].password_kh, function (errCompare, resultCompare) {
+                        if (errCompare) {
+                            authLogin.message.otherFail = 'Lỗi Xác Thực Server'
                             res.send(authLogin)
                         } else {
-                            if (result.length > 0) {
+                            if (resultCompare) {
                                 req.session.loggedin = true;
                                 req.session.user = result;
                                 authLogin.isLogin = true
@@ -125,7 +131,7 @@ const register = async (req, res) => {
     ) {
         bcrypt.hash(passwordRegister, saltRounds, (err, hash) => {
             if (err) {
-                status.registerMessage = '1Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ)'
+                status.registerMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: Register 123)'
                 res.send(status)
 
             } else {
@@ -133,7 +139,7 @@ const register = async (req, res) => {
                 db.query(sql, [fullnameRegister, phoneNumberRegister, emailRegister, hash], (errUser, resultUser) => {
                     if (errUser) {
                         console.log(errUser);
-                        status.registerMessage = '2Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ)'
+                        status.registerMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: Register 456)'
                         res.send(status)
                     }
                     else {
@@ -141,7 +147,7 @@ const register = async (req, res) => {
                         const sqlAddress = 'INSERT INTO `diachi`(`dia_chi`, `mac_dinh`, `id_xp`, `id_kh`) VALUES (?, ?, ?, ?)'
                         db.query(sqlAddress, [addressRegister, 1, wardRegister, idUser], (errAddress, resultAddress) => {
                             if (errAddress) {
-                                status.registerMessage = '3Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ)'
+                                status.registerMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: Register 789)'
                                 res.send(status)
                             } else {
                                 status.registerStatus = true

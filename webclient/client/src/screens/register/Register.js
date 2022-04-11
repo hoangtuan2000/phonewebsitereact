@@ -185,8 +185,6 @@ function Register() {
         }
     }
 
-    console.log(agreeRegister);
-
     return (
         <>
             <Container>
