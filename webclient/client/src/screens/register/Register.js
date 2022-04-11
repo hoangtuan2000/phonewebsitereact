@@ -56,6 +56,9 @@ function Register() {
                 document.getElementById('districtRegister').removeAttribute('disabled')
                 setWards([])
                 document.getElementById('wardRegister').setAttribute('disabled', true)
+                //reset state DistrictRegister empty
+                setDistrictRegister('')
+                setWardRegister('')
             })
             .catch((err) => {
                 console.log('setDistricts', err);
@@ -215,7 +218,7 @@ function Register() {
                                             onChange={(e) => checkFullname(e.target.value)}
                                         />
                                     </div>
-                                    <Form.Text className="text-danger" id="notificationFullnameFail">gkj</Form.Text>
+                                    <Form.Text className="text-danger" id="notificationFullnameFail"></Form.Text>
                                 </Form.Group>
 
                                 <Form.Group className="mb-2">

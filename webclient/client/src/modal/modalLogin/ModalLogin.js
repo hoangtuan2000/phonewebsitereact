@@ -9,11 +9,14 @@ import { saveUserLogin } from '../../redux/userSlice'
 import { URL } from '../../config/config'
 
 import styles from './modalLoginStyle.module.css'
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // const ModalLogin = (show, onHide, handleGetUserLogin) => {
 function ModalLogin(props) {
 
+    const currentPage = useLocation()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     // input value email, password
     const [email, setEmail] = useState('')
@@ -32,7 +35,9 @@ function ModalLogin(props) {
                 //of the [key, value] pairs of a given object's own enumerable string properties.
                 if (Object.entries(response.data.user).length !== 0 && response.data.isLogin === true) {
                     dispatch(saveUserLogin(response.data.user))
-
+                    if(currentPage.pathname === '/register'){
+                        navigate('/')
+                    }
                 } else {
                     if (response.data.message.emailFail) {
                         setEmailFail(response.data.message.emailFail)
