@@ -96,6 +96,16 @@ const validateUserWard = (ward, selectElement) => {
     }
 }
 
+const validateUserAgree = (argee, checkElement) => {
+    if (argee) {
+        document.getElementById(checkElement).classList.remove('is-invalid')
+        return true
+    } else {
+        document.getElementById(checkElement).classList.add('is-invalid')
+        return false
+    }
+}
+
 export {
     validateUserFullname,
     validateUserEmail,
@@ -105,5 +115,6 @@ export {
     validateUserAddress,
     validateUserProvince,
     validateUserDistrict,
-    validateUserWard
+    validateUserWard,
+    validateUserAgree
 }

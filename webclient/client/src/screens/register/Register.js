@@ -7,13 +7,16 @@ import Axios from 'axios'
 
 import { URL } from '../../config/config'
 import {
-    validateUserFullname, validateUserEmail, validateUserPassword, validateUserPasswordAgain, validateUserPhoneNumber, validateUserAddress,
-    validateUserProvince,
-    validateUserDistrict,
-    validateUserWard
+    validateUserFullname, validateUserEmail, validateUserPassword,
+    validateUserPasswordAgain, validateUserPhoneNumber, validateUserAddress,
+    validateUserProvince, validateUserDistrict, validateUserWard, validateUserAgree
 } from '../../functions/validateFormFunction'
+import ModalRegistrationStatus from "../../modal/modalRegistrationStatus/ModalRegistrationStatus"
 
 function Register() {
+
+    // variable of bootstrap modal
+    const [modalRegistrationStatusShow, setModalRegistrationStatusShow] = useState(false);
 
     const [provinces, setProvinces] = useState([])
     const [districts, setDistricts] = useState([])
@@ -28,6 +31,9 @@ function Register() {
     const [provinceRegister, setProvinceRegister] = useState('')
     const [districtRegister, setDistrictRegister] = useState('')
     const [wardRegister, setWardRegister] = useState('')
+    const [agreeRegister, setAgreeRegister] = useState(false)
+
+    const [registrationStatus, setRegistrationStatus] = useState({})
 
 
     useEffect(() => {
@@ -118,16 +124,68 @@ function Register() {
         return validateUserWard(ward, 'wardRegister')
     }
 
+    const checkAgree = (agree) => {
+        setAgreeRegister(agree)
+        return validateUserAgree(agree, 'argeeRegister')
+    }
+
     const registerUser = () => {
         if (
             checkFullname(fullnameRegister) && checkEmail(emailRegister) &&
             checkPassword(passwordRegister) && checkPasswordAgain(passwordAgainRegister) &&
             checkPhoneNumber(phoneNumberRegister) && checkAddress(addressRegister) &&
-            checkProvince(provinceRegister) && checkDistrict(districtRegister) && checkWard(wardRegister)
+            checkProvince(provinceRegister) && checkDistrict(districtRegister) &&
+            checkWard(wardRegister) && checkAgree(agreeRegister)
         ) {
-            console.log('ok')
+            // check email exist
+            Axios.post(URL + '/auth/existEmail', { email: emailRegister })
+                .then((res) => {
+                    if (res.data.exitEmailStatus) {
+                        // exist email
+                        document.getElementById('notificationEmailFail').innerHTML = res.data.exitEmailMessage
+                        document.getElementById('emailRegister').focus()
+
+                    } else {
+                        // not exist email
+                        Axios.post(URL + '/auth/register',
+                            {
+                                fullnameRegister: fullnameRegister,
+                                emailRegister: emailRegister,
+                                passwordRegister: passwordRegister,
+                                phoneNumberRegister: phoneNumberRegister,
+                                addressRegister: addressRegister,
+                                wardRegister: wardRegister
+                            }
+                        )
+                            .then((result) => {
+                                setRegistrationStatus(result.data)
+                                setModalRegistrationStatusShow(true)
+                                // reset info register in input
+                                setFullnameRegister('')
+                                setEmailRegister('')
+                                setPasswordRegister('')
+                                setPasswordAgainRegister('')
+                                setPhoneNumberRegister('')
+                                setAddressRegister('')
+                                setProvinceRegister('')
+                                setDistrictRegister('')
+                                setWardRegister('')
+                                setAgreeRegister('')
+                                document.getElementById('wardRegister').setAttribute('disabled', true)
+                                document.getElementById('districtRegister').setAttribute('disabled', true)
+                            })
+                            .catch((error) => {
+                                console.log('registerUser', error);
+                            })
+                    }
+                })
+                .catch((err) => {
+                    console.log('registerUser existEmail' + err);
+                })
         }
     }
+
+    console.log(agreeRegister);
 
     return (
         <>
@@ -155,6 +213,7 @@ function Register() {
                                             id="fullnameRegister"
                                             type="text"
                                             placeholder="Nhập Họ Tên"
+                                            value={fullnameRegister}
                                             onChange={(e) => checkFullname(e.target.value)}
                                         />
                                     </div>
@@ -173,6 +232,7 @@ function Register() {
                                             id="emailRegister"
                                             type="text"
                                             placeholder="Nhập Email"
+                                            value={emailRegister}
                                             onChange={(e) => checkEmail(e.target.value)}
                                         />
                                     </div>
@@ -191,6 +251,7 @@ function Register() {
                                             id="passwordRegister"
                                             type="password"
                                             placeholder="Nhập Mật Khẩu"
+                                            value={passwordRegister}
                                             onChange={(e) => checkPassword(e.target.value)}
                                         />
                                     </div>
@@ -209,6 +270,7 @@ function Register() {
                                             id="passwordAgainRegister"
                                             type="password"
                                             placeholder="Nhập Lại Mật Khẩu"
+                                            value={passwordAgainRegister}
                                             onChange={(e) => checkPasswordAgain(e.target.value)}
                                         />
                                     </div>
@@ -227,6 +289,7 @@ function Register() {
                                             id="phoneNumberRegister"
                                             type="text"
                                             placeholder="Nhập Số Điện Thoại"
+                                            value={phoneNumberRegister}
                                             onChange={(e) => checkPhoneNumber(e.target.value)}
                                         />
                                     </div>
@@ -245,6 +308,7 @@ function Register() {
                                             id="addressRegister"
                                             type="text"
                                             placeholder="Nhập Số Nhà Tên Đường"
+                                            value={addressRegister}
                                             onChange={(e) => checkAddress(e.target.value)}
                                         />
                                     </div>
@@ -256,7 +320,7 @@ function Register() {
                                 </Form.Label>
                                 <Form.Select
                                     id="provinceRegister"
-                                    defaultValue=''
+                                    value={provinceRegister}
                                     className="mb-2"
                                     onChange={(e) => {
                                         getDistrictsProvince(e);
@@ -279,7 +343,7 @@ function Register() {
                                 </Form.Label>
                                 <Form.Select
                                     id="districtRegister"
-                                    defaultValue=''
+                                    value={districtRegister}
                                     className="mb-2"
                                     disabled
                                     onChange={(e) => {
@@ -302,7 +366,7 @@ function Register() {
                                 </Form.Label>
                                 <Form.Select
                                     id="wardRegister"
-                                    defaultValue=''
+                                    value={wardRegister}
                                     className="mb-2"
                                     disabled
                                     onChange={(e) => checkWard(e.target.value)}
@@ -319,17 +383,16 @@ function Register() {
 
                                 <Form.Group className="my-3" htmlFor='checkAgree'>
                                     <Form.Check
-                                        id='checkAgree'
+                                        id='argeeRegister'
                                         type="checkbox"
+                                        checked={agreeRegister}
+                                        onChange={(e) => checkAgree(e.target.checked)}
                                         label={
                                             <span>
                                                 Đồng ý với &nbsp;
                                                 <Link to='/policy'>Điều Khoản Và Chính Sách</Link>
                                             </span>}
                                     />
-                                    <Form.Text className="text-danger">
-                                        abc
-                                    </Form.Text>
                                 </Form.Group>
 
                                 <div className="text-center">
@@ -349,6 +412,13 @@ function Register() {
                                 </div>
                             </Form>
                         </div>
+
+                        {/* call tag modal Registration Status*/}
+                        <ModalRegistrationStatus
+                            show={modalRegistrationStatusShow}
+                            onHide={() => setModalRegistrationStatusShow(false)}
+                            registrationStatus={registrationStatus}
+                        />
                     </Col>
                 </Row>
             </Container>

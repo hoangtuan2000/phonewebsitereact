@@ -83,7 +83,35 @@ const getLogin = async (req, res) => {
     }
 }
 
+const existEmail = async (req, res) => {
+    let status = {
+        exitEmailStatus: false,
+        exitEmailMessage: '',
+    }
+    let email = req.body.email
+    const sql = 'SELECT * FROM `khachhang` WHERE email_kh = ?'
+    db.query(sql, email, (err, result) => {
+        if (err) {
+            res.send(err)
+        } else {
+            if (result.length > 0) {
+                status.exitEmailStatus = true
+                status.exitEmailMessage = 'Email đã đăng ký (Vui lòng chọn email khác)'
+                res.send(status)
+            } else {
+                res.send(status)
+            }
+        }
+    })
+}
+
 const register = async (req, res) => {
+    const saltRounds = 5
+    let status = {
+        registerStatus: false,
+        registerMessage: ''
+    }
+
     let fullnameRegister = req.body.fullnameRegister
     let emailRegister = req.body.emailRegister
     let passwordRegister = req.body.passwordRegister
@@ -91,35 +119,44 @@ const register = async (req, res) => {
     let addressRegister = req.body.addressRegister
     let wardRegister = req.body.wardRegister
 
-    const saltRounds = 5
-    let isRegister = { register: false }
-
     if (
         validateUserFullname(fullnameRegister) && validateUserEmail(emailRegister) && validateUserPassword(passwordRegister) &&
         validateUserPhoneNumber(phoneNumberRegister) && validateUserAddress(addressRegister) && validateUserWard(wardRegister)
     ) {
         bcrypt.hash(passwordRegister, saltRounds, (err, hash) => {
             if (err) {
-                res.send(isRegister)
+                status.registerMessage = '1Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ)'
+                res.send(status)
+
             } else {
-                // console.log(hash);
-                const sql = ''
-                db.query(sql, [username, hash], (err, result) => {
-                    if (err) {
-                        res.send(err)
+                const sql = 'INSERT INTO `khachhang`(`ten_kh`, `sdt_kh`, `email_kh`, `password_kh`) VALUES (?, ?, ?, ?)'
+                db.query(sql, [fullnameRegister, phoneNumberRegister, emailRegister, hash], (errUser, resultUser) => {
+                    if (errUser) {
+                        console.log(errUser);
+                        status.registerMessage = '2Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ)'
+                        res.send(status)
                     }
                     else {
-                        res.send(result)
+                        const idUser = resultUser.insertId
+                        const sqlAddress = 'INSERT INTO `diachi`(`dia_chi`, `mac_dinh`, `id_xp`, `id_kh`) VALUES (?, ?, ?, ?)'
+                        db.query(sqlAddress, [addressRegister, 1, wardRegister, idUser], (errAddress, resultAddress) => {
+                            if (errAddress) {
+                                status.registerMessage = '3Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ)'
+                                res.send(status)
+                            } else {
+                                status.registerStatus = true
+                                res.send(status)
+                            }
+                        })
                     }
                 })
             }
         })
 
     } else {
-        res.send(isRegister)
+        status.registerMessage = 'Lỗi Thông Tin Khách Hàng'
+        res.send(status)
     }
-
-
 }
 
 
@@ -127,5 +164,6 @@ module.exports = {
     login,
     logout,
     getLogin,
-    register
+    register,
+    existEmail
 }

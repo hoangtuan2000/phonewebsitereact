@@ -17,7 +17,7 @@ function Header() {
     const userLogin = useSelector((state) => state.userLogin.infoUser)
 
     // variable of bootstrap modal
-    const [modalShow, setModalShow] = useState(false);
+    const [modalLoginShow, setModalLoginShow] = useState(false);
 
     // check login when open web
     useEffect(() => {
@@ -172,7 +172,7 @@ function Header() {
                                     <span
                                         className='nav-link'
                                         style={{ cursor: 'pointer' }}
-                                        onClick={() => setModalShow(true)}
+                                        onClick={() => setModalLoginShow(true)}
                                     >
                                         <FontAwesomeIcon icon={faRightToBracket} className='me-1' />
                                         Đăng Nhập
@@ -180,8 +180,8 @@ function Header() {
 
                                     {/* call tag modal login */}
                                     <ModalLogin
-                                        show={modalShow}
-                                        onHide={() => setModalShow(false)}
+                                        show={modalLoginShow}
+                                        onHide={() => setModalLoginShow(false)}
                                     />
                                 </>
                             )

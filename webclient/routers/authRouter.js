@@ -5,5 +5,6 @@ router.post('/login', authController.login)
 router.post('/logout', authController.logout)
 router.get('/getlogin', authController.getLogin)
 router.post('/register', authController.register)
+router.post('/existEmail', authController.existEmail)
 
 module.exports = router
