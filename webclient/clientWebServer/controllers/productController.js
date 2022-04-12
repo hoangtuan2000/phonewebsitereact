@@ -1,4 +1,4 @@
-const db = require('../models')
+const db = require('../../models')
 
 const getAllProducts = async (req, res) => {
     const sqlSelect =

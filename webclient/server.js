@@ -26,34 +26,45 @@ app.use(session({
     cookie: {
         // expires: 60
         httpOnly: true, //not accessible via function document.cookie
-        maxAge: 60000
+        maxAge: 60000 * 60000 * 24
     }
 }));
-
+// **************************************************************************************
+// ****************************** Client Web ******************************
 // Products Routers
-const productRouter = require('./routers/productRouter.js')
+const productRouter = require('./clientWebServer/routers/productRouter.js')
 app.use('/api/products', productRouter)
 
 // Smartphones Routers
-const smartphoneRouter = require('./routers/smartphoneRouter.js')
+const smartphoneRouter = require('./clientWebServer/routers/smartphoneRouter.js')
 app.use('/api/products', smartphoneRouter)
 
 // Headphones Routers
-const headphoneRouter = require('./routers/headphoneRouter.js')
+const headphoneRouter = require('./clientWebServer/routers/headphoneRouter.js')
 app.use('/api/products', headphoneRouter)
 
 // Phonecases Routers
-const phonecaseRouter = require('./routers/phonecaseRouter.js')
+const phonecaseRouter = require('./clientWebServer/routers/phonecaseRouter.js')
 app.use('/api/products', phonecaseRouter)
 
 //Login/Register Router
-const authRouter = require('./routers/authRouter.js')
+const authRouter = require('./clientWebServer/routers/authRouter.js')
 app.use('/auth', authRouter)
 
 //Address Router
-const addressRouter = require('./routers/addressRouter.js')
+const addressRouter = require('./clientWebServer/routers/addressRouter.js')
 app.use('/address', addressRouter)
 
+//Cart Router
+const cartRouter = require('./clientWebServer/routers/cartRouter.js')
+app.use('/cart', cartRouter)
+
+
+
+// ****************************** Admin Web ******************************
+
+
+// **************************************************************************************
 // static images folder
 app.use(express.static('./public'))
 

@@ -1,4 +1,4 @@
-const db = require('../models')
+const db = require('../../models')
 
 const getAllProvinces = async (req, res) => {
     const sql = 'SELECT * FROM tinhthanhpho'

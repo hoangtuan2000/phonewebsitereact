@@ -1,10 +1,10 @@
-const db = require('../models')
+const db = require('../../models')
 
-const getAllPhonecases = async (req, res) => {
+const getAllHeadphones = async (req, res) => {
     const sqlSelect =
         `SELECT sp.id_sp, sp.ten_sp, sp.anh_sp, sp.gia_sp, km.giam_km
-        FROM sanpham as sp, khuyenmai as km, oplung as ol
-        WHERE sp.id_km = km.id_km AND sp.id_sp = ol.id_sp AND sp.so_luong_sp > 0`
+        FROM sanpham as sp, khuyenmai as km, tainghe as tn
+        WHERE sp.id_km = km.id_km AND sp.id_sp = tn.id_sp AND sp.so_luong_sp > 0`
     db.query(sqlSelect, (err, result) => {
         if (err) {
             res.send(err)
@@ -14,11 +14,11 @@ const getAllPhonecases = async (req, res) => {
     })
 }
 
-const getPromotionalPhonecases = async (req, res) => {
+const getPromotionalHeadphones = async (req, res) => {
     const sql =
         `SELECT sp.id_sp, sp.ten_sp, sp.anh_sp, sp.gia_sp, km.giam_km
-        FROM sanpham as sp, khuyenmai as km, oplung as ol
-        WHERE sp.id_km = km.id_km AND sp.id_sp = ol.id_sp AND sp.so_luong_sp > 0 AND km.giam_km > 0
+        FROM sanpham as sp, khuyenmai as km, tainghe as tn
+        WHERE sp.id_km = km.id_km AND sp.id_sp = tn.id_sp AND sp.so_luong_sp > 0 AND km.giam_km > 0
         ORDER BY km.giam_km DESC
         LIMIT 18`
     db.query(sql, (err, result) => {
@@ -30,7 +30,7 @@ const getPromotionalPhonecases = async (req, res) => {
     })
 }
 
-const getHighPricePhonecases = async (req, res) => {
+const getHighPriceHeadphones = async (req, res) => {
     const sql =
         `SELECT
             sp.id_sp,
@@ -40,10 +40,10 @@ const getHighPricePhonecases = async (req, res) => {
             km.giam_km
         FROM 
             sanpham as sp,
-            oplung as ol,
+            tainghe as tn,
             khuyenmai as km
         WHERE 
-            sp.id_sp = ol.id_sp 
+            sp.id_sp = tn.id_sp 
             AND sp.so_luong_sp > 0 
             AND sp.id_km = km.id_km
         ORDER BY sp.gia_sp DESC
@@ -58,7 +58,7 @@ const getHighPricePhonecases = async (req, res) => {
 }
 
 module.exports = {
-    getAllPhonecases,
-    getPromotionalPhonecases,
-    getHighPricePhonecases
+    getAllHeadphones,
+    getPromotionalHeadphones,
+    getHighPriceHeadphones
 }

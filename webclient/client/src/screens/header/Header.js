@@ -24,8 +24,6 @@ function Header() {
         const url = URL + '/auth/getlogin'
         Axios.get(url)
             .then((response) => {
-                let user = response.data.user
-                let isLogin = response.data.isLogin
                 if (Object.entries(response.data.user).length !== 0 && response.data.isLogin) {
                     console.log('getLogin save');
                     dispatch(saveUserLogin(response.data.user))

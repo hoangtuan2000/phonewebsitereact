@@ -35,8 +35,11 @@ function ModalLogin(props) {
                 //of the [key, value] pairs of a given object's own enumerable string properties.
                 if (Object.entries(response.data.user).length !== 0 && response.data.isLogin === true) {
                     dispatch(saveUserLogin(response.data.user))
-                    if(currentPage.pathname === '/register'){
+                    if (currentPage.pathname === '/register') {
                         navigate('/')
+                    } else {
+                        // hide modal Login
+                        props.onHide()
                     }
                 } else {
                     if (response.data.message.emailFail) {

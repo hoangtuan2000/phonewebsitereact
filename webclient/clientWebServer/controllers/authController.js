@@ -1,4 +1,4 @@
-const db = require('../models')
+const db = require('../../models')
 const bcrypt = require('bcrypt')
 
 const {
@@ -129,12 +129,14 @@ const register = async (req, res) => {
         validateUserFullname(fullnameRegister) && validateUserEmail(emailRegister) && validateUserPassword(passwordRegister) &&
         validateUserPhoneNumber(phoneNumberRegister) && validateUserAddress(addressRegister) && validateUserWard(wardRegister)
     ) {
+        // hast password
         bcrypt.hash(passwordRegister, saltRounds, (err, hash) => {
             if (err) {
                 status.registerMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: Register 123)'
                 res.send(status)
 
             } else {
+                // create user
                 const sql = 'INSERT INTO `khachhang`(`ten_kh`, `sdt_kh`, `email_kh`, `password_kh`) VALUES (?, ?, ?, ?)'
                 db.query(sql, [fullnameRegister, phoneNumberRegister, emailRegister, hash], (errUser, resultUser) => {
                     if (errUser) {
@@ -143,6 +145,7 @@ const register = async (req, res) => {
                         res.send(status)
                     }
                     else {
+                        // create address of user
                         const idUser = resultUser.insertId
                         const sqlAddress = 'INSERT INTO `diachi`(`dia_chi`, `mac_dinh`, `id_xp`, `id_kh`) VALUES (?, ?, ?, ?)'
                         db.query(sqlAddress, [addressRegister, 1, wardRegister, idUser], (errAddress, resultAddress) => {
@@ -150,8 +153,17 @@ const register = async (req, res) => {
                                 status.registerMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: Register 789)'
                                 res.send(status)
                             } else {
-                                status.registerStatus = true
-                                res.send(status)
+                                // create cart of user
+                                const sqlCart = 'INSERT INTO `giohang`(`id_kh`) VALUES (?)'
+                                db.query(sqlCart, idUser, (errCart, resultCart) => {
+                                    if (errCart) {
+                                        status.registerMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: Register 902)'
+                                        res.send(status)
+                                    } else {
+                                        status.registerStatus = true
+                                        res.send(status)
+                                    }
+                                })
                             }
                         })
                     }

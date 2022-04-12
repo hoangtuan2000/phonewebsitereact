@@ -9,51 +9,14 @@ import { faAngleLeft, faAngleRight, faHandPointer, faCartPlus, faShieldBlank, fa
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Axios from "axios";
+import { useSelector, useDispatch } from 'react-redux'
+
 import ProductConfiguration from '../../components/ProductConfiguration'
 import ProductIntroduction from '../../components/ProductIntroduction'
+import ModalLogin from "../../modal/modalLogin/ModalLogin";
 
 import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
-
-// custom button next slider of react slick
-const ButtonNextArrow = (props) => {
-    const { className, style, onClick } = props;
-    return (
-        <FontAwesomeIcon
-            icon={faAngleRight}
-            style={{
-                ...style,
-                background: 'black',
-                opacity: '0.1',
-                height: '30px',
-                width: '30px',
-                color: 'white',
-                borderRadius: '6px'
-            }}
-            className={className}
-            onClick={onClick}
-        />
-    );
-}
-// custom button prev slider of react slick
-const ButtonPrevArrow = (props) => {
-    const { className, style, onClick } = props;
-    return (
-        <FontAwesomeIcon
-            icon={faAngleLeft}
-            style={{
-                ...style,
-                background: 'black',
-                opacity: '0.1',
-                height: '30px',
-                width: '30px',
-                color: 'white',
-                borderRadius: '6px'
-            }}
-            className={className}
-            onClick={onClick}
-        />
-    );
-}
+import { ButtonNextArrow, ButtonPrevArrow } from "../../components/buttonReactSlick/ButtonReactSlick";
 
 // function of react rating stars component 
 const ratingChanged = (newRating) => {
@@ -64,7 +27,11 @@ const infoButtonsName = ['Giới Thiệu', 'Thông Tin Cấu Hình']
 
 function ProductDetail() {
 
+    const userLogin = useSelector((state) => state.userLogin.infoUser)
     let params = useParams();
+
+    // variable of bootstrap modal
+    const [modalLoginShow, setModalLoginShow] = useState(false);
 
     // show content introduction or configuration of product
     const [showInformation, setShowInformation] = useState(infoButtonsName[0])
@@ -110,6 +77,17 @@ function ProductDetail() {
         getProductData()
     }, [params.idProduct])
 
+    // handle click add cart
+    const handleAddToCarts = () => {
+        // not Login
+        if (Object.entries(userLogin).length === 0) {
+            setModalLoginShow(true)
+
+        } else {
+            Axios.post
+        }
+    }
+
     // variable of React Slick library
     const settings = {
         customPaging: (i) => {
@@ -130,6 +108,7 @@ function ProductDetail() {
         dots: true,
         dotsClass: "slick-dots slick-thumb",
         infinite: true,
+        adaptiveHeight: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -148,13 +127,13 @@ function ProductDetail() {
                             {
                                 objImages.map((val) => {
                                     return (
-                                    <div className="align-middle" key={val.id_asp}>
-                                        <img
-                                            src={'http://localhost:3001/' + val.anh_asp}
-                                            className='mx-auto w-100'
-                                            style={{ objectFit: 'contain' }}
-                                        />
-                                    </div>
+                                        <div className="align-middle" key={val.id_asp}>
+                                            <img
+                                                src={'http://localhost:3001/' + val.anh_asp}
+                                                className='mx-auto w-100'
+                                                style={{ height: '400px', objectFit: 'contain' }}
+                                            />
+                                        </div>
                                     )
                                 })
                             }
@@ -187,17 +166,18 @@ function ProductDetail() {
                             <div className="clearfix"></div>
 
                         </div>
-                        {/* <p>Tình trạng: {statusProduct} </p> */}
+
                         <div className="my-3">
                             <Button className="me-2 fw-bold" style={{ backgroundColor: '#fb6e2e', border: 'none' }}>
                                 <FontAwesomeIcon icon={faHandPointer} className='me-1' />
                                 Mua
                             </Button>
-                            <Button variant="primary" className="fw-bold">
+                            <Button onClick={handleAddToCarts} variant="primary" className="fw-bold">
                                 <FontAwesomeIcon icon={faCartPlus} className='me-1' />
                                 Thêm Vào Giỏ Hàng
                             </Button>
                         </div>
+
                         <div className="mt-2 border border-primary rounded-3">
                             <div className="bg-primary text-center text-white p-1">
                                 <span>Chính Sách Bảo Hành</span>
@@ -254,6 +234,12 @@ function ProductDetail() {
                         </div>
                     </div>
                 </Col>
+
+                {/* call tag modal login */}
+                <ModalLogin
+                    show={modalLoginShow}
+                    onHide={() => setModalLoginShow(false)}
+                />
             </Row>
         </Container >
     )
