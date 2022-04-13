@@ -183,5 +183,5 @@ module.exports = {
     logout,
     getLogin,
     register,
-    existEmail
+    existEmail,
 }
