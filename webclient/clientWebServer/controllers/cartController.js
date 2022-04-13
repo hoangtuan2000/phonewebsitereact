@@ -33,7 +33,7 @@ const getIdCartUser = async (req, res, next) => {
         })
 
     } else {
-        status.getIdCartMessage = 'Bạn Chưa Đăng Nhập'
+        status.getIdCartMessage = 'Bạn Đã Hết Phiên Đăng Nhập, Vui Lòng Đăng Nhập Lại'
         req.getIdCartUser = status
         next()
     }
@@ -98,7 +98,7 @@ const addProductToCart = async (req, res) => {
         }
 
     } else {
-        status.addCartMessage = 'Bạn chưa đăng nhập'
+        status.addCartMessage = 'Bạn Đã Hết Phiên Đăng Nhập, Vui Lòng Đăng Nhập Lại'
         res.send(status)
     }
 }
@@ -179,6 +179,6 @@ module.exports = {
 //     })
 
 // } else {
-//     status.addCartMessage = 'Bạn chưa đăng nhập'
+//     status.addCartMessage = 'Bạn Đã Hết Phiên Đăng Nhập, Vui Lòng Đăng Nhập Lại'
 //     res.send(status)
 // }

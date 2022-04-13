@@ -17,6 +17,8 @@ import ModalLogin from "../../modal/modalLogin/ModalLogin";
 
 import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
 import { ButtonNextArrow, ButtonPrevArrow } from "../../components/buttonReactSlick/ButtonReactSlick";
+import { URL } from '../../config/config'
+import ModalNotification from "../../modal/modalNotification/ModalNotification";
 
 // function of react rating stars component 
 const ratingChanged = (newRating) => {
@@ -32,6 +34,7 @@ function ProductDetail() {
 
     // variable of bootstrap modal
     const [modalLoginShow, setModalLoginShow] = useState(false);
+    const [modalNotificationShow, setModalNotificationShow] = useState(false);
 
     // show content introduction or configuration of product
     const [showInformation, setShowInformation] = useState(infoButtonsName[0])
@@ -39,6 +42,9 @@ function ProductDetail() {
     const [objImages, setObjImages] = useState([])
     const [oldPrice, setOldPrice] = useState('')
     const [newPrice, setNewPrice] = useState('')
+
+    // status add product to cart
+    const [statusAddProductToCart, setStatusAddProductToCart] = useState({})
 
     useEffect(() => {
         const getProductImages = async () => {
@@ -84,7 +90,14 @@ function ProductDetail() {
             setModalLoginShow(true)
 
         } else {
-            Axios.post
+            Axios.post(URL + '/cart/addProductToCart', { idProduct: objProduct.id_sp })
+                .then((res) => {
+                    setStatusAddProductToCart(res.data)
+                    setModalNotificationShow(true)
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         }
     }
 
@@ -239,6 +252,20 @@ function ProductDetail() {
                 <ModalLogin
                     show={modalLoginShow}
                     onHide={() => setModalLoginShow(false)}
+                />
+
+                {/* call tag modal Notification */}
+                <ModalNotification
+                    show={modalNotificationShow}
+                    onHide={() => setModalNotificationShow(false)}
+                    status={statusAddProductToCart.addCartStatus}
+                    title={
+                        statusAddProductToCart.addCartStatus ?
+                        'Thành Công' : 'Thất Bại' 
+                    }
+                    message={statusAddProductToCart.addCartMessage}
+                    gotoPage={'/cart'}
+                    namePage={'Giỏ Hàng'}
                 />
             </Row>
         </Container >

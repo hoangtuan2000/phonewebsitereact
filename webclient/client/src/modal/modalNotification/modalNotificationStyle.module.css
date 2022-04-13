@@ -1,0 +1,17 @@
+.modalTittleSuccess {
+    text-align: center;
+    margin: 10px;
+    margin-bottom: 5px;
+    color: green;
+}
+
+.modalTittleFail {
+    text-align: center;
+    margin: 10px;
+    color: red;
+}
+
+.modalContent {
+    text-align: center;
+    margin: 10px;
+}
