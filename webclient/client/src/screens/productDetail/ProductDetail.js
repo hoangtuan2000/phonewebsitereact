@@ -90,7 +90,7 @@ function ProductDetail() {
             setModalLoginShow(true)
 
         } else {
-            Axios.post(URL + '/cart/addProductToCart', { idProduct: objProduct.id_sp })
+            Axios.post(URL + '/cart/addProductCart', { idProduct: objProduct.id_sp })
                 .then((res) => {
                     setStatusAddProductToCart(res.data)
                     setModalNotificationShow(true)
