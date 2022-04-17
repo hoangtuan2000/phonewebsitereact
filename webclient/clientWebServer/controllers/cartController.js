@@ -226,7 +226,7 @@ const changeNumberProductCart = async (req, res) => {
             } else {
                 if (resCheck.length > 0) {
                     if (numberProduct > resCheck[0].so_luong_sp) {
-                        status.changeNumberProductCartMessage = `Sản phẩm chỉ còn ${resCheck[0].so_luong_sp}`
+                        status.changeNumberProductCartMessage = `Cửa Hàng Chỉ còn ${resCheck[0].so_luong_sp} Sản Phẩm`
                         res.send(status)
                     } else {
                         const sqlUpdate = 'UPDATE `chitietgiohang` SET `so_luong` = ? WHERE id_sp = ? AND id_gh = ?'

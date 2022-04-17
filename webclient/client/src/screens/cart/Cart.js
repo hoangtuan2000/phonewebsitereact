@@ -8,6 +8,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { URL } from '../../config/config'
 import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import ModalNotification from '../../modal/modalNotification/ModalNotification'
+import TableCart from "../../components/tableCart/TableCart"
 
 function Cart() {
 
@@ -15,11 +16,13 @@ function Cart() {
     const windowHeight = window.innerHeight
 
     // variable of bootstrap modal
-    const [modalNotificationShow, setModalNotificationShow] = useState(false);
+    const [modalStatusDeleteProductCart, setModalStatusDeleteProductCart] = useState(false);
+    const [modalStatusChangeNumberProductCart, setModalStatusChangeNumberProductCart] = useState(false);
 
     const [products, setProducts] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
     const [statusDeleteProductCart, setStatusDeleteProductCart] = useState({})
+    const [statusChangeNumberProductCart, setStatusChangeNumberProductCart] = useState({})
 
     useEffect(() => {
         Axios.get(URL + '/cart/getAllProductsCart')
@@ -53,6 +56,7 @@ function Cart() {
             })
     }
 
+    // sum price all product
     useEffect(() => {
         if (products.length > 0) {
             let price = 0
@@ -68,12 +72,61 @@ function Cart() {
         Axios.post(URL + '/cart/deleteProductCart', { idProduct: idProduct })
             .then((res) => {
                 setStatusDeleteProductCart(res.data)
-                setModalNotificationShow(true)
+                setModalStatusDeleteProductCart(true)
+                // re render
                 getAllProductsCart()
             })
             .catch((err) => {
                 console.log('handleDeleteProductCart', err);
             })
+    }
+
+    const changeNumberProduct = (idProduct, operator) => {
+        // get number product of cart
+        let number = document.getElementById(`numberProductCart${idProduct}`).value
+        //convert typeof string => typeof number
+        number = parseInt(number)
+
+        // kiểm tra bấm nút tăng hay giảm sản phẩm
+        if (operator === 'plus') {
+            number++
+            Axios.post(URL + '/cart/changeNumberProductCart', {
+                idProduct: idProduct,
+                numberProduct: number
+            })
+                .then((res) => {
+                    // lỗi mới show modal thông báo
+                    if (res.data.changeNumberProductCartStatus === false) {
+                        setStatusChangeNumberProductCart(res.data);
+                        setModalStatusChangeNumberProductCart(true)
+                    } else {
+                        getAllProductsCart()
+                    }
+                })
+                .catch((err) => {
+                    console.log('changeNumberProduct', err);
+                })
+        } else {
+            number--
+            if (number > 0) {
+                Axios.post(URL + '/cart/changeNumberProductCart', {
+                    idProduct: idProduct,
+                    numberProduct: number
+                })
+                    .then((res) => {
+                        // lỗi mới show modal thông báo
+                        if (res.data.changeNumberProductCartStatus === false) {
+                            setStatusChangeNumberProductCart(res.data);
+                            setModalStatusChangeNumberProductCart(true)
+                        } else {
+                            getAllProductsCart()
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('changeNumberProduct', err);
+                    })
+            }
+        }
     }
 
     return (
@@ -85,98 +138,13 @@ function Cart() {
                             {
                                 products.length > 0 ?
                                     <>
-                                        <Table striped bordered={false} hover className="p-1">
-                                            <thead className="text-center">
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Tên Sản Phẩm</th>
-                                                    <th>Số Lượng</th>
-                                                    <th>Giá</th>
-                                                    <th>Thành Tiền</th>
-                                                    <th>Xóa</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    products.map((product) => {
-                                                        const PromotionPrice = reducedPrice(product.gia_sp, product.giam_km)
-                                                        return (
-                                                            <tr key={product.id_sp} className="text-center align-middle">
-                                                                <td className="p-1" style={{ width: '70px' }}>
-                                                                    <Image
-                                                                        src={URL + product.anh_sp}
-                                                                        rounded
-                                                                        fluid
-                                                                        thumbnail
-                                                                        style={{
-                                                                            width: '50px',
-                                                                            height: '50px'
-                                                                        }}
-                                                                    />
-                                                                </td>
-                                                                <td>
-                                                                    {product.ten_sp}
-                                                                </td>
-                                                                <td style={{ width: '100px' }}>
-                                                                    <InputGroup size='sm' >
-                                                                        <Button className="p-0">
-                                                                            <FontAwesomeIcon icon={faMinus} />
-                                                                        </Button>
-                                                                        <FormControl className="p-0 text-center" value={product.so_luong} readOnly />
-                                                                        <Button className="p-0">
-                                                                            <FontAwesomeIcon icon={faPlus} />
-                                                                        </Button>
-                                                                    </InputGroup>
-                                                                </td>
-                                                                <td className="text-end">
-                                                                    {
-                                                                        moneyFormat(PromotionPrice) + ' đ'
-                                                                    }
-                                                                </td>
-                                                                <td className="text-end">
-                                                                    {
-                                                                        moneyFormat(PromotionPrice * product.so_luong) + ' đ'
-                                                                    }
-                                                                </td>
-                                                                {/* button delete product cart */}
-                                                                <td>
-                                                                    <Button
-                                                                        className="p-0 bg-transparent border-0"
-                                                                        onClick={() => handleDeleteProductCart(product.id_sp)}
-                                                                    >
-                                                                        <OverlayTrigger
-                                                                            placement='bottom'
-                                                                            overlay={
-                                                                                <Tooltip>
-                                                                                    Xóa Sản Phẩm
-                                                                                </Tooltip>
-                                                                            }
-                                                                        >
-                                                                            <span>
-                                                                                <FontAwesomeIcon
-                                                                                    icon={faTrashCan}
-                                                                                    className='text-danger'
-                                                                                />
-                                                                            </span>
-                                                                        </OverlayTrigger>
-                                                                    </Button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
-                                                <tr className="text-end text-danger fw-bold">
-                                                    <td colSpan={3}></td>
-                                                    <td>
-                                                        Tổng Tiền:
-                                                    </td>
-                                                    <td>
-                                                        {moneyFormat(totalPrice) + ' đ'}
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </Table>
+                                        <TableCart
+                                            products={products}
+                                            changeNumberProduct={changeNumberProduct}
+                                            handleDeleteProductCart={handleDeleteProductCart}
+                                            totalPrice={totalPrice}
+                                        />
+                                        
                                         <NavLink to='/order' className='btn btn-sm btn-danger float-end'>
                                             Thanh Toán
                                         </NavLink>
@@ -186,16 +154,28 @@ function Cart() {
                             }
                         </div>
 
-                        {/* call tag modal Notification */}
+                        {/* call tag modal Notification modalStatusDeleteProductCart */}
                         <ModalNotification
-                            show={modalNotificationShow}
-                            onHide={() => setModalNotificationShow(false)}
+                            show={modalStatusDeleteProductCart}
+                            onHide={() => setModalStatusDeleteProductCart(false)}
                             status={statusDeleteProductCart.deleteProductCartStatus}
                             title={
                                 statusDeleteProductCart.deleteProductCartStatus ?
                                     'Thành Công' : 'Thất Bại'
                             }
                             message={statusDeleteProductCart.deleteProductCartMessage}
+                        />
+
+                        {/* call tag modal Notification */}
+                        <ModalNotification
+                            show={modalStatusChangeNumberProductCart}
+                            onHide={() => setModalStatusChangeNumberProductCart(false)}
+                            status={statusChangeNumberProductCart.changeNumberProductCartStatus}
+                            title={
+                                statusChangeNumberProductCart.changeNumberProductCartStatus ?
+                                    'Thành Công' : 'Thất Bại'
+                            }
+                            message={statusChangeNumberProductCart.changeNumberProductCartMessage}
                         />
                     </Col>
                 </Row>

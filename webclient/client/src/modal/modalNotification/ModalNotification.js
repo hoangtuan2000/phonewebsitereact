@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import styles from './modalNotificationStyle.module.css'
 
 function ModalNotification(props) {
-    console.log(props);
+    // console.log(props);
     return (
         <>
             <Modal
