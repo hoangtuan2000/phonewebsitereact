@@ -181,10 +181,14 @@ function ProductDetail() {
                         </div>
 
                         <div className="my-3">
-                            <Button className="me-2 fw-bold" style={{ backgroundColor: '#fb6e2e', border: 'none' }}>
+                            <NavLink
+                                to={`/order-product/${params.idProduct}`}
+                                className="me-2 fw-bold"
+                                style={{ backgroundColor: '#fb6e2e', border: 'none' }}
+                            >
                                 <FontAwesomeIcon icon={faHandPointer} className='me-1' />
                                 Mua
-                            </Button>
+                            </NavLink>
                             <Button onClick={handleAddToCarts} variant="primary" className="fw-bold">
                                 <FontAwesomeIcon icon={faCartPlus} className='me-1' />
                                 Thêm Vào Giỏ Hàng
@@ -261,7 +265,7 @@ function ProductDetail() {
                     status={statusAddProductToCart.addCartStatus}
                     title={
                         statusAddProductToCart.addCartStatus ?
-                        'Thành Công' : 'Thất Bại' 
+                            'Thành Công' : 'Thất Bại'
                     }
                     message={statusAddProductToCart.addCartMessage}
                     gotoPage={'/cart'}

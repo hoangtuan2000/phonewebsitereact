@@ -4,7 +4,7 @@ const getAllSmartphones = async (req, res) => {
     const sqlSelect =
         `SELECT sp.id_sp, sp.ten_sp, sp.anh_sp, sp.gia_sp, km.giam_km
         FROM sanpham as sp, khuyenmai as km, dienthoai as dt
-        WHERE sp.id_km = km.id_km AND sp.id_sp = dt.id_sp AND sp.so_luong_sp > 0`
+        WHERE sp.id_km = km.id_km AND sp.id_sp = dt.id_sp AND sp.so_luong_sp > 0 AND sp.id_ttsp = 'CH'`
     db.query(sqlSelect, (err, result) => {
         if (err) {
             res.send(err)
@@ -31,6 +31,7 @@ const getPromotionalSmartphones = async (req, res) => {
             AND sp.id_sp = dt.id_sp 
             AND sp.so_luong_sp > 0 
             AND km.giam_km > 0
+            AND sp.id_ttsp = 'CH'
         ORDER BY km.giam_km DESC
         LIMIT 18`
     db.query(sql, (err, result) => {
@@ -58,6 +59,7 @@ const getHighPriceSmartphones = async (req, res) => {
             sp.id_sp = dt.id_sp 
             AND sp.so_luong_sp > 0 
             AND sp.id_km = km.id_km
+            AND sp.id_ttsp = 'CH'
         ORDER BY sp.gia_sp DESC
         LIMIT 12`
     db.query(sql, (err, result) => {

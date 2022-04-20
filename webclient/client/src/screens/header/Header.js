@@ -25,10 +25,10 @@ function Header() {
         Axios.get(url)
             .then((response) => {
                 if (Object.entries(response.data.user).length !== 0 && response.data.isLogin) {
-                    console.log('getLogin save');
+                    // console.log('getLogin save');
                     dispatch(saveUserLogin(response.data.user))
                 } else {
-                    console.log('getLogin delete');
+                    // console.log('getLogin delete');
                     dispatch(saveUserLogin({}))
                 }
             })
@@ -37,24 +37,24 @@ function Header() {
             })
     }, [])
 
-    const test = () => {
-        const url = URL + '/auth/test'
-        Axios.post(url)
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+    // const test = () => {
+    //     const url = URL + '/auth/test'
+    //     Axios.post(url)
+    //         .then((response) => {
+    //             console.log(response);
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         })
+    // }
 
     return (
         <Navbar className='p-0 backgroundBlue' collapseOnSelect expand='lg' variant='dark'>
             <Container>
 
-                <button onClick={test}>
+                {/* <button onClick={test}>
                     test
-                </button>
+                </button> */}
 
                 <NavLink className="navbar-brand my-1" to='/'>
                     HT Shop

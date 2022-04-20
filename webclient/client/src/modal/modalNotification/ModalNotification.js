@@ -25,7 +25,7 @@ function ModalNotification(props) {
                         Thoát
                     </Button>
                     {
-                        props.status && props.gotoPage ?
+                        props.status && props.gotoPage && props.namePage ?
                             <>
                                 <NavLink
                                     to={props.gotoPage}

@@ -106,6 +106,16 @@ const validateUserAgree = (argee, checkElement) => {
     }
 }
 
+const validateUserNote = (note, notificationElement) => {
+    if (note.length < 50) {
+        document.getElementById(notificationElement).innerHTML = ''
+        return true
+    } else {
+        document.getElementById(notificationElement).innerHTML = 'Chỉ được phép ghi chú dưới 50 ký tự'
+        return false
+    }
+}
+
 export {
     validateUserFullname,
     validateUserEmail,
@@ -116,5 +126,6 @@ export {
     validateUserProvince,
     validateUserDistrict,
     validateUserWard,
-    validateUserAgree
+    validateUserAgree,
+    validateUserNote
 }

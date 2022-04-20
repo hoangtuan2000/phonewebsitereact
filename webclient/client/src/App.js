@@ -17,6 +17,9 @@ import Headphone from './screens/headphone/Headphone'
 import Phonecase from './screens/phonecase/Phonecase'
 import Register from './screens/register/Register';
 import Cart from './screens/cart/Cart'
+import OrderCart from './screens/order/OrderCart'
+import OrderProduct from './screens/order/OrderProduct'
+import OrderDetails from './screens/orderDetails/OrderDetails'
 import Account from './screens/account/Account'
 import Policy from './screens/policy/Policy'
 import ProductDetail from './screens/productDetail/ProductDetail'
@@ -50,6 +53,9 @@ function App() {
           {/* protected router */}
           <Route element={<ProtectRoutes />}>
             <Route path='cart' element={<Cart />} />
+            <Route path='order-cart' element={<OrderCart />} />
+            <Route path='order-product/:idProduct' element={<OrderProduct />} />
+            <Route path='order-details/:idOrder' element={<OrderDetails />} />
             <Route path='account' element={<Account />}>
               <Route path='account-information' element={<>abc</>} />
               <Route path='account-order' element={<>dfsdfs</>} />

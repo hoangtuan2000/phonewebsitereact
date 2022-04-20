@@ -145,7 +145,7 @@ function Cart() {
                                             totalPrice={totalPrice}
                                         />
                                         
-                                        <NavLink to='/order' className='btn btn-sm btn-danger float-end'>
+                                        <NavLink to='/order-cart' className='btn btn-sm btn-danger float-end'>
                                             Thanh Toán
                                         </NavLink>
                                     </>

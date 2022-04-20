@@ -59,6 +59,10 @@ app.use('/address', addressRouter)
 const cartRouter = require('./clientWebServer/routers/cartRouter.js')
 app.use('/cart', cartRouter)
 
+//Order Router
+const orderRouter = require('./clientWebServer/routers/orderRouter.js')
+app.use('/order', orderRouter)
+
 
 
 // ****************************** Admin Web ******************************
