@@ -54,7 +54,7 @@ function App() {
           <Route element={<ProtectRoutes />}>
             <Route path='cart' element={<Cart />} />
             <Route path='order-cart' element={<OrderCart />} />
-            <Route path='order-product/:idProduct' element={<OrderProduct />} />
+            <Route path='order-product/:orderIdProduct' element={<OrderProduct />} />
             <Route path='order-details/:idOrder' element={<OrderDetails />} />
             <Route path='account' element={<Account />}>
               <Route path='account-information' element={<>abc</>} />

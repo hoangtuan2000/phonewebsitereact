@@ -1,5 +1,5 @@
 import { Col, Container, Row, Button, Badge } from "react-bootstrap"
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import Slider from "react-slick";
 import ReactStars from "react-rating-stars-component";
 
@@ -31,6 +31,7 @@ function ProductDetail() {
 
     const userLogin = useSelector((state) => state.userLogin.infoUser)
     let params = useParams();
+    const navigate = useNavigate()
 
     // variable of bootstrap modal
     const [modalLoginShow, setModalLoginShow] = useState(false);
@@ -98,6 +99,17 @@ function ProductDetail() {
                 .catch((err) => {
                     console.log(err);
                 })
+        }
+    }
+
+    // handle click buy product
+    const orderProduct = () => {
+        // not Login
+        if (Object.entries(userLogin).length === 0) {
+            setModalLoginShow(true)
+
+        } else {
+            navigate(`/order-product/${params.idProduct}`)
         }
     }
 
@@ -181,14 +193,14 @@ function ProductDetail() {
                         </div>
 
                         <div className="my-3">
-                            <NavLink
-                                to={`/order-product/${params.idProduct}`}
-                                className="me-2 fw-bold"
+                            <Button
+                                className="me-2 fw-bold text-white"
                                 style={{ backgroundColor: '#fb6e2e', border: 'none' }}
+                                onClick={orderProduct}
                             >
                                 <FontAwesomeIcon icon={faHandPointer} className='me-1' />
                                 Mua
-                            </NavLink>
+                            </Button>
                             <Button onClick={handleAddToCarts} variant="primary" className="fw-bold">
                                 <FontAwesomeIcon icon={faCartPlus} className='me-1' />
                                 Thêm Vào Giỏ Hàng

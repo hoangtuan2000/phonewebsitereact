@@ -1,9 +1,7 @@
 const db = require('../../models')
 
+// ****************** mua => giỏ hàng ******************
 const orderProductInCart = async (req, res) => {
-    //resert queryError
-    queryError = []
-
     let status = {
         orderProductInCartStatus: false,
         orderProductInCartMessage: '',
@@ -72,18 +70,18 @@ const orderProductInCart = async (req, res) => {
                                         products.push(array)
                                     }
                                     // thêm sản phẩm vào chi tiết đơn hàng
-                                    const sqlDetailOrder =
+                                    const sqlOrderDetail =
                                         'INSERT INTO `chitietdonhang`(`id_dh`, `id_sp`, `gia`, `so_luong`, `khuyen_mai`) VALUES ?'
                                     db.query(
-                                        sqlDetailOrder,
+                                        sqlOrderDetail,
                                         [products],
-                                        (errDetailOrder, resDetailOrder) => {
-                                            if (errDetailOrder) {
+                                        (errOrderDetail, resOrderDetail) => {
+                                            if (errOrderDetail) {
                                                 status.orderProductInCartMessage =
                                                     `Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProductInCart 789)`
                                                 res.send(status)
                                             } else {
-                                                if (resDetailOrder.affectedRows > 0) {
+                                                if (resOrderDetail.affectedRows > 0) {
                                                     // update number product in sanpham table
                                                     for (let i = 0; i < resProductCart.length; i++) {
                                                         const sqlUpdateProduct =
@@ -141,6 +139,170 @@ const orderProductInCart = async (req, res) => {
     }
 }
 
+
+// ****************** mua => nút mua ******************
+// hiển thị thông tin sản phẩm nếu mua bằng nút mua
+const getProductInfoOrder = async (req, res) => {
+    let idProduct = req.body.idProduct
+    const sql =
+        `SELECT
+        sp.id_sp,
+        sp.ten_sp,
+        sp.anh_sp,
+        sp.gia_sp,
+        km.giam_km
+    FROM 
+        sanpham as sp,
+        khuyenmai as km
+    WHERE 
+        sp.id_sp = ?
+        AND sp.id_km = km.id_km`
+    db.query(sql, idProduct, (err, result) => {
+        if (err) {
+            console.log('getProductInfoOrder', err);
+        } else {
+            // thêm cột số lượng mặc định là 1 để hiển thị trong table cho khách hàng xem lúc đặt hàng
+            result[0].so_luong = 1
+            res.send(result)
+        }
+    })
+}
+
+// thay đổi số lượng sản phẩm mua => kiểm tra số lượng sản phấm có trong kho
+const changeNumberProductOrder = async (req, res) => {
+    let status = {
+        changeNumberProductOrderStatus: false,
+        changeNumberProductOrderMessage: '',
+    }
+
+    let idProductOrder = req.body.idProductOrder
+    let numberProductOrder = req.body.numberProductOrder
+
+    const sql = 'SELECT so_luong_sp FROM sanpham WHERE id_sp = ?'
+    db.query(sql, idProductOrder, (err, result) => {
+        if(err){
+            status.changeNumberProductOrderMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: changeNumberProductOrder 123)'
+            res.send(status)
+        }else{
+            if(numberProductOrder > result[0].so_luong_sp){
+                status.changeNumberProductOrderMessage = `Cửa hàng chỉ còn ${result[0].so_luong_sp} sản phẩm`
+                res.send(status)
+            }else{
+                status.changeNumberProductOrderStatus = true
+                res.send(status)
+            }
+        }
+    })
+}
+
+const orderProduct = async (req, res) => {
+    let status = {
+        orderProductStatus: false,
+        orderProductMessage: '',
+        orderProductIdOrder: ''
+    }
+
+    let receiver = req.body.receiver
+    let phoneNumber = req.body.phoneNumber
+    let address = req.body.address
+    let note = req.body.note
+    let idProductOrder = req.body.idProductOrder
+    let numberProductOrder = req.body.numberProductOrder
+
+    if (req.session.user) {
+        const idUser = req.session.user[0].id_kh
+        // create order
+        const sqlOrder =
+            `INSERT INTO donhang(nguoi_nhan, so_dien_thoai, dia_chi_giao, ghi_chu, id_kh) VALUES (?, ?, ?, ?, ?)`
+        db.query(sqlOrder, [receiver, phoneNumber, address, note, idUser], (errOrder, resOrder) => {
+            if (errOrder) {
+                status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 123)'
+                res.send(status)
+            } else {
+                if (resOrder.affectedRows > 0) {
+                    const idOrder = resOrder.insertId
+                    //select info product
+                    const sqlProductInfo =
+                        `SELECT sp.id_sp, sp.gia_sp, km.giam_km 
+                            FROM sanpham as sp, khuyenmai as km 
+                            WHERE sp.id_sp = ? AND sp.id_km = km.id_km`
+                    db.query(sqlProductInfo, idProductOrder, (errProductInfo, resProductInfo) => {
+                        if (errProductInfo) {
+                            status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 456)'
+                            res.send(status)
+                        } else {
+                            if (resProductInfo.length > 0) {
+                                // insert product chitietgiohang table
+                                const sqlOrderDetail =
+                                    'INSERT INTO `chitietdonhang`(`id_dh`, `id_sp`, `gia`, `so_luong`, `khuyen_mai`) VALUES (?, ?, ?, ?, ?)'
+                                db.query(
+                                    sqlOrderDetail,
+                                    [
+                                        idOrder,
+                                        idProductOrder,
+                                        resProductInfo[0].gia_sp,
+                                        numberProductOrder,
+                                        resProductInfo[0].giam_km
+                                    ],
+                                    (errOrderDetail, resOrderDetail) => {
+                                        if (errOrderDetail) {
+                                            status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 789)'
+                                            res.send(status)
+                                        } else {
+                                            if (resOrderDetail.affectedRows > 0) {
+                                                // update number product of sanpham table
+                                                const sqlUpdateProduct =
+                                                    `UPDATE sanpham SET so_luong_sp = so_luong_sp - ?  WHERE id_sp = ?`
+                                                db.query(
+                                                    sqlUpdateProduct,
+                                                    [numberProductOrder, idProductOrder],
+                                                    (errUpdateProduct, resUpdateProduct) => {
+                                                        if (errUpdateProduct) {
+                                                            status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 901)'
+                                                            res.send(status)
+                                                        } else {
+                                                            if (resUpdateProduct.changedRows > 0) {
+                                                                status.orderProductStatus = true
+                                                                status.orderProductMessage = 'Click để xem chi tiết đơn hàng'
+                                                                status.orderProductIdOrder = idOrder
+                                                                res.send(status)
+                                                            } else {
+                                                                status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 012)'
+                                                                res.send(status)
+                                                            }
+                                                        }
+                                                    }
+                                                )
+                                            } else {
+                                                status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 013)'
+                                                res.send(status)
+                                            }
+                                        }
+                                    }
+                                )
+                            } else {
+                                status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 014)'
+                                res.send(status)
+                            }
+                        }
+                    })
+
+                } else {
+                    status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 015)'
+                    res.send(status)
+                }
+            }
+        })
+
+    } else {
+        status.orderProductMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: orderProduct 016)'
+        res.send(status)
+    }
+}
+
 module.exports = {
-    orderProductInCart
+    orderProductInCart,
+    getProductInfoOrder,
+    orderProduct,
+    changeNumberProductOrder
 }

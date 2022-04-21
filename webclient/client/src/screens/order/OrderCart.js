@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import { URL } from '../../config/config'
 import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import ModalNotification from '../../modal/modalNotification/ModalNotification'
-import TableCart from "../../components/tableCart/TableCart"
+import TableOrderCart from "../../components/tableOrder/TableOrderCart"
 import { validateUserFullname, validateUserPhoneNumber, validateUserNote } from '../../functions/validateFormFunction'
 
 function OrderCart() {
@@ -214,7 +214,7 @@ function OrderCart() {
                             {
                                 products.length > 0 ?
                                     <>
-                                        <TableCart
+                                        <TableOrderCart
                                             products={products}
                                             changeNumberProduct={changeNumberProduct}
                                             handleDeleteProductCart={handleDeleteProductCart}
@@ -344,7 +344,12 @@ function OrderCart() {
                         {/* call tag modal Notification ModalStatusOrder*/}
                         <ModalNotification
                             show={modalStatusOrder}
-                            onHide={() => setModalStatusOrder(false)}
+                            {
+                            ...(statusOrder.orderProductInCartStatus ?
+                                { onHide: () => { setModalStatusOrder(false); navigate('/') } } //nếu đặt hàng thành công thì chuyền về trang home
+                                : { onHide: () => { setModalStatusOrder(false) } }
+                            )
+                            }
                             status={statusOrder.orderProductInCartStatus}
                             title={
                                 statusOrder.orderProductInCartStatus ?

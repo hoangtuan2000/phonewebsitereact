@@ -8,7 +8,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { URL } from '../../config/config'
 import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import ModalNotification from '../../modal/modalNotification/ModalNotification'
-import TableCart from "../../components/tableCart/TableCart"
+import TableOrderCart from "../../components/tableOrder/TableOrderCart"
 
 function Cart() {
 
@@ -138,7 +138,7 @@ function Cart() {
                             {
                                 products.length > 0 ?
                                     <>
-                                        <TableCart
+                                        <TableOrderCart
                                             products={products}
                                             changeNumberProduct={changeNumberProduct}
                                             handleDeleteProductCart={handleDeleteProductCart}

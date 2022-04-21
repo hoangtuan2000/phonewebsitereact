@@ -6,7 +6,7 @@ import { URL } from '../../config/config'
 import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import { Link } from "react-router-dom"
 
-function TableCart({ products, changeNumberProduct, handleDeleteProductCart, totalPrice }) {
+function TableOrderCart({ products, changeNumberProduct, handleDeleteProductCart, totalPrice }) {
     return (
         <Table striped bordered={false} hover className="p-1">
             <thead className="text-center">
@@ -114,4 +114,4 @@ function TableCart({ products, changeNumberProduct, handleDeleteProductCart, tot
     )
 }
 
-export default TableCart
+export default TableOrderCart
