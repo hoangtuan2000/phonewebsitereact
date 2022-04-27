@@ -8,21 +8,21 @@ import "slick-carousel/slick/slick-theme.css";
 import 'aos/dist/aos.css';
 
 import ProtectRoutes from './components/ProtectRoutes';
-import Header from './screens/header/Header'
-import Breadcrumbs from './screens/breadcrumbs/Breadcrumbs'
-import Footer from './screens/footer/Footer'
-import Home from './screens/home/Home'
-import Smartphone from './screens/smartphone/Smartphone'
-import Headphone from './screens/headphone/Headphone'
-import Phonecase from './screens/phonecase/Phonecase'
-import Register from './screens/register/Register';
-import Cart from './screens/cart/Cart'
-import OrderCart from './screens/order/OrderCart'
-import OrderProduct from './screens/order/OrderProduct'
-import OrderDetails from './screens/orderDetails/OrderDetails'
-import Account from './screens/account/Account'
-import Policy from './screens/policy/Policy'
-import ProductDetail from './screens/productDetail/ProductDetail'
+import Header from './pages/header/Header'
+import Breadcrumbs from './pages/breadcrumbs/Breadcrumbs'
+import Footer from './pages/footer/Footer'
+import Home from './pages/home/Home'
+import Smartphone from './pages/smartphone/Smartphone'
+import Headphone from './pages/headphone/Headphone'
+import Phonecase from './pages/phonecase/Phonecase'
+import Register from './pages/register/Register';
+import Cart from './pages/cart/Cart'
+import OrderCart from './pages/order/OrderCart'
+import OrderProduct from './pages/order/OrderProduct'
+import OrderDetails from './pages/orderDetails/OrderDetails'
+import Account from './pages/account/Account'
+import Policy from './pages/policy/Policy'
+import ProductDetail from './pages/productDetail/ProductDetail'
 import ScrollButton from './components/ScrollButton'
 
 // init AOS library

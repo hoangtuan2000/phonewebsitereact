@@ -13,7 +13,8 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(cors(
     {
-        origin: 'http://localhost:3000', // port of front-end 'http://localhost:3000'
+        origin: ['http://localhost:3000', 'http://localhost:3006'], // port of web client front-end 'http://localhost:3000' and web admin front-end 'http://localhost:3006'
+        methods: ['GET', "POST"],
         credentials: true //pass header
     }
 ))
@@ -65,7 +66,15 @@ app.use('/order', orderRouter)
 
 
 
+
+
+// **************************************************************************************
 // ****************************** Admin Web ******************************
+//Login/Register Router
+const authRouterAdmin = require('./clientAdminServer/routersAdmin/authRouterAdmin.js')
+app.use('/authAdmin', authRouterAdmin)
+
+
 
 
 // **************************************************************************************
