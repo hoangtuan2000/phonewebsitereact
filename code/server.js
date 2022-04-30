@@ -68,11 +68,17 @@ app.use('/order', orderRouter)
 
 
 
+
+
 // **************************************************************************************
 // ****************************** Admin Web ******************************
 //Login/Register Router
 const authRouterAdmin = require('./clientAdminServer/routersAdmin/authRouterAdmin.js')
 app.use('/authAdmin', authRouterAdmin)
+
+//Products Router
+const productsRouterAdmin = require('./clientAdminServer/routersAdmin/productsRouterAdmin.js')
+app.use('/productsAdmin', productsRouterAdmin)
 
 
 

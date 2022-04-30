@@ -12,6 +12,7 @@ import { URL } from './config/config'
 
 import ProtectRoutesAdmin from './components/ProtectRoutesAdmin';
 import Home from "./pages/home/Home";
+import AllProducts from "./pages/allProducts/AllProducts";
 import Login from "./pages/login/Login";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
@@ -56,6 +57,7 @@ function App() {
             {/* protected router */}
             <Route element={<ProtectRoutesAdmin />}>
               <Route path="home" element={<Home />} />
+              <Route path="allProducts" element={<AllProducts />} />
               <Route path="users">
                 <Route index element={<List />} />
                 <Route path=":userId" element={<Single />} />

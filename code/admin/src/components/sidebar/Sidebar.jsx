@@ -8,10 +8,11 @@ import InsertChartIcon from "@mui/icons-material/InsertChart";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import BorderAllIcon from '@mui/icons-material/BorderAll';
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 
@@ -21,13 +22,14 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">lamadmin</span>
+        <Link to="/home" style={{ textDecoration: "none" }}>
+          <span className="logo">HT Shop</span>
         </Link>
       </div>
       <hr />
       <div className="center">
         <ul>
+
           <p className="title">MAIN</p>
           <li>
             <DashboardIcon className="icon" />
@@ -54,6 +56,7 @@ const Sidebar = () => {
             <LocalShippingIcon className="icon" />
             <span>Delivery</span>
           </li>
+
           <p className="title">USEFUL</p>
           <li>
             <InsertChartIcon className="icon" />
@@ -63,19 +66,26 @@ const Sidebar = () => {
             <NotificationsNoneIcon className="icon" />
             <span>Notifications</span>
           </li>
-          <p className="title">SERVICE</p>
+
+          <p className="title">SẢN PHẨM</p>
           <li>
-            <SettingsSystemDaydreamOutlinedIcon className="icon" />
-            <span>System Health</span>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/allProducts'
+            >
+              <BorderAllIcon className="icon" />
+              <span>Tất Cả Sản Phẩm</span>
+            </NavLink>
           </li>
-          <li>
-            <PsychologyOutlinedIcon className="icon" />
-            <span>Logs</span>
-          </li>
-          <li>
-            <SettingsApplicationsIcon className="icon" />
-            <span>Settings</span>
-          </li>
+
           <p className="title">USER</p>
           <li>
             <AccountCircleOutlinedIcon className="icon" />
@@ -85,6 +95,7 @@ const Sidebar = () => {
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>
+
         </ul>
       </div>
       <div className="bottom">
