@@ -11,25 +11,22 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import Grid from '@mui/material/Grid';
+
+import { URL } from '../../config/config'
+import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
+
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function ShowProductDetailDialog(props) {
-  console.log('1', props.productInfo);
-  
-  useEffect(() => {
-    // if (Object.entries(props.productInfo).length > 0) {
-    //   if (!props.productInfo.getOneProductStatus) {
-    //     if (props.productInfo.getOneProductMessage) {
-    // document.getElementById('abc').innerHTML = `<h3>${props.productInfo.getOneProductStatus}</h3>`
-    let a = document.getElementById('abc')
-    console.log('a', a);
-    //     }
-    //   }
-    // }
-  }, [])
+
+  const screenHeight = window.innerHeight
+  const product = props.basicProductInfo
 
   return (
     <div>
@@ -40,7 +37,7 @@ export default function ShowProductDetailDialog(props) {
         TransitionComponent={Transition}
       >
 
-        <AppBar sx={{ position: 'relative' }}>
+        <AppBar sx={{ position: 'relative', marginBottom: '10px' }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -56,20 +53,94 @@ export default function ShowProductDetailDialog(props) {
           </Toolbar>
         </AppBar>
 
-        <div id='abc'>
-          {/* <List >
-            <ListItem button>
-              <ListItemText primary="Phone ringtone" secondary="Titania" />
-            </ListItem>
-            <Divider />
-            <ListItem button>
-              <ListItemText
-                primary="Default notification ringtone"
-                secondary="Tethys"
-              />
-            </ListItem>
-          </List> */}
-        </div>
+        {
+          product.getBasicProductInfoStatus ?
+            <List >
+              <Grid container spacing={2}>
+                <Grid item xs={7} className='border-end'>
+                  <div className='mb-2'>
+                    <img
+                      src={URL + product.getBasicProductInfoData.anh_sp}
+                      style={{
+                        width: '200px',
+                        height: '200px',
+                        backgroundColor: 'gray',
+                        borderRadius: '10%',
+                        objectFit: 'cover'
+                      }}
+                      className='p-1 ms-3 mb-2'
+                    />
+
+                    {
+                      product.getBasicProductInfoData.anh_asp.map((img, index) => {
+                        return (
+                          <img
+                            key={index}
+                            src={URL + img}
+                            style={{
+                              width: '200px',
+                              height: '200px',
+                              backgroundColor: 'gray',
+                              borderRadius: '10%',
+                              objectFit: 'cover'
+                            }}
+                            className='p-1 ms-3 mb-2'
+                          />
+                        )
+                      })
+                    }
+                  </div>
+                </Grid>
+
+                <Grid item xs={5}>
+                  <span className='fw-bold' style={{fontSize: '18px'}}>Tên Sản Phẩm:</span>
+                  <ul className='mb-3'>
+                    <li style={{fontSize: '16px'}}>
+                      {product.getBasicProductInfoData.ten_sp}
+                    </li>
+                  </ul>
+
+                  <span className='fw-bold' style={{fontSize: '18px'}}>Giá:</span>
+                  <ul className='mb-3'>
+                    <li style={{fontSize: '16px'}}>
+                      {moneyFormat(product.getBasicProductInfoData.gia_sp) + ' VNĐ'}
+                    </li>
+                  </ul>
+
+                  <span className='fw-bold' style={{fontSize: '18px'}}>Số lượng:</span>
+                  <ul className='mb-3'>
+                    <li style={{fontSize: '16px'}}>
+                      {moneyFormat(product.getBasicProductInfoData.so_luong_sp) + ' sản phẩm'}
+                    </li>
+                  </ul>
+
+                  <span className='fw-bold' style={{fontSize: '18px'}}>Khuyến mãi:</span>
+                  <ul className='mb-3'>
+                    <li style={{fontSize: '16px'}}>
+                      {product.getBasicProductInfoData.giam_km + '%'}
+                    </li>
+                  </ul>
+
+                  <span className='fw-bold' style={{fontSize: '18px'}}>Giá khuyến mãi:</span>
+                  <ul className='mb-3'>
+                    <li style={{fontSize: '16px'}}>
+                      {moneyFormat(reducedPrice(product.getBasicProductInfoData.gia_sp, product.getBasicProductInfoData.giam_km)) + ' VNĐ'}
+                    </li>
+                  </ul>
+
+                  <span className='fw-bold' style={{fontSize: '18px'}}>Trạng Thái:</span>
+                  <ul className='mb-3'>
+                    <li style={{fontSize: '16px', color: 'red'}}>
+                      {product.getBasicProductInfoData.ten_ttsp}
+                    </li>
+                  </ul>
+                  
+                </Grid>
+              </Grid>
+
+            </List>
+            : <h5 className='mx-auto my-auto'>{product.getBasicProductInfoMessage}</h5>
+        }
 
       </Dialog>
     </div>
