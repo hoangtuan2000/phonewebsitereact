@@ -20,6 +20,7 @@ import New from "./pages/new/New";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import UpdateProduct from './pages/updateProduct/UpdateProduct';
+import AddProduct from './pages/addProduct/AddProduct';
 
 function App() { 
 
@@ -60,6 +61,7 @@ function App() {
               <Route path="home" element={<Home />} />
               <Route path="allProducts" element={<AllProducts />} />
               <Route path="updateProduct/:idProduct" element={<UpdateProduct />} />
+              <Route path="addProduct/:productType" element={<AddProduct />} />
               <Route path="users">
                 <Route index element={<List />} />
                 <Route path=":userId" element={<Single />} />

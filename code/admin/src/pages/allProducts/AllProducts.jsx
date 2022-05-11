@@ -4,6 +4,9 @@ import { Button, Tooltip, Zoom, IconButton } from '@mui/material';
 import Axios from 'axios'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import UpgradeIcon from '@mui/icons-material/Upgrade';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import HeadphonesIcon from '@mui/icons-material/Headphones';
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 
 import { URL } from '../../config/config'
 import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
@@ -17,7 +20,7 @@ import Chart from "../../components/chart/Chart";
 import Table from "../../components/table/Table";
 import { height } from '@mui/system';
 import ShowProductInfoDialog from '../../components/modal/ShowProductInfoDialog';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AllProducts = () => {
   document.body.style.backgroundImage = `none`;
@@ -141,7 +144,28 @@ const AllProducts = () => {
         <div className="homeContainer">
           <Navbar />
           <div id='showAllProducts' style={{ height: 500, width: '100%', padding: '10px' }}>
-            <h5>Tất Cả Sản Phẩm</h5>
+            <div className='mb-2'>
+              <h6 className='float-start'>Tất Cả Sản Phẩm</h6>
+              <Link to='/addProduct/phonecase' className='float-end ms-1' style={{textDecoration: 'none'}}>
+                <Button  variant="outlined" size="small" style={{fontSize: '12px'}}>
+                  <SmartphoneIcon fontSize='small' />
+                  Thêm Ốp Lưng
+                </Button>
+              </Link>
+              <Link to='/addProduct/headphone' className='float-end ms-1' style={{textDecoration: 'none'}}>
+                <Button  variant="outlined" size="small" style={{fontSize: '12px'}}>
+                  <HeadphonesIcon fontSize='small' />
+                  Thêm Tai Nghe
+                </Button>
+              </Link>
+              <Link to='/addProduct/smartphone' className='float-end ms-1' style={{textDecoration: 'none'}}>
+                <Button  variant="outlined" size="small" style={{fontSize: '12px'}}>
+                  <PhoneIphoneIcon fontSize='small' />
+                  Thêm Điện Thoại
+                </Button>
+              </Link>
+              <div className="clearfix"></div>
+            </div>
             <DataGrid
               autoHeight
               rows={rows}

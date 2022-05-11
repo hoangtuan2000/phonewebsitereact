@@ -2,12 +2,18 @@ const express = require('express')
 const cors = require('cors')
 const session = require('express-session');
 const path = require('path');
+const bodyParser = require('body-parser');
+const multer = require('multer')
+
 
 const app = express()
 
 // middleware
 
 app.use(express.json())
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.urlencoded({ extended: true }))
 
@@ -21,9 +27,9 @@ app.use(cors(
 
 app.use(session({
     key: 'user',
-	secret: 'secret',
-	resave: false,
-	saveUninitialized: false,
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
     cookie: {
         // expires: 60
         httpOnly: true, //not accessible via function document.cookie
@@ -79,6 +85,15 @@ app.use('/authAdmin', authRouterAdmin)
 //Products Router
 const productsRouterAdmin = require('./clientAdminServer/routersAdmin/productsRouterAdmin.js')
 app.use('/productsAdmin', productsRouterAdmin)
+
+//product config info Router
+const productConfigInfoRouterAdmin = require('./clientAdminServer/routersAdmin/productConfigInfoRouterAdmin.js')
+app.use('/productConfigInfoAdmin', productConfigInfoRouterAdmin)
+
+//add product Router
+const addProductRouterAdmin = require('./clientAdminServer/routersAdmin/addProductRouterAdmin.js')
+app.use('/addProductAdmin', addProductRouterAdmin)
+
 
 
 

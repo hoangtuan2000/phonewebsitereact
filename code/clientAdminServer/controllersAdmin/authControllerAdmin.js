@@ -60,7 +60,7 @@ const login = async (req, res) => {
 }
 
 const getLogin = async (req, res) => {
-    console.log('user admin: ', req.session.userAdmin);
+    // console.log('user admin: ', req.session.userAdmin);
     if (req.session.userAdmin) {
         res.send(req.session.userAdmin[0])
     //     authLogin.isLogin = true
