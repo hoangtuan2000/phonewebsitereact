@@ -23,28 +23,28 @@ const imageFilter = function (req, file, cb) {
     cb(null, true);
 };
 
-let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter, limits: { fileSize: 2000000 } }).array('imagesArray', 3);
+let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter, limits: { fileSize: 2000000 } }).array('productImages', 9);
 
 
-const uploadImage = async (req, res, next) => {
+const uploadMultipleImages = async (req, res, next) => {
     uploadMultipleFiles(req, res, (err) => {
         if (err instanceof multer.MulterError) {
-            res.send('LIMIT_UNEXPECTED_FILE')
-            console.log(err);
+            req.uploadMultipleImagesMessage = err
+            req.uploadMultipleImagesStatus = false
+            next()
         }
         else {
-            console.log('up ok', req.files);
-            // req.uploadImage = true
-            // let fileSave = []
-            // for(let i = 0; i< req.files.length; i++){
-            //     let array = []
-            //     array.push(req.files[i].filename)
-            //     fileSave.push(array)
-            // }
-            // req.fileSave = fileSave
+            req.uploadMultipleImagesStatus = true
+            let imagesNameSaved = []
+            for(let i = 0; i< req.files.length; i++){
+                let array = []
+                array.push('/images/' + req.files[i].filename)
+                imagesNameSaved.push(array)
+            }
+            req.imagesNameSaved = imagesNameSaved
             next();
         }
     })
 }
 
-module.exports = { uploadImage }
+module.exports = { uploadMultipleImages }

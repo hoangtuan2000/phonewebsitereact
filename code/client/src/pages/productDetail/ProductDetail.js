@@ -77,8 +77,6 @@ function ProductDetail() {
                 setNewPrice(newPrice)
                 setOldPrice(oldPrice)
             }
-
-
         }
         //call function
         getProductData()

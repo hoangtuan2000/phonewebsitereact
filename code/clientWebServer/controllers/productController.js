@@ -36,11 +36,11 @@ const getOneProduct = async (req, res) => {
         `SELECT
                 sp.id_sp, sp.id_lsp, sp.ten_sp, sp.gia_sp,
                 sp.so_luong_sp, sp.anh_sp, sp.gioi_thieu_sp,
-                nsx.ten_nsx, km.giam_km, ttsp.ten_ttsp
+                xx.ten_xx, km.giam_km, ttsp.ten_ttsp, th.ten_th
             FROM 
-                sanpham as sp, nuocsanxuat as nsx, khuyenmai as km, trangthaisanpham as ttsp 
+                sanpham as sp, xuatxu as xx, khuyenmai as km, trangthaisanpham as ttsp, thuonghieu as th
             WHERE 
-                sp.id_sp = ? AND sp.id_nsx = nsx.id_nsx AND sp.id_km = km.id_km AND sp.id_ttsp = ttsp.id_ttsp`
+                sp.id_sp = ? AND sp.id_xx = xx.id_xx AND sp.id_km = km.id_km AND sp.id_ttsp = ttsp.id_ttsp AND sp.id_th = th.id_th`
     db.query(sqlSelect, id, (err, product) => {
         if (err) {
             res.status(200).send(err)
@@ -50,16 +50,15 @@ const getOneProduct = async (req, res) => {
                 case 'DT':
                     const sqlSmartphone =
                         `SELECT 
-                            bn.dung_luong_bn, ram.dung_luong_ram, th.ten_th, 
+                            bn.dung_luong_bn, ram.dung_luong_ram, 
                             hdh.ten_hdh, tk.kieu_tk, chip.ten_chip, mh.kich_thuoc_mh
                         FROM
-                            dienthoai AS dt, bonho as bn, ram, thuonghieu as th,
+                            dienthoai AS dt, bonho as bn, ram,
                             hedieuhanh as hdh, thietke as tk, chip, manhinh as mh
                         WHERE
                             dt.id_sp = ? 
                             AND dt.id_bn = bn.id_bn
                             AND dt.id_ram = ram.id_ram
-                            AND dt.id_th = th.id_th
                             AND dt.id_hdh = hdh.id_hdh
                             AND dt.id_tk = tk.id_tk
                             AND dt.id_chip = chip.id_chip
@@ -77,15 +76,12 @@ const getOneProduct = async (req, res) => {
                 case 'TN':
                     const sqlHeadphone =
                         `SELECT 
-                            th.ten_th,
                             lkn.ten_lkn
                         FROM 
                             tainghe as tn,
-                            thuonghieu as th,
                             loaiketnoi as lkn
                         WHERE 
                             tn.id_sp = ?
-                            AND tn.id_th = th.id_th
                             AND tn.id_lkn = lkn.id_lkn`
                     db.query(sqlHeadphone, id, (err, headphone) => {
                         if (err) {
@@ -99,16 +95,13 @@ const getOneProduct = async (req, res) => {
                 default:
                     const sqlPhonecase =
                         `SELECT 
-                        th.ten_th,
-                        cl.ten_cl
-                    FROM 
-                        oplung as ol,
-                        thuonghieu as th,
-                        chatlieu as cl
-                    WHERE 
-                        ol.id_sp = ?
-                        AND ol.id_th = th.id_th
-                        AND ol.id_cl = cl.id_cl`
+                            cl.ten_cl
+                        FROM 
+                            oplung as ol,
+                            chatlieu as cl
+                        WHERE 
+                            ol.id_sp = ?
+                            AND ol.id_cl = cl.id_cl`
                     db.query(sqlPhonecase, id, (err, phonecase) => {
                         if (err) {
                             res.send(err)

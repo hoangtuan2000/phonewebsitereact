@@ -129,5 +129,6 @@ export {
     validateProductName,
     validateProductPrice,
     validateProductNumber,
-    validateSelect
+    validateSelect,
+    deleteDots
 }

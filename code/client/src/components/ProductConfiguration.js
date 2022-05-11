@@ -42,7 +42,7 @@ function ProductConfiguration(props) {
                         </tr>
                         <tr>
                             <td className='fw-bold'>Xuất Xứ:</td>
-                            <td>{data.ten_nsx}</td>
+                            <td>{data.ten_xx}</td>
                         </tr>
                     </tbody>
                 </Table>
@@ -68,7 +68,7 @@ function ProductConfiguration(props) {
                         </tr>
                         <tr>
                             <td className='fw-bold'>Xuất Xứ:</td>
-                            <td>{data.ten_nsx}</td>
+                            <td>{data.ten_xx}</td>
                         </tr>
                     </tbody>
                 </Table>
@@ -94,7 +94,7 @@ function ProductConfiguration(props) {
                         </tr>
                         <tr>
                             <td className='fw-bold'>Xuất Xứ:</td>
-                            <td>{data.ten_nsx}</td>
+                            <td>{data.ten_xx}</td>
                         </tr>
                     </tbody>
                 </Table>
