@@ -15,7 +15,7 @@ import {
   deleteDots
 } from '../../functions/validateFormFunction'
 
-function AddPhonecase() {
+function UpdateHeadphone() {
 
   // modal
   const [modalSelectDefaultImage, setModalSelectDefaultImage] = useState(false)
@@ -27,7 +27,7 @@ function AddPhonecase() {
 
   // get info config of product
   const [origin, setOrigin] = useState([]);
-  const [material, setMaterial] = useState([]);
+  const [connectionType, setConnectionType] = useState([]);
   const [trademark, setTrademark] = useState([]);
   const [promotion, setPromotion] = useState([]);
 
@@ -41,7 +41,7 @@ function AddPhonecase() {
   const [productPriceAdd, setProductPriceAdd] = useState('')
   const [productNumberAdd, setProductNumberAdd] = useState('')
   const [productOriginAdd, setProductOriginAdd] = useState('')
-  const [productMaterialAdd, setProductMaterialAdd] = useState('')
+  const [productConnectionTypeAdd, setProductConnectionTypeAdd] = useState('')
   const [productTrademarkAdd, setProductTrademarkAdd] = useState('')
   const [productPromotionAdd, setProductPromotionAdd] = useState('')
 
@@ -74,13 +74,13 @@ function AddPhonecase() {
         console.log('/productConfigInfoAdmin/getAllPromotion', err);
       })
 
-    // get material
-    Axios.get(URL + '/productConfigInfoAdmin/getAllMaterial')
+    // get ConnectionType
+    Axios.get(URL + '/productConfigInfoAdmin/getAllConnectionType')
       .then((res) => {
-        setMaterial(res.data.getAllMaterialData);
+        setConnectionType(res.data.getAllConnectionTypeData);
       })
       .catch((err) => {
-        console.log('/productConfigInfoAdmin/getAllMgetAllMaterialemory', err);
+        console.log('/productConfigInfoAdmin/getAllMgetAllConnectionType', err);
       })
   }, [])
 
@@ -139,91 +139,91 @@ function AddPhonecase() {
     return validateSelect(promotion, 'AddProductPromotion')
   }
 
-  const checkProductMaterial = (material) => {
-    setProductMaterialAdd(material);
-    return validateSelect(material, 'AddProductMaterial')
+  const checkProductConnectionType = (connectionType) => {
+    setProductConnectionTypeAdd(connectionType);
+    return validateSelect(connectionType, 'AddProductConnectionType')
   }
 
 
   // submit add product
   const addProduct = async () => {
-    // check default image
-    if (productDefaultImage.defaultImage.length > 0) {
-      // check album images
-      if (productImages.images.length > 0) {
-        //check intro of product
-        if (productIntroduceAdd.length > 0) {
-          // check form product
-          if (
-            checkProductName(productNameAdd) && checkProductPrice(productPriceAdd)
-            && checkProductNumber(productNumberAdd) && checkProductOrigin(productOriginAdd)
-            && checkProductTrademark(productTrademarkAdd) && checkProductPromotion(productPromotionAdd)
-            && checkProductMaterial(productMaterialAdd)
-          ) {
-            // create form 
-            const formData = new FormData();
-            formData.append("productImages", productDefaultImage.defaultImage[0]);
-            for (const key of Object.keys(productImages.images)) {
-              formData.append('productImages', productImages.images[key])
-            }
-            formData.append("productName", productNameAdd);
-            formData.append("productPrice", productPriceAdd);
-            formData.append("productNumber", productNumberAdd);
-            formData.append("productOrigin", productOriginAdd);
-            formData.append("productTrademark", productTrademarkAdd);
-            formData.append("productPromotion", productPromotionAdd);
-            formData.append("productIntro", productIntroduceAdd);
-            formData.append("productMaterial", productMaterialAdd);
+    // // check default image
+    // if (productDefaultImage.defaultImage.length > 0) {
+    //   // check album images
+    //   if (productImages.images.length > 0) {
+    //     //check intro of product
+    //     if (productIntroduceAdd.length > 0) {
+    //       // check form product
+    //       if (
+    //         checkProductName(productNameAdd) && checkProductPrice(productPriceAdd)
+    //         && checkProductNumber(productNumberAdd) && checkProductOrigin(productOriginAdd)
+    //         && checkProductTrademark(productTrademarkAdd) && checkProductPromotion(productPromotionAdd)
+    //         && checkProductConnectionType(productConnectionTypeAdd)
+    //       ) {
+    //         // create form 
+    //         const formData = new FormData();
+    //         formData.append("productImages", productDefaultImage.defaultImage[0]);
+    //         for (const key of Object.keys(productImages.images)) {
+    //           formData.append('productImages', productImages.images[key])
+    //         }
+    //         formData.append("productName", productNameAdd);
+    //         formData.append("productPrice", productPriceAdd);
+    //         formData.append("productNumber", productNumberAdd);
+    //         formData.append("productOrigin", productOriginAdd);
+    //         formData.append("productTrademark", productTrademarkAdd);
+    //         formData.append("productPromotion", productPromotionAdd);
+    //         formData.append("productIntro", productIntroduceAdd);
+    //         formData.append("productConnectionType", productConnectionTypeAdd);
 
-            // for (var value of formData.values()) {
-            //     console.log('form', value);
-            // }
+    //         // for (var value of formData.values()) {
+    //         //     console.log('form', value);
+    //         // }
 
-            Axios.post(URL + '/addProductAdmin/addPhonecase',
-              formData,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                }
-              })
-              .then((res) => {
-                setAddProductStatus(res.data)
-                setModalAddProductStatus(true)
+    //         Axios.post(URL + '/addProductAdmin/addHeadphone',
+    //           formData,
+    //           {
+    //             headers: {
+    //               "Content-Type": "multipart/form-data",
+    //             }
+    //           })
+    //           .then((res) => {
+    //             setAddProductStatus(res.data)
+    //             setModalAddProductStatus(true)
 
-                if (res.data.addPhonecaseStatus) {
-                  setReviewDefaultImage('')
-                  setReviewImages([])
-                  setProductDefaultImage({ defaultImage: '' })
-                  setProductImages({ images: '' })
-                  setProductIntroduceAdd('')
-                  setProductNameAdd('')
-                  setProductPriceAdd('')
-                  setProductNumberAdd('')
-                  setProductOriginAdd('')
-                  setProductTrademarkAdd('')
-                  setProductPromotionAdd('')
-                  setProductMaterialAdd('')
-                  document.getElementById('AddProductName').value = ''
-                  document.getElementById('AddProductPrice').value = ''
-                  document.getElementById('AddProductNumber').value = ''
-                  setTimeout(
-                    window.location.reload()
-                    , 1000)
-                }
-              })
-              .catch((err) => {
-                console.log('/addProductAdmin/addPhonecase', err);
-              })
-          }
-        } else {
-          setModalContentIntro(true)
-        }
-      } else {
-        setModalSelectImages(true)
-      }
-    } else {
-      setModalSelectDefaultImage(true)
-    }
+    //             if (res.data.addHeadphoneStatus) {
+    //               setReviewDefaultImage('')
+    //               setReviewImages([])
+    //               setProductDefaultImage({ defaultImage: '' })
+    //               setProductImages({ images: '' })
+    //               setProductIntroduceAdd('')
+    //               setProductNameAdd('')
+    //               setProductPriceAdd('')
+    //               setProductNumberAdd('')
+    //               setProductOriginAdd('')
+    //               setProductTrademarkAdd('')
+    //               setProductPromotionAdd('')
+    //               setProductConnectionTypeAdd('')
+    //               document.getElementById('AddProductName').value = ''
+    //               document.getElementById('AddProductPrice').value = ''
+    //               document.getElementById('AddProductNumber').value = ''
+    //               setTimeout(
+    //                 window.location.reload()
+    //                 , 1000)
+    //             }
+    //           })
+    //           .catch((err) => {
+    //             console.log('/addProductAdmin/addHeadphone', err);
+    //           })
+    //       }
+    //     } else {
+    //       setModalContentIntro(true)
+    //     }
+    //   } else {
+    //     setModalSelectImages(true)
+    //   }
+    // } else {
+    //   setModalSelectDefaultImage(true)
+    // }
   }
 
   return (
@@ -231,7 +231,9 @@ function AddPhonecase() {
       <Grid container spacing={0}>
         {/* <div className='bg-primary'> */}
         <Grid item xs={12}>
-          <div className='p-2'>Thêm Ốp Lưng</div>
+          <div className='p-2'>
+            <h6>Cập Nhật Tai Nghe</h6>
+          </div>
         </Grid>
         <Grid item xs={12} className='m-1 bg-light rounded'>
           <Grid container spacing={0} className='d-flex justify-content-center'>
@@ -376,23 +378,23 @@ function AddPhonecase() {
                       <Form.Text id='notificationProductNumberFail' className="text-danger"></Form.Text>
                     </Form.Group>
 
-                    <Form.Label style={{ fontSize: '14px' }} htmlFor="AddProductMaterial">
-                      Chất liệu::
+                    <Form.Label style={{ fontSize: '14px' }} htmlFor="AddProductConnectionType">
+                      Loại Kết Nối:
                     </Form.Label>
                     <Form.Select
-                      id='AddProductMaterial'
+                      id='AddProductConnectionType'
                       className='mb-1'
                       size="sm"
-                      value={productMaterialAdd}
+                      value={productConnectionTypeAdd}
                       onChange={(e) => {
-                        checkProductMaterial(e.target.value)
+                        checkProductConnectionType(e.target.value)
                       }}
                     >
                       <option value=''></option>
                       {
-                        material.map((val) => {
+                        connectionType.map((val) => {
                           return (
-                            <option key={val.id_cl} value={val.id_cl}>{val.ten_cl}</option>
+                            <option key={val.id_lkn} value={val.id_lkn}>{val.ten_lkn}</option>
                           )
                         })
                       }
@@ -535,15 +537,15 @@ function AddPhonecase() {
       <ModalNotification
         show={modalAddProductStatus}
         onHide={() => setModalAddProductStatus(false)}
-        status={addProductStatus.addPhonecaseStatus}
-        title={addProductStatus.addPhonecaseStatus ? 'Thành Công' : 'Thất Bại'}
-        message={addProductStatus.addPhonecaseMessage}
+        status={addProductStatus.addHeadphoneStatus}
+        title={addProductStatus.addHeadphoneStatus ? 'Thành Công' : 'Thất Bại'}
+        message={addProductStatus.addHeadphoneMessage}
       />
     </>
   )
 }
 
-export default AddPhonecase
+export default UpdateHeadphone
 
 
 

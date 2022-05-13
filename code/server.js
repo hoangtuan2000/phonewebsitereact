@@ -94,6 +94,10 @@ app.use('/productConfigInfoAdmin', productConfigInfoRouterAdmin)
 const addProductRouterAdmin = require('./clientAdminServer/routersAdmin/addProductRouterAdmin.js')
 app.use('/addProductAdmin', addProductRouterAdmin)
 
+//update product Router
+const updateProductRouterAdmin = require('./clientAdminServer/routersAdmin/updateProductRouterAdmin.js')
+app.use('/updateProductAdmin', updateProductRouterAdmin)
+
 
 
 

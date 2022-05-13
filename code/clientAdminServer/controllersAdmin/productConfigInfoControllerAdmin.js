@@ -231,6 +231,27 @@ const getAllConnectionType = async (req, res) => {
     })
 }
 
+const getAllProductStatus = async (req, res) => {
+    let status = {
+        getAllProductStatusData: []
+    }
+    const sql = 'SELECT * FROM trangthaisanpham'
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log('getAllProductStatus err:', err);
+            res.send(status)
+        } else {
+            if (result.length > 0) {
+                status.getAllProductStatusData = result
+                res.send(status)
+            } else {
+                console.log('getAllProductStatus not data');
+                res.send(status)
+            }
+        }
+    })
+}
+
 module.exports = {
     getAllOrigin,
     getAllMemory,
@@ -242,5 +263,6 @@ module.exports = {
     getAllSize,
     getAllPromotion,
     getAllMaterial,
-    getAllConnectionType
+    getAllConnectionType,
+    getAllProductStatus
 }

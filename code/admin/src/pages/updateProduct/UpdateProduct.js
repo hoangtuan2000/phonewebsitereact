@@ -1,30 +1,39 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import Axios from 'axios'
 
 import { URL } from '../../config/config'
+import UpdateSmartphone from '../../components/updateProduct/UpdateSmartphone'
+import UpdateHeadphone from '../../components/updateProduct/UpdateHeadphone'
+import UpdatePhoneCase from '../../components/updateProduct/UpdatePhonecase'
+import Sidebar from "../../components/sidebar/Sidebar";
+import Navbar from "../../components/navbar/Navbar";
 
 function UpdateProduct() {
-
-    const params = useParams()
-
-    const [product, setProduct] = useState({})
-
-    // get Detail Product Info
-    useEffect(() => {
-        Axios.post(URL + '/productsAdmin/getDetailProductInfo', { idProduct: params.idProduct })
-            .then((res) => {
-                setProduct(res.data);
-                console.log(res.data);
-            })
-            .catch((err) => {
-                console.log('/productsAdmin/getDetailProductInfo', err);
-            })
-    }, [])
+    let [searchParams, setSearchParams] = useSearchParams() 
 
     return (
         <>
-        d
+            <div className="home">
+                <Sidebar />
+                <div className="homeContainer">
+                    <Navbar />
+
+                    <div>
+                        {
+                            searchParams.get("productType") === 'smartphone' ?
+                                <UpdateSmartphone />
+                                :
+                                searchParams.get("productType") === 'headphone' ?
+                                    <UpdateHeadphone />
+                                    :
+                                    searchParams.get("productType") === 'phonecase' ?
+                                        <UpdatePhoneCase />
+                                        : <></>
+                        }
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

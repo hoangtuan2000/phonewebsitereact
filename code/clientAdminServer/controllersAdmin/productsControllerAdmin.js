@@ -11,6 +11,7 @@ const getAllProducts = async (req, res) => {
     const sql =
         `SELECT
             sp.id_sp,
+            lsp.ten_lsp,
             sp.anh_sp,
             sp.ten_sp,
             sp.gia_sp,
@@ -19,10 +20,12 @@ const getAllProducts = async (req, res) => {
         FROM 
             sanpham as sp,
             khuyenmai as km,
-            trangthaisanpham as ttsp
+            trangthaisanpham as ttsp,
+            loaisanpham as lsp
         WHERE
             sp.id_km = km.id_km
             AND sp.id_ttsp = ttsp.id_ttsp
+            AND sp.id_lsp = lsp.id_lsp
         `
 
     db.query(sql, (err, result) => {
@@ -106,6 +109,128 @@ const getBasicProductInfo = async (req, res) => {
     })
 }
 
+// const getDetailProductInfoOld = async (req, res) => {
+//     let status = {
+//         getDetailProductInfotStatus: false,
+//         getDetailProductInfotData: '',
+//         getDetailProductInfotMessage: ''
+//     }
+
+//     let idProduct = req.body.idProduct
+
+//     const sql =
+//         `SELECT
+//             sp.id_sp,
+//             sp.id_lsp,
+//             sp.ten_sp,
+//             sp.gia_sp,
+//             sp.so_luong_sp,
+//             sp.anh_sp,
+//             sp.gioi_thieu_sp,
+//             sp.ngay_tao,
+//             xx.ten_xx,
+//             km.giam_km,
+//             th.ten_th,
+//             ttsp.ten_ttsp
+//         FROM 
+//             sanpham as sp,
+//             xuatxu as xx,
+//             khuyenmai as km, 
+//             trangthaisanpham as ttsp,
+//             thuonghieu as th
+//         WHERE 
+//             sp.id_sp = ?
+//             AND sp.id_xx = xx.id_xx
+//             AND sp.id_km = km.id_km
+//             AND sp.id_ttsp = ttsp.id_ttsp
+//             AND sp.id_th = th.id_th
+//         `        
+
+//     db.query(sql, idProduct, (err, result) => {
+//         if (err) {
+//             console.log(err);
+//             status.getDetailProductInfotMessage = 'Lỗi Hệ Thống (Lỗi: getDetailProductInfo 123)'
+//             res.send(status)
+//         } else {
+//             if (result.length > 0) {
+//                 const productType = result[0].id_lsp
+//                 let sqlConfigProduct = ''
+//                 switch (productType) {
+//                     case 'DT':
+//                         sqlConfigProduct =
+//                             `SELECT 
+//                                 bn.dung_luong_bn,
+//                                 ram.dung_luong_ram,
+//                                 hdh.ten_hdh,
+//                                 tk.kieu_tk,
+//                                 chip.ten_chip,
+//                                 mh.kich_thuoc_mh
+//                             FROM 
+//                                 dienthoai as dt,
+//                                 bonho as bn,
+//                                 ram as ram,
+//                                 hedieuhanh as hdh,
+//                                 thietke as tk,
+//                                 chip as chip,
+//                                 manhinh as mh
+//                             WHERE 
+//                                 dt.id_sp = ?
+//                                 AND dt.id_bn = bn.id_bn
+//                                 AND dt.id_ram = ram.id_ram
+//                                 AND dt.id_hdh = hdh.id_hdh
+//                                 AND dt.id_tk = tk.id_tk
+//                                 AND dt.id_chip = chip.id_chip
+//                                 AND dt.id_mh = mh.id_mh`
+//                         break
+//                     case 'TN':
+//                         sqlConfigProduct =
+//                             `SELECT 
+//                                 lkn.ten_lkn
+//                             FROM
+//                                 tainghe as tn,
+//                                 loaiketnoi as lkn
+//                             WHERE 
+//                                 tn.id_sp = ?
+//                                 AND tn.id_lkn = lkn.id_lkn`
+//                         break
+//                     case 'OL':
+//                         sqlConfigProduct =
+//                             `SELECT 
+//                                 cl.ten_cl
+//                             FROM
+//                                 oplung as ol,
+//                                 chatlieu as cl
+//                             WHERE 
+//                                 ol.id_sp = ?
+//                                 AND ol.id_cl = cl.id_cl`
+//                         break
+//                 }
+
+//                 db.query(sqlConfigProduct, idProduct, (errConfigProduct, resConfigProduct) => {
+//                     if (errConfigProduct) {
+//                         status.getDetailProductInfotMessage = 'Lỗi Hệ Thống (Lỗi: getDetailProductInfo 456)'
+//                         res.send(status)
+//                     } else {
+//                         if (resConfigProduct.length > 0) {
+//                             status.getDetailProductInfotStatus = true
+//                             status.getDetailProductInfotData = result[0]
+//                             status.getDetailProductInfotData.configInfo = resConfigProduct[0]
+//                             res.send(status)
+//                         } else {
+//                             status.getDetailProductInfotMessage = 'Không Tìm Thấy Sản Phẩm (Lỗi: getDetailProductInfo 789)'
+//                             res.send(status)
+//                         }
+//                     }
+//                 })
+
+//             } else {
+//                 status.getDetailProductInfotMessage = 'Không Tìm Thấy Sản Phẩm (Lỗi: getDetailProductInfo 901)'
+//                 res.send(status)
+//             }
+//         }
+//     })
+// }
+
 const getDetailProductInfo = async (req, res) => {
     let status = {
         getDetailProductInfotStatus: false,
@@ -117,34 +242,17 @@ const getDetailProductInfo = async (req, res) => {
 
     const sql =
         `SELECT
-            sp.id_sp,
-            sp.id_lsp,
-            sp.ten_sp,
-            sp.gia_sp,
-            sp.so_luong_sp,
-            sp.anh_sp,
-            sp.gioi_thieu_sp,
-            sp.ngay_tao,
-            nsx.ten_nsx,
-            km.giam_km,
-            th.ten_th,
-            ttsp.ten_ttsp
+            sp.id_sp, sp.id_lsp, sp.ten_sp, sp.gia_sp, sp.so_luong_sp, 
+            sp.anh_sp, sp.gioi_thieu_sp, sp.id_xx, sp.id_km, sp.id_th, sp.id_ttsp
         FROM 
-            sanpham as sp,
-            nuocsanxuat as nsx,
-            khuyenmai as km, 
-            trangthaisanpham as ttsp,
-            thuonghieu as th
+            sanpham as sp
         WHERE 
             sp.id_sp = ?
-            AND sp.id_nsx = nsx.id_nsx
-            AND sp.id_km = km.id_km
-            AND sp.id_ttsp = ttsp.id_ttsp
-            AND sp.id_th = th.id_th
         `
 
     db.query(sql, idProduct, (err, result) => {
         if (err) {
+            console.log(err);
             status.getDetailProductInfotMessage = 'Lỗi Hệ Thống (Lỗi: getDetailProductInfo 123)'
             res.send(status)
         } else {
@@ -155,72 +263,77 @@ const getDetailProductInfo = async (req, res) => {
                     case 'DT':
                         sqlConfigProduct =
                             `SELECT 
-                                bn.dung_luong_bn,
-                                ram.dung_luong_ram,
-                                hdh.ten_hdh,
-                                tk.kieu_tk,
-                                chip.ten_chip,
-                                mh.kich_thuoc_mh
+                                dt.id_bn,
+                                dt.id_ram,
+                                dt.id_hdh,
+                                dt.id_tk,
+                                dt.id_chip,
+                                dt.id_mh
                             FROM 
-                                dienthoai as dt,
-                                bonho as bn,
-                                ram as ram,
-                                hedieuhanh as hdh,
-                                thietke as tk,
-                                chip as chip,
-                                manhinh as mh
+                                dienthoai as dt
                             WHERE 
-                                dt.id_sp = ?
-                                AND dt.id_bn = bn.id_bn
-                                AND dt.id_ram = ram.id_ram
-                                AND dt.id_hdh = hdh.id_hdh
-                                AND dt.id_tk = tk.id_tk
-                                AND dt.id_chip = chip.id_chip
-                                AND dt.id_mh = mh.id_mh`
+                                dt.id_sp = ?`
                         break
                     case 'TN':
                         sqlConfigProduct =
                             `SELECT 
-                                lkn.ten_lkn
+                                tn.id_lkn
                             FROM
-                                tainghe as tn,
-                                loaiketnoi as lkn
+                                tainghe as tn
                             WHERE 
-                                tn.id_sp = ?
-                                AND tn.id_lkn = lkn.id_lkn`
+                                tn.id_sp = ?`
                         break
                     case 'OL':
                         sqlConfigProduct =
                             `SELECT 
-                                cl.ten_cl
+                                cl.id_cl
                             FROM
-                                oplung as ol,
-                                chatlieu as cl
+                                oplung as ol
                             WHERE 
-                                ol.id_sp = ?
-                                AND ol.id_cl = cl.id_cl`
+                                ol.id_sp = ?`
                         break
                 }
 
                 db.query(sqlConfigProduct, idProduct, (errConfigProduct, resConfigProduct) => {
                     if (errConfigProduct) {
-                        status.getDetailProductInfotMessage = 'Lỗi Hệ Thống (Lỗi: getDetailProductInfo 123)'
+                        status.getDetailProductInfotMessage = 'Lỗi Hệ Thống (Lỗi: getDetailProductInfo 456)'
                         res.send(status)
+
                     } else {
                         if (resConfigProduct.length > 0) {
-                            status.getDetailProductInfotStatus = true
-                            status.getDetailProductInfotData = result[0]
-                            status.getDetailProductInfotData.configInfo = resConfigProduct[0]
-                            res.send(status)
+                            const sqlImages = 'SELECT * FROM `anhsanpham` WHERE id_sp = ?'
+                            db.query(sqlImages, idProduct, (errImages, resImages) => {
+                                if (errImages) {
+                                    status.getDetailProductInfotMessage = 'Lỗi Hệ Thống (Lỗi: getDetailProductInfo 789)'
+                                    res.send(status)
+                                } else {
+                                    if (resImages.length > 0) {
+                                        status.getDetailProductInfotStatus = true
+                                        status.getDetailProductInfotData = result[0]
+                                        status.getDetailProductInfotData.configInfo = resConfigProduct[0]
+                                        status.getDetailProductInfotData.images = []
+                                        for (const key in resImages) {
+                                            status.getDetailProductInfotData.images.push(resImages[key].anh_asp)
+                                        }
+                                        res.send(status)
+
+                                    } else {
+                                        status.getDetailProductInfotMessage = 'Không Tìm Thấy Sản Phẩm (Lỗi: getDetailProductInfo 901)'
+                                        res.send(status)
+                                    }
+
+                                }
+                            })
+
                         } else {
-                            status.getDetailProductInfotMessage = 'Không Tìm Thấy Sản Phẩm (Lỗi: getDetailProductInfo 123)'
+                            status.getDetailProductInfotMessage = 'Không Tìm Thấy Sản Phẩm (Lỗi: getDetailProductInfo 012)'
                             res.send(status)
                         }
                     }
                 })
 
             } else {
-                status.getDetailProductInfotMessage = 'Không Tìm Thấy Sản Phẩm (Lỗi: getDetailProductInfo 123)'
+                status.getDetailProductInfotMessage = 'Không Tìm Thấy Sản Phẩm (Lỗi: getDetailProductInfo 013)'
                 res.send(status)
             }
         }

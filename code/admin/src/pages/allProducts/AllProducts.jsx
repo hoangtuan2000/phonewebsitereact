@@ -48,18 +48,23 @@ const AllProducts = () => {
       .then((res) => {
         if (res.data.getAllProductsStatus && res.data.getAllProductsData.length > 0) {
           setProducts(res.data.getAllProductsData)
+
         } else if (res.data.getAllProductsStatus && res.data.getAllProductsData.length <= 0) {
           document.getElementById('showAllProducts').innerHTML = '<h3>hiện tại chưa có sản phẩm</h3>'
+
         } else if (!res.data.getAllProductsStatus) {
           document.getElementById('showAllProducts').innerHTML = `<h3>${res.data.getAllProductsMessage}</h3>`
+
         }
+
       })
       .catch((err) => {
         console.log('/productsAdmin/getAllProducts', err);
+
       })
   }, [])
 
-  // Axios get Basic Product Info
+  // Axios get Basic Product Info => show dialog view product
   const getBasicProductInfo = (idProduct) => {
     Axios.post(URL + '/productsAdmin/getBasicProductInfo', { idProduct: idProduct })
       .then((res) => {
@@ -74,6 +79,7 @@ const AllProducts = () => {
   // Table DataGrid MUI Colums
   const columns = [
     { field: 'id', headerName: 'ID', width: 70, },
+    { field: 'typeProduct', headerName: 'Loại', width: 100, },
     {
       field: 'imageProduct',
       headerName: 'Ảnh',
@@ -112,7 +118,23 @@ const AllProducts = () => {
               </IconButton>
             </Tooltip>
             <Tooltip TransitionComponent={Zoom} title="Cập Nhật" followCursor>
-              <IconButton color="warning" onClick={() => navigate(`/updateProduct/${params.row.id}`)}>
+              {/* <IconButton color="warning" onClick={() => navigate(`/updateProduct/${params.row.typeProduct}`)}> */}
+              <IconButton
+                color="warning"
+                onClick={() => {
+                  switch (params.row.typeProduct) {
+                    case 'Điện Thoại':
+                      navigate(`/updateProduct/${params.row.id}?productType=smartphone`)
+                      break;
+                    case 'Tai Nghe':
+                      navigate(`/updateProduct/${params.row.id}?productType=headphone`)
+                      break;
+                    case 'Ốp Lưng':
+                      navigate(`/updateProduct/${params.row.id}?productType=phonecase`)
+                      break;
+                  }
+                }}
+              >
                 <UpgradeIcon />
               </IconButton>
             </Tooltip>
@@ -129,6 +151,7 @@ const AllProducts = () => {
   products.map((product) => {
     let object = {}
     object.id = product.id_sp
+    object.typeProduct = product.ten_lsp
     object.imageProduct = product.anh_sp
     object.nameProduct = product.ten_sp
     object.priceProduct = moneyFormat(product.gia_sp)
@@ -146,20 +169,20 @@ const AllProducts = () => {
           <div id='showAllProducts' style={{ height: 500, width: '100%', padding: '10px' }}>
             <div className='mb-2'>
               <h6 className='float-start'>Tất Cả Sản Phẩm</h6>
-              <Link to='/addProduct/phonecase' className='float-end ms-1' style={{textDecoration: 'none'}}>
-                <Button  variant="outlined" size="small" style={{fontSize: '12px'}}>
+              <Link to='/addProduct/phonecase' className='float-end ms-1' style={{ textDecoration: 'none' }}>
+                <Button variant="outlined" size="small" style={{ fontSize: '12px' }}>
                   <SmartphoneIcon fontSize='small' />
                   Thêm Ốp Lưng
                 </Button>
               </Link>
-              <Link to='/addProduct/headphone' className='float-end ms-1' style={{textDecoration: 'none'}}>
-                <Button  variant="outlined" size="small" style={{fontSize: '12px'}}>
+              <Link to='/addProduct/headphone' className='float-end ms-1' style={{ textDecoration: 'none' }}>
+                <Button variant="outlined" size="small" style={{ fontSize: '12px' }}>
                   <HeadphonesIcon fontSize='small' />
                   Thêm Tai Nghe
                 </Button>
               </Link>
-              <Link to='/addProduct/smartphone' className='float-end ms-1' style={{textDecoration: 'none'}}>
-                <Button  variant="outlined" size="small" style={{fontSize: '12px'}}>
+              <Link to='/addProduct/smartphone' className='float-end ms-1' style={{ textDecoration: 'none' }}>
+                <Button variant="outlined" size="small" style={{ fontSize: '12px' }}>
                   <PhoneIphoneIcon fontSize='small' />
                   Thêm Điện Thoại
                 </Button>

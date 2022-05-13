@@ -15,7 +15,7 @@ import {
   deleteDots
 } from '../../functions/validateFormFunction'
 
-function AddPhonecase() {
+function UpdatePhonecase() {
 
   // modal
   const [modalSelectDefaultImage, setModalSelectDefaultImage] = useState(false)
@@ -231,7 +231,7 @@ function AddPhonecase() {
       <Grid container spacing={0}>
         {/* <div className='bg-primary'> */}
         <Grid item xs={12}>
-          <div className='p-2'>Thêm Ốp Lưng</div>
+          <div className='p-2'>Cập Nhật Ốp Lưng</div>
         </Grid>
         <Grid item xs={12} className='m-1 bg-light rounded'>
           <Grid container spacing={0} className='d-flex justify-content-center'>
@@ -543,7 +543,7 @@ function AddPhonecase() {
   )
 }
 
-export default AddPhonecase
+export default UpdatePhonecase
 
 
 
