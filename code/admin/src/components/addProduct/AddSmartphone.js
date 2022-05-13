@@ -3,6 +3,8 @@ import { Grid, Button } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Form } from 'react-bootstrap'
 import Axios from 'axios'
+import SunEditor from "suneditor-react";
+import "suneditor/dist/css/suneditor.min.css";
 
 import { URL } from '../../config/config'
 import SunEditorTranslationArea from '../editor/SunEditorTranslationArea';
@@ -14,6 +16,7 @@ import {
     validateSelect,
     deleteDots
 } from '../../functions/validateFormFunction'
+import { useNavigate } from 'react-router-dom';
 
 function AddSmartphone() {
 
@@ -21,6 +24,9 @@ function AddSmartphone() {
     const [modalSelectDefaultImage, setModalSelectDefaultImage] = useState(false)
     const [modalSelectImages, setModalSelectImages] = useState(false)
     const [modalContentIntro, setModalContentIntro] = useState(false)
+    const [modalAddProductStatus, setModalAddProductStatus] = useState(false)
+
+    const [addProductStatus, setAddProductStatus] = useState({});
 
     // get info config of product
     const [origin, setOrigin] = useState([]);
@@ -79,15 +85,6 @@ function AddSmartphone() {
             })
             .catch((err) => {
                 console.log('/productConfigInfoAdmin/getAllRam', err);
-            })
-
-        // get Trademark
-        Axios.get(URL + '/productConfigInfoAdmin/getAllTrademark')
-            .then((res) => {
-                setTrademark(res.data.getAllTrademarkData);
-            })
-            .catch((err) => {
-                console.log('/productConfigInfoAdmin/getAllTrademark', err);
             })
 
         // get Trademark
@@ -231,7 +228,7 @@ function AddSmartphone() {
     }
 
     // submit add product
-    const addProduct = async () => {
+    const addProduct = () => {
         // check default image
         if (productDefaultImage.defaultImage.length > 0) {
             // check album images
@@ -278,7 +275,36 @@ function AddSmartphone() {
                                 }
                             })
                             .then((res) => {
-                                console.log(res);
+                                // console.log(res);
+                                setAddProductStatus(res.data)
+                                setModalAddProductStatus(true)
+
+                                if (res.data.addSmartphoneStatus) {                                    
+                                    setReviewDefaultImage('')
+                                    setReviewImages([])
+                                    setProductDefaultImage({ defaultImage: '' })
+                                    setProductImages({ images: '' })
+                                    setProductIntroduceAdd('')
+                                    setProductNameAdd('')
+                                    setProductPriceAdd('')
+                                    setProductNumberAdd('')
+                                    setProductOriginAdd('')
+                                    setProductMemoryAdd('')
+                                    setProductRamAdd('')
+                                    setProductTrademarkAdd('')
+                                    setProductOperatingSystemAdd('')
+                                    setProductDesignAdd('')
+                                    setProductChipAdd('')
+                                    setProductSizeAdd('')
+                                    setProductPromotionAdd('')
+                                    document.getElementById('AddProductName').value = ''
+                                    document.getElementById('AddProductPrice').value = ''
+                                    document.getElementById('AddProductNumber').value = ''
+                                    setTimeout(
+                                        window.location.reload()
+                                        , 1000)
+                                }
+
                             })
                             .catch((err) => {
                                 console.log('/addProductAdmin/addSmartphone', err);
@@ -419,6 +445,7 @@ function AddSmartphone() {
                                                 id='AddProductName'
                                                 type="text"
                                                 size="sm"
+                                                autoFocus
                                                 onChange={(e) => checkProductName(e.target.value)}
                                             />
                                             <Form.Text id='notificationProductNameFail' className="text-danger"></Form.Text>
@@ -447,7 +474,7 @@ function AddSmartphone() {
                                         </Form.Group>
 
                                         <Form.Label style={{ fontSize: '14px' }} htmlFor="AddProductOrigin">
-                                            Xuất xứ::
+                                            Xuất xứ:
                                         </Form.Label>
                                         <Form.Select
                                             id='AddProductOrigin'
@@ -708,6 +735,15 @@ function AddSmartphone() {
                 status={false}
                 title={'Thất Bại'}
                 message={'Bạn chưa nhập giới thiệu cho sản phẩm'}
+            />
+
+            {/* call modal Add Product Status */}
+            <ModalNotification
+                show={modalAddProductStatus}
+                onHide={() => setModalAddProductStatus(false)}
+                status={addProductStatus.addSmartphoneStatus}
+                title={addProductStatus.addSmartphoneStatus ? 'Thành Công' : 'Thất Bại'}
+                message={addProductStatus.addSmartphoneMessage}
             />
         </>
     )

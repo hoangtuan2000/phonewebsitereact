@@ -9,7 +9,6 @@ function SunEditorTranslationArea({
     return (
         <div>
             <SunEditor
-                autoFocus={true}
                 width="100%"
                 height="150px"
                 setOptions={{

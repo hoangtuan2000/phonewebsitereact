@@ -23,7 +23,7 @@ const imageFilter = function (req, file, cb) {
     cb(null, true);
 };
 
-let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter, limits: { fileSize: 2000000 } }).array('productImages', 9);
+let uploadMultipleFiles = multer({ storage: storage, fileFilter: imageFilter, limits: { fileSize: 5000000 } }).array('productImages', 9);
 
 
 const uploadMultipleImages = async (req, res, next) => {

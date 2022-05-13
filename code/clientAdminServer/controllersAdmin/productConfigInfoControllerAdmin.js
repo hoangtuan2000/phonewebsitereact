@@ -189,6 +189,48 @@ const getAllPromotion = async (req, res) => {
     })
 }
 
+const getAllMaterial = async (req, res) => {
+    let status = {
+        getAllMaterialData: []
+    }
+    const sql = 'SELECT * FROM chatlieu'
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log('getAllMaterial err:', err);
+            res.send(status)
+        } else {
+            if (result.length > 0) {
+                status.getAllMaterialData = result
+                res.send(status)
+            } else {
+                console.log('getAllMaterial not data');
+                res.send(status)
+            }
+        }
+    })
+}
+
+const getAllConnectionType = async (req, res) => {
+    let status = {
+        getAllConnectionTypeData: []
+    }
+    const sql = 'SELECT * FROM loaiketnoi'
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log('getAllConnectionType err:', err);
+            res.send(status)
+        } else {
+            if (result.length > 0) {
+                status.getAllConnectionTypeData = result
+                res.send(status)
+            } else {
+                console.log('getAllConnectionType not data');
+                res.send(status)
+            }
+        }
+    })
+}
+
 module.exports = {
     getAllOrigin,
     getAllMemory,
@@ -199,4 +241,6 @@ module.exports = {
     getAllChip,
     getAllSize,
     getAllPromotion,
+    getAllMaterial,
+    getAllConnectionType
 }

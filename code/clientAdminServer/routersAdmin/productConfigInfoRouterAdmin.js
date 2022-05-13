@@ -10,5 +10,7 @@ router.get('/getAllDesign', productConfigInfoControllerAdmin.getAllDesign)
 router.get('/getAllChip', productConfigInfoControllerAdmin.getAllChip)
 router.get('/getAllSize', productConfigInfoControllerAdmin.getAllSize)
 router.get('/getAllPromotion', productConfigInfoControllerAdmin.getAllPromotion)
+router.get('/getAllMaterial', productConfigInfoControllerAdmin.getAllMaterial)
+router.get('/getAllConnectionType', productConfigInfoControllerAdmin.getAllConnectionType)
 
 module.exports = router
