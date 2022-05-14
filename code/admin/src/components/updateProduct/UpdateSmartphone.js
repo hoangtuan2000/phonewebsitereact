@@ -738,10 +738,10 @@ function UpdateSmartphone() {
                                         <div className='text-center'>
                                             <Button
                                                 variant="contained"
-                                                className='mt-3 w-50'
+                                                className='mt-3 w-50 bg-warning'
                                                 onClick={updateProduct}
                                             >
-                                                Thêm Sản Phẩm
+                                                Cập Nhật Sản Phẩm
                                             </Button>
                                         </div>
                                     </Grid>

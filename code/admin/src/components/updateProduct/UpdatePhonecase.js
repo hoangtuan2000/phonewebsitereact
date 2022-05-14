@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Grid, Button } from '@mui/material';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Form } from 'react-bootstrap'
 import Axios from 'axios'
+import SunEditor from "suneditor-react";
+import "suneditor/dist/css/suneditor.min.css";
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { URL } from '../../config/config'
 import SunEditorTranslationArea from '../editor/SunEditorTranslationArea';
@@ -14,39 +16,70 @@ import {
   validateSelect,
   deleteDots
 } from '../../functions/validateFormFunction'
+import { moneyFormat } from '../../functions/moneyFunction'
 
 function UpdatePhonecase() {
 
-  // modal
-  const [modalSelectDefaultImage, setModalSelectDefaultImage] = useState(false)
-  const [modalSelectImages, setModalSelectImages] = useState(false)
-  const [modalContentIntro, setModalContentIntro] = useState(false)
-  const [modalAddProductStatus, setModalAddProductStatus] = useState(false)
+  const params = useParams()
 
-  const [addProductStatus, setAddProductStatus] = useState({});
+  // modal
+  const [modalContentIntro, setModalContentIntro] = useState(false)
+  const [modalUpdateProductStatus, setModalUpdateProductStatus] = useState(false)
+
+  const [updateProductStatus, setUpdateProductStatus] = useState({});
 
   // get info config of product
   const [origin, setOrigin] = useState([]);
   const [material, setMaterial] = useState([]);
   const [trademark, setTrademark] = useState([]);
   const [promotion, setPromotion] = useState([]);
+  const [productStatus, setProductStatus] = useState([]);
+  const [productAvatarDatabase, setProductAvatarDatabase] = useState('');
+  const [productImagesDatabase, setProductImagesDatabase] = useState([]);
 
   const [reviewDefaultImage, setReviewDefaultImage] = useState('');
   const [reviewImages, setReviewImages] = useState([]);
 
   const [productDefaultImage, setProductDefaultImage] = useState({ defaultImage: '' });
   const [productImages, setProductImages] = useState({ images: '' });
-  const [productIntroduceAdd, setProductIntroduceAdd] = useState('');
-  const [productNameAdd, setProductNameAdd] = useState('')
-  const [productPriceAdd, setProductPriceAdd] = useState('')
-  const [productNumberAdd, setProductNumberAdd] = useState('')
-  const [productOriginAdd, setProductOriginAdd] = useState('')
-  const [productMaterialAdd, setProductMaterialAdd] = useState('')
-  const [productTrademarkAdd, setProductTrademarkAdd] = useState('')
-  const [productPromotionAdd, setProductPromotionAdd] = useState('')
+  const [productIntroduceUpdate, setProductIntroduceUpdate] = useState('');
+  const [productNameUpdate, setProductNameUpdate] = useState('')
+  const [productPriceUpdate, setProductPriceUpdate] = useState('')
+  const [productNumberUpdate, setProductNumberUpdate] = useState('')
+  const [productOriginUpdate, setProductOriginUpdate] = useState('')
+  const [productMaterialUpdate, setProductMaterialUpdate] = useState('')
+  const [productTrademarkUpdate, setProductTrademarkUpdate] = useState('')
+  const [productPromotionUpdate, setProductPromotionUpdate] = useState('')
+  const [productStatusUpdate, setProductStatusUpdate] = useState('')
 
-  //get product config info
+  //get product info and config info
   useEffect(() => {
+    // get product info
+    Axios.post(URL + '/productsAdmin/getDetailProductInfo', { idProduct: params.idProduct })
+      .then((res) => {
+        if (res.data.getDetailProductInfotStatus) {
+          let product = res.data.getDetailProductInfotData
+          setProductIntroduceUpdate(product.gioi_thieu_sp)
+          setProductNameUpdate(product.ten_sp)
+          setProductPriceUpdate(moneyFormat(product.gia_sp))
+          setProductAvatarDatabase(product.anh_sp)
+          setProductImagesDatabase(product.images)
+          setProductNumberUpdate(moneyFormat(product.so_luong_sp))
+          setProductTrademarkUpdate(product.id_th)
+          setProductOriginUpdate(product.id_xx)
+          setProductPromotionUpdate(product.id_km)
+          setProductStatusUpdate(product.id_ttsp)
+          setProductMaterialUpdate(product.configInfo.id_cl)
+          document.getElementById('UpdateProductPrice').value = moneyFormat(product.gia_sp)
+          document.getElementById('UpdateProductNumber').value = moneyFormat(product.so_luong_sp)
+        }
+
+      })
+      .catch((err) => {
+        console.log('updateProduct => headphone', err);
+
+      })
+
     // get origin
     Axios.get(URL + '/productConfigInfoAdmin/getAllOrigin')
       .then((res) => {
@@ -74,6 +107,15 @@ function UpdatePhonecase() {
         console.log('/productConfigInfoAdmin/getAllPromotion', err);
       })
 
+    // get product status
+    Axios.get(URL + '/productConfigInfoAdmin/getAllProductStatus')
+      .then((res) => {
+        setProductStatus(res.data.getAllProductStatusData);
+      })
+      .catch((err) => {
+        console.log('/productConfigInfoAdmin/getAllProductStatus', err);
+      })
+
     // get material
     Axios.get(URL + '/productConfigInfoAdmin/getAllMaterial')
       .then((res) => {
@@ -82,6 +124,7 @@ function UpdatePhonecase() {
       .catch((err) => {
         console.log('/productConfigInfoAdmin/getAllMgetAllMaterialemory', err);
       })
+
   }, [])
 
   // select and review default image
@@ -110,119 +153,94 @@ function UpdatePhonecase() {
   };
 
   const checkProductName = (productName) => {
-    setProductNameAdd(productName)
-    return validateProductName(productName, 'notificationProductNameFail', 'AddProductName')
+    setProductNameUpdate(productName)
+    return validateProductName(productName, 'notificationProductNameFail', 'UpdateProductName')
   }
 
   const checkProductPrice = (price) => {
-    setProductPriceAdd(deleteDots(price))
-    return validateProductPrice(price, 'AddProductPrice', 'notificationProductPriceFail', 'AddProductPrice')
+    setProductPriceUpdate(deleteDots(price))
+    return validateProductPrice(price, 'UpdateProductPrice', 'notificationProductPriceFail', 'UpdateProductPrice')
   }
 
   const checkProductNumber = (number) => {
-    setProductNumberAdd(deleteDots(number))
-    return validateProductNumber(number, 'AddProductNumber', 'notificationProductNumberFail', 'AddProductNumber')
+    setProductNumberUpdate(deleteDots(number))
+    return validateProductNumber(number, 'UpdateProductNumber', 'notificationProductNumberFail', 'UpdateProductNumber')
   }
 
   const checkProductOrigin = (origin) => {
-    setProductOriginAdd(origin);
-    return validateSelect(origin, 'AddProductOrigin')
+    setProductOriginUpdate(origin);
+    return validateSelect(origin, 'UpdateProductOrigin')
   }
 
   const checkProductTrademark = (trademark) => {
-    setProductTrademarkAdd(trademark);
-    return validateSelect(trademark, 'AddProductTrademark')
+    setProductTrademarkUpdate(trademark);
+    return validateSelect(trademark, 'UpdateProductTrademark')
   }
 
   const checkProductPromotion = (promotion) => {
-    setProductPromotionAdd(promotion);
-    return validateSelect(promotion, 'AddProductPromotion')
+    setProductPromotionUpdate(promotion);
+    return validateSelect(promotion, 'UpdateProductPromotion')
+  }
+
+  const checkProductStatus = (status) => {
+    setProductStatusUpdate(status);
+    return validateSelect(status, 'UpdateProductStatus')
   }
 
   const checkProductMaterial = (material) => {
-    setProductMaterialAdd(material);
-    return validateSelect(material, 'AddProductMaterial')
+    setProductMaterialUpdate(material);
+    return validateSelect(material, 'UpdateProductMaterial')
   }
 
-
-  // submit add product
-  const addProduct = async () => {
-    // check default image
-    if (productDefaultImage.defaultImage.length > 0) {
-      // check album images
-      if (productImages.images.length > 0) {
-        //check intro of product
-        if (productIntroduceAdd.length > 0) {
-          // check form product
-          if (
-            checkProductName(productNameAdd) && checkProductPrice(productPriceAdd)
-            && checkProductNumber(productNumberAdd) && checkProductOrigin(productOriginAdd)
-            && checkProductTrademark(productTrademarkAdd) && checkProductPromotion(productPromotionAdd)
-            && checkProductMaterial(productMaterialAdd)
-          ) {
-            // create form 
-            const formData = new FormData();
-            formData.append("productImages", productDefaultImage.defaultImage[0]);
-            for (const key of Object.keys(productImages.images)) {
-              formData.append('productImages', productImages.images[key])
-            }
-            formData.append("productName", productNameAdd);
-            formData.append("productPrice", productPriceAdd);
-            formData.append("productNumber", productNumberAdd);
-            formData.append("productOrigin", productOriginAdd);
-            formData.append("productTrademark", productTrademarkAdd);
-            formData.append("productPromotion", productPromotionAdd);
-            formData.append("productIntro", productIntroduceAdd);
-            formData.append("productMaterial", productMaterialAdd);
-
-            // for (var value of formData.values()) {
-            //     console.log('form', value);
-            // }
-
-            Axios.post(URL + '/addProductAdmin/addPhonecase',
-              formData,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                }
-              })
-              .then((res) => {
-                setAddProductStatus(res.data)
-                setModalAddProductStatus(true)
-
-                if (res.data.addPhonecaseStatus) {
-                  setReviewDefaultImage('')
-                  setReviewImages([])
-                  setProductDefaultImage({ defaultImage: '' })
-                  setProductImages({ images: '' })
-                  setProductIntroduceAdd('')
-                  setProductNameAdd('')
-                  setProductPriceAdd('')
-                  setProductNumberAdd('')
-                  setProductOriginAdd('')
-                  setProductTrademarkAdd('')
-                  setProductPromotionAdd('')
-                  setProductMaterialAdd('')
-                  document.getElementById('AddProductName').value = ''
-                  document.getElementById('AddProductPrice').value = ''
-                  document.getElementById('AddProductNumber').value = ''
-                  setTimeout(
-                    window.location.reload()
-                    , 1000)
-                }
-              })
-              .catch((err) => {
-                console.log('/addProductAdmin/addPhonecase', err);
-              })
-          }
-        } else {
-          setModalContentIntro(true)
+  // submit update product
+  const updateProduct = () => {
+    //check intro of product
+    if (productIntroduceUpdate.length > 0) {
+      // check form product
+      if (
+        checkProductName(productNameUpdate) && checkProductPrice(productPriceUpdate)
+        && checkProductNumber(productNumberUpdate) && checkProductOrigin(productOriginUpdate) && checkProductStatus(productStatusUpdate)
+        && checkProductTrademark(productTrademarkUpdate) && checkProductPromotion(productPromotionUpdate) && checkProductMaterial(productMaterialUpdate)
+      ) {
+        // create form 
+        const formData = new FormData();
+        formData.append("productDefaultImage", productDefaultImage.defaultImage[0])
+        for (const key of Object.keys(productImages.images)) {
+          formData.append('productImages', productImages.images[key])
         }
-      } else {
-        setModalSelectImages(true)
+
+        formData.append("idProduct", params.idProduct);
+        formData.append("productName", productNameUpdate);
+        formData.append("productPrice", deleteDots(productPriceUpdate));
+        formData.append("productNumber", deleteDots(productNumberUpdate));
+        formData.append("productOrigin", productOriginUpdate);
+        formData.append("productMaterial", productMaterialUpdate);
+        formData.append("productTrademark", productTrademarkUpdate);
+        formData.append("productStatus", productStatusUpdate);
+        formData.append("productPromotion", productPromotionUpdate);
+        formData.append("productIntro", productIntroduceUpdate);
+        // for (var value of formData.values()) {
+        //     console.log('form', value);
+        // }
+
+        Axios.post(URL + '/updateProductAdmin/updatePhonecase',
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            }
+          })
+          .then((res) => {
+            setUpdateProductStatus(res.data)
+            setModalUpdateProductStatus(true)
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log('/updateProductAdmin/updatePhonecase', err);
+          })
       }
     } else {
-      setModalSelectDefaultImage(true)
+      setModalContentIntro(true)
     }
   }
 
@@ -231,7 +249,9 @@ function UpdatePhonecase() {
       <Grid container spacing={0}>
         {/* <div className='bg-primary'> */}
         <Grid item xs={12}>
-          <div className='p-2'>Cập Nhật Ốp Lưng</div>
+          <div className='p-2'>
+            <h6>Cập Nhật Ốp Lưng</h6>
+          </div>
         </Grid>
         <Grid item xs={12} className='m-1 bg-light rounded'>
           <Grid container spacing={0} className='d-flex justify-content-center'>
@@ -267,11 +287,15 @@ function UpdatePhonecase() {
                       />
                       :
                       <>
-                        <div className='text-center'>
-                          <AddPhotoAlternateIcon fontSize='large' />
-                          <h6>Avatar Product</h6>
-                          <h6>600 x 600</h6>
-                        </div>
+                        <img
+                          src={URL + productAvatarDatabase}
+                          className='rounded border border-secondary'
+                          style={{
+                            height: '250px',
+                            width: '200px',
+                            objectFit: 'cover'
+                          }}
+                        />
                       </>
                   }
                 </label>
@@ -308,31 +332,28 @@ function UpdatePhonecase() {
 
                 {/* review images before upload */}
                 <div className='mt-2'>
-                  {reviewImages &&
-                    reviewImages.map((image, index) => {
-                      return (
-                        <div key={image} className="float-start me-1 my-1 border rounded bg-white text-center">
-                          <img src={image} style={{ height: "250px", width: '200px', objectFit: 'contain' }} />
-                          <br />
-                          {/* <Button
-                                                        variant="contained"
-                                                        color='error'
-                                                        size='small'
-                                                        className='float-start mx-1 p-0'
-                                                        style={{ fontSize: '8px' }}
-                                                        onClick={() => {
-                                                            setReviewImages(reviewImages.filter((e) => e !== image));
-                                                            delete productImages.images[index]
-                                                            console.log(productImages.images);
-                                                        }
-                                                        }
-                                                    >
-                                                        Xóa
-                                                    </Button> */}
-                          <p style={{ fontSize: '12px' }}>Ảnh {index + 1}</p>
-                        </div>
-                      );
-                    })}
+                  {
+                    reviewImages.length > 0 ?
+                      reviewImages.map((image, index) => {
+                        return (
+                          <div key={image} className="float-start me-1 my-1 border rounded bg-white text-center">
+                            <img src={image} style={{ height: "250px", width: '200px', objectFit: 'contain' }} />
+                            <br />
+                            <p style={{ fontSize: '12px' }}>Ảnh {index + 1}</p>
+                          </div>
+                        );
+                      })
+                      :
+                      productImagesDatabase.map((image, index) => {
+                        return (
+                          <div key={image} className="float-start me-1 my-1 border rounded bg-white text-center">
+                            <img src={URL + image} style={{ height: "250px", width: '200px', objectFit: 'contain' }} />
+                            <br />
+                            <p style={{ fontSize: '12px' }}>Ảnh {index + 1}</p>
+                          </div>
+                        );
+                      })
+                  }
                 </div>
               </div>
             </Grid>
@@ -343,21 +364,22 @@ function UpdatePhonecase() {
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <Form.Group className='mb-1' >
-                      <Form.Label style={{ fontSize: '14px' }} htmlFor='AddProductName'>Tên sản phẩm: </Form.Label>
+                      <Form.Label style={{ fontSize: '14px' }} htmlFor='UpdateProductName'>Tên sản phẩm: </Form.Label>
                       <Form.Control
-                        id='AddProductName'
+                        id='UpdateProductName'
                         type="text"
                         size="sm"
                         autoFocus
+                        value={productNameUpdate}
                         onChange={(e) => checkProductName(e.target.value)}
                       />
                       <Form.Text id='notificationProductNameFail' className="text-danger"></Form.Text>
                     </Form.Group>
 
                     <Form.Group className='mb-1' >
-                      <Form.Label style={{ fontSize: '14px' }} htmlFor='AddProductPrice'>Giá: </Form.Label>
+                      <Form.Label style={{ fontSize: '14px' }} htmlFor='UpdateProductPrice'>Giá: </Form.Label>
                       <Form.Control
-                        id='AddProductPrice'
+                        id='UpdateProductPrice'
                         type="text"
                         size="sm"
                         onChange={(e) => checkProductPrice(e.target.value)}
@@ -366,9 +388,9 @@ function UpdatePhonecase() {
                     </Form.Group>
 
                     <Form.Group className='mb-1' >
-                      <Form.Label style={{ fontSize: '14px' }} htmlFor='AddProductNumber'>Số Lượng: </Form.Label>
+                      <Form.Label style={{ fontSize: '14px' }} htmlFor='UpdateProductNumber'>Số Lượng: </Form.Label>
                       <Form.Control
-                        id='AddProductNumber'
+                        id='UpdateProductNumber'
                         type="text"
                         size="sm"
                         onChange={(e) => checkProductNumber(e.target.value)}
@@ -376,14 +398,14 @@ function UpdatePhonecase() {
                       <Form.Text id='notificationProductNumberFail' className="text-danger"></Form.Text>
                     </Form.Group>
 
-                    <Form.Label style={{ fontSize: '14px' }} htmlFor="AddProductMaterial">
-                      Chất liệu::
+                    <Form.Label style={{ fontSize: '14px' }} htmlFor="UpdateProductOrigin">
+                      Chất liệu:
                     </Form.Label>
                     <Form.Select
-                      id='AddProductMaterial'
+                      id='UpdateProductMaterial'
                       className='mb-1'
                       size="sm"
-                      value={productMaterialAdd}
+                      value={productMaterialUpdate}
                       onChange={(e) => {
                         checkProductMaterial(e.target.value)
                       }}
@@ -398,15 +420,38 @@ function UpdatePhonecase() {
                       }
                     </Form.Select>
                   </Grid>
+
                   <Grid item xs={6}>
-                    <Form.Label style={{ fontSize: '14px' }} htmlFor="AddProductTrademark">
+                    <Form.Label style={{ fontSize: '14px' }} htmlFor="UpdateProductOrigin">
+                      Xuất xứ:
+                    </Form.Label>
+                    <Form.Select
+                      id='UpdateProductOrigin'
+                      className='mb-1'
+                      size="sm"
+                      value={productOriginUpdate}
+                      onChange={(e) => {
+                        checkProductOrigin(e.target.value)
+                      }}
+                    >
+                      <option value=''></option>
+                      {
+                        origin.map((val) => {
+                          return (
+                            <option key={val.id_xx} value={val.id_xx}>{val.ten_xx}</option>
+                          )
+                        })
+                      }
+                    </Form.Select>
+
+                    <Form.Label style={{ fontSize: '14px' }} htmlFor="UpdateProductTrademark">
                       Thương hiệu:
                     </Form.Label>
                     <Form.Select
-                      id='AddProductTrademark'
+                      id='UpdateProductTrademark'
                       className='mb-1'
                       size="sm"
-                      value={productTrademarkAdd}
+                      value={productTrademarkUpdate}
                       onChange={(e) => {
                         checkProductTrademark(e.target.value)
                       }}
@@ -421,14 +466,14 @@ function UpdatePhonecase() {
                       }
                     </Form.Select>
 
-                    <Form.Label style={{ fontSize: '14px' }} htmlFor="AddProductPromotion">
+                    <Form.Label style={{ fontSize: '14px' }} htmlFor="UpdateProductPromotion">
                       Khuyến mãi:
                     </Form.Label>
                     <Form.Select
-                      id='AddProductPromotion'
+                      id='UpdateProductPromotion'
                       className='mb-1'
                       size="sm"
-                      value={productPromotionAdd}
+                      value={productPromotionUpdate}
                       onChange={(e) => {
                         checkProductPromotion(e.target.value)
                       }}
@@ -449,23 +494,23 @@ function UpdatePhonecase() {
                       }
                     </Form.Select>
 
-                    <Form.Label style={{ fontSize: '14px' }} htmlFor="AddProductOrigin">
-                      Xuất xứ:
+                    <Form.Label style={{ fontSize: '14px' }} htmlFor="UpdateProductStatus">
+                      Trạng thái sản phẩm:
                     </Form.Label>
                     <Form.Select
-                      id='AddProductOrigin'
+                      id='UpdateProductStatus'
                       className='mb-1'
                       size="sm"
-                      value={productOriginAdd}
+                      value={productStatusUpdate}
                       onChange={(e) => {
-                        checkProductOrigin(e.target.value)
+                        checkProductStatus(e.target.value)
                       }}
                     >
                       <option value=''></option>
                       {
-                        origin.map((val) => {
+                        productStatus.map((val) => {
                           return (
-                            <option key={val.id_xx} value={val.id_xx}>{val.ten_xx}</option>
+                            <option key={val.id_ttsp} value={val.id_ttsp}>{val.ten_ttsp}</option>
                           )
                         })
                       }
@@ -474,23 +519,23 @@ function UpdatePhonecase() {
 
                   {/* giới thiệu */}
                   <Grid item xs={12}>
-                    <Form.Label style={{ fontSize: '14px' }} htmlFor="AddProductPromotion">
+                    <Form.Label style={{ fontSize: '14px' }} htmlFor="UpdateProductPromotion">
                       Giới Thiệu:
                     </Form.Label>
                     <Form.Text id='notificationProductIntroduceFail' className="text-danger"></Form.Text>
                     {/* editor */}
                     <SunEditorTranslationArea
-                      initialContent={productIntroduceAdd}
-                      setContent={setProductIntroduceAdd}
+                      initialContent={productIntroduceUpdate}
+                      setContent={setProductIntroduceUpdate}
                     />
 
                     <div className='text-center'>
                       <Button
                         variant="contained"
-                        className='mt-3 w-50'
-                        onClick={addProduct}
+                        className='mt-3 w-50 bg-warning'
+                        onClick={updateProduct}
                       >
-                        Thêm Sản Phẩm
+                        Cập Nhật Sản Phẩm
                       </Button>
                     </div>
                   </Grid>
@@ -503,25 +548,8 @@ function UpdatePhonecase() {
         {/* </div> */}
       </Grid>
 
-      {/* call modal Select Default Image */}
-      <ModalNotification
-        show={modalSelectDefaultImage}
-        onHide={() => setModalSelectDefaultImage(false)}
-        status={false}
-        title={'Thất Bại'}
-        message={'Bạn chưa chọn ảnh Avatar'}
-      />
 
-      {/* call modal Select Images */}
-      <ModalNotification
-        show={modalSelectImages}
-        onHide={() => setModalSelectImages(false)}
-        status={false}
-        title={'Thất Bại'}
-        message={'Bạn chưa chọn album ảnh cho sản phẩm'}
-      />
-
-      {/* call modal Select Images */}
+      {/* call modal intro */}
       <ModalNotification
         show={modalContentIntro}
         onHide={() => setModalContentIntro(false)}
@@ -530,14 +558,13 @@ function UpdatePhonecase() {
         message={'Bạn chưa nhập giới thiệu cho sản phẩm'}
       />
 
-
-      {/* call modal Add Product Status */}
+      {/* call modal Update Product Status */}
       <ModalNotification
-        show={modalAddProductStatus}
-        onHide={() => setModalAddProductStatus(false)}
-        status={addProductStatus.addPhonecaseStatus}
-        title={addProductStatus.addPhonecaseStatus ? 'Thành Công' : 'Thất Bại'}
-        message={addProductStatus.addPhonecaseMessage}
+        show={modalUpdateProductStatus}
+        onHide={() => setModalUpdateProductStatus(false)}
+        status={updateProductStatus.updatePhonecaseStatus}
+        title={updateProductStatus.updatePhonecaseStatus ? 'Thành Công' : 'Thất Bại'}
+        message={updateProductStatus.updatePhonecaseMessage}
       />
     </>
   )

@@ -5,9 +5,12 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import HeadphonesIcon from '@mui/icons-material/Headphones';
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import BorderAllIcon from '@mui/icons-material/BorderAll';
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
@@ -30,42 +33,14 @@ const Sidebar = () => {
       <div className="center">
         <ul>
 
-          <p className="title">MAIN</p>
-          <li>
-            <DashboardIcon className="icon" />
-            <span>Dashboard</span>
-          </li>
+         
           <p className="title">LISTS</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
               <span>Users</span>
             </li>
-          </Link>
-          <Link to="/products" style={{ textDecoration: "none" }}>
-            <li>
-              <StoreIcon className="icon" />
-              <span>Products</span>
-            </li>
-          </Link>
-          <li>
-            <CreditCardIcon className="icon" />
-            <span>Orders</span>
-          </li>
-          <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-
-          <p className="title">USEFUL</p>
-          <li>
-            <InsertChartIcon className="icon" />
-            <span>Stats</span>
-          </li>
-          <li>
-            <NotificationsNoneIcon className="icon" />
-            <span>Notifications</span>
-          </li>
+          </Link>       
 
           <p className="title">SẢN PHẨM</p>
           <li>
@@ -83,6 +58,57 @@ const Sidebar = () => {
             >
               <BorderAllIcon className="icon" />
               <span>Tất Cả Sản Phẩm</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/smartphones'
+            >
+              <PhoneIphoneIcon className="icon" />
+              <span>Điện Thoại</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/headphones'
+            >
+              <HeadphonesIcon className="icon" />
+              <span>Tai Nghe</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/phonecases'
+            >
+              <SmartphoneIcon className="icon" />
+              <span>Ốp Lưng</span>
             </NavLink>
           </li>
 

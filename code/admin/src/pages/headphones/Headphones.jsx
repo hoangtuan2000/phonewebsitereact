@@ -22,7 +22,7 @@ import { height } from '@mui/system';
 import ShowProductInfoDialog from '../../components/modal/ShowProductInfoDialog';
 import { Link, useNavigate } from 'react-router-dom';
 
-const AllProducts = () => {
+const Headphones = () => {
   document.body.style.backgroundImage = `none`;
   document.body.style.backgroundColor = "white";
 
@@ -44,22 +44,22 @@ const AllProducts = () => {
 
   // get all products
   useEffect(() => {
-    Axios.get(URL + '/productsAdmin/getAllProducts')
+    Axios.get(URL + '/productsAdmin/getAllHeadphones')
       .then((res) => {
-        if (res.data.getAllProductsStatus && res.data.getAllProductsData.length > 0) {
-          setProducts(res.data.getAllProductsData)
+        if (res.data.getAllHeadphonesStatus && res.data.getAllHeadphonesData.length > 0) {
+          setProducts(res.data.getAllHeadphonesData)
 
-        } else if (res.data.getAllProductsStatus && res.data.getAllProductsData.length <= 0) {
+        } else if (res.data.getAllHeadphonesStatus && res.data.getAllHeadphonesData.length <= 0) {
           document.getElementById('showAllProducts').innerHTML = '<h3>hiện tại chưa có sản phẩm</h3>'
 
-        } else if (!res.data.getAllProductsStatus) {
-          document.getElementById('showAllProducts').innerHTML = `<h3>${res.data.getAllProductsMessage}</h3>`
+        } else if (!res.data.getAllHeadphonesStatus) {
+          document.getElementById('showAllProducts').innerHTML = `<h3>${res.data.getAllHeadphonesMessage}</h3>`
 
         }
 
       })
       .catch((err) => {
-        console.log('/productsAdmin/getAllProducts', err);
+        console.log('/productsAdmin/getAllHeadphones', err);
 
       })
   }, [])
@@ -173,22 +173,7 @@ const AllProducts = () => {
               </IconButton>
             </Tooltip>
             <Tooltip TransitionComponent={Zoom} title="Cập Nhật" followCursor>
-              <IconButton
-                color="warning"
-                onClick={() => {
-                  switch (params.row.typeProduct) {
-                    case 'Điện Thoại':
-                      navigate(`/updateProduct/${params.row.id}?productType=smartphone`)
-                      break;
-                    case 'Tai Nghe':
-                      navigate(`/updateProduct/${params.row.id}?productType=headphone`)
-                      break;
-                    case 'Ốp Lưng':
-                      navigate(`/updateProduct/${params.row.id}?productType=phonecase`)
-                      break;
-                  }
-                }}
-              >
+              <IconButton color="warning" onClick={() => navigate(`/updateProduct/${params.row.id}?productType=headphone`)}>
                 <UpgradeIcon />
               </IconButton>
             </Tooltip>
@@ -209,7 +194,7 @@ const AllProducts = () => {
     object.imageProduct = product.anh_sp
     object.nameProduct = product.ten_sp
     object.priceProduct = moneyFormat(product.gia_sp)
-    product.giam_km > 0 ? object.promotionProduct = product.giam_km + '%' : object.promotionProduct = 'Không giảm'
+    product.giam_km > 0 ? object.promotionProduct = product.giam_km + '%' : object.promotionProduct = 'Không Giảm'
     object.statusProduct = product.ten_ttsp
     rows.push(object)
   })
@@ -222,23 +207,11 @@ const AllProducts = () => {
           <Navbar />
           <div id='showAllProducts' style={{ height: 500, width: '100%', padding: '10px' }}>
             <div className='mb-2'>
-              <h6 className='float-start'>Tất Cả Sản Phẩm</h6>
-              <Link to='/addProduct/phonecase' className='float-end ms-1' style={{ textDecoration: 'none' }}>
-                <Button variant="outlined" size="small" style={{ fontSize: '12px' }}>
-                  <SmartphoneIcon fontSize='small' />
-                  Thêm Ốp Lưng
-                </Button>
-              </Link>
+              <h6 className='float-start'>Tất Cả Tai Nghe</h6>
               <Link to='/addProduct/headphone' className='float-end ms-1' style={{ textDecoration: 'none' }}>
                 <Button variant="outlined" size="small" style={{ fontSize: '12px' }}>
-                  <HeadphonesIcon fontSize='small' />
-                  Thêm Tai Nghe
-                </Button>
-              </Link>
-              <Link to='/addProduct/smartphone' className='float-end ms-1' style={{ textDecoration: 'none' }}>
-                <Button variant="outlined" size="small" style={{ fontSize: '12px' }}>
                   <PhoneIphoneIcon fontSize='small' />
-                  Thêm Điện Thoại
+                  Thêm Tai Nghe
                 </Button>
               </Link>
               <div className="clearfix"></div>
@@ -265,4 +238,4 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+export default Headphones;

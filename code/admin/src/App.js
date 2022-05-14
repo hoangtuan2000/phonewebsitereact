@@ -13,6 +13,9 @@ import { URL } from './config/config'
 import ProtectRoutesAdmin from './components/ProtectRoutesAdmin';
 import Home from "./pages/home/Home";
 import AllProducts from "./pages/allProducts/AllProducts";
+import Smartphones from "./pages/smartphones/Smartphones";
+import Headphones from "./pages/headphones/Headphones";
+import Phonecases from "./pages/phonecases/Phonecases";
 import Login from "./pages/login/Login";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
@@ -60,6 +63,9 @@ function App() {
             <Route element={<ProtectRoutesAdmin />}>
               <Route path="home" element={<Home />} />
               <Route path="allProducts" element={<AllProducts />} />
+              <Route path="smartphones" element={<Smartphones />} />
+              <Route path="headphones" element={<Headphones />} />
+              <Route path="phonecases" element={<Phonecases />} />
               <Route path="updateProduct/:idProduct" element={<UpdateProduct />} />
               <Route path="addProduct/:productType" element={<AddProduct />} />
               <Route path="users">
@@ -68,14 +74,6 @@ function App() {
                 <Route
                   path="new"
                   element={<New inputs={userInputs} title="Add New User" />}
-                />
-              </Route>
-              <Route path="products">
-                <Route index element={<List />} />
-                <Route path=":productId" element={<Single />} />
-                <Route
-                  path="new"
-                  element={<New inputs={productInputs} title="Add New Product" />}
                 />
               </Route>
             </Route>

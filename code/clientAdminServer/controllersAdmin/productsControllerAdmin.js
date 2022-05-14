@@ -46,6 +46,147 @@ const getAllProducts = async (req, res) => {
     })
 }
 
+const getAllSmartphones = async (req, res) => {
+
+    let status = {
+        getAllSmartphonesStatus: false,
+        getAllSmartphonesData: '',
+        getAllSmartphonesMessage: ''
+    }
+
+    const sql =
+        `SELECT
+            sp.id_sp,
+            lsp.ten_lsp,
+            sp.anh_sp,
+            sp.ten_sp,
+            sp.gia_sp,
+            km.giam_km,
+            ttsp.ten_ttsp
+        FROM 
+            sanpham as sp,
+            khuyenmai as km,
+            trangthaisanpham as ttsp,
+            loaisanpham as lsp
+        WHERE
+            sp.id_km = km.id_km
+            AND sp.id_ttsp = ttsp.id_ttsp
+            AND sp.id_lsp = 'DT'
+            AND sp.id_lsp = lsp.id_lsp
+        `
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            status.getAllSmartphonesMessage = 'Lỗi Hệ Thống (Lỗi: getAllSmartphones 123)'
+            res.send(status)
+        } else {
+            if (result.length > 0) {
+                status.getAllSmartphonesStatus = true
+                status.getAllSmartphonesData = result
+                res.send(status)
+            } else {
+                status.getAllSmartphonesStatus = true
+                status.getAllSmartphonesData = []
+                res.send(status)
+            }
+        }
+    })
+}
+
+const getAllHeadphones = async (req, res) => {
+
+    let status = {
+        getAllHeadphonesStatus: false,
+        getAllHeadphonesData: '',
+        getAllHeadphonesMessage: ''
+    }
+
+    const sql =
+        `SELECT
+            sp.id_sp,
+            lsp.ten_lsp,
+            sp.anh_sp,
+            sp.ten_sp,
+            sp.gia_sp,
+            km.giam_km,
+            ttsp.ten_ttsp
+        FROM 
+            sanpham as sp,
+            khuyenmai as km,
+            trangthaisanpham as ttsp,
+            loaisanpham as lsp
+        WHERE
+            sp.id_km = km.id_km
+            AND sp.id_ttsp = ttsp.id_ttsp
+            AND sp.id_lsp = 'TN'
+            AND sp.id_lsp = lsp.id_lsp
+        `
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            status.getAllHeadphonesMessage = 'Lỗi Hệ Thống (Lỗi: getAllHeadphones 123)'
+            res.send(status)
+        } else {
+            if (result.length > 0) {
+                status.getAllHeadphonesStatus = true
+                status.getAllHeadphonesData = result
+                res.send(status)
+            } else {
+                status.getAllHeadphonesStatus = true
+                status.getAllHeadphonesData = []
+                res.send(status)
+            }
+        }
+    })
+}
+
+const getAllPhonecases = async (req, res) => {
+
+    let status = {
+        getAllPhonecasesStatus: false,
+        getAllPhonecasesData: '',
+        getAllPhonecasesMessage: ''
+    }
+
+    const sql =
+        `SELECT
+            sp.id_sp,
+            lsp.ten_lsp,
+            sp.anh_sp,
+            sp.ten_sp,
+            sp.gia_sp,
+            km.giam_km,
+            ttsp.ten_ttsp
+        FROM 
+            sanpham as sp,
+            khuyenmai as km,
+            trangthaisanpham as ttsp,
+            loaisanpham as lsp
+        WHERE
+            sp.id_km = km.id_km
+            AND sp.id_ttsp = ttsp.id_ttsp
+            AND sp.id_lsp = 'OL'
+            AND sp.id_lsp = lsp.id_lsp
+        `
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            status.getAllPhonecasesMessage = 'Lỗi Hệ Thống (Lỗi: getAllPhonecases 123)'
+            res.send(status)
+        } else {
+            if (result.length > 0) {
+                status.getAllPhonecasesStatus = true
+                status.getAllPhonecasesData = result
+                res.send(status)
+            } else {
+                status.getAllPhonecasesStatus = true
+                status.getAllPhonecasesData = []
+                res.send(status)
+            }
+        }
+    })
+}
+
 const getBasicProductInfo = async (req, res) => {
     let status = {
         getBasicProductInfoStatus: false,
@@ -286,7 +427,7 @@ const getDetailProductInfo = async (req, res) => {
                     case 'OL':
                         sqlConfigProduct =
                             `SELECT 
-                                cl.id_cl
+                                ol.id_cl
                             FROM
                                 oplung as ol
                             WHERE 
@@ -343,5 +484,8 @@ const getDetailProductInfo = async (req, res) => {
 module.exports = {
     getAllProducts,
     getBasicProductInfo,
-    getDetailProductInfo
+    getDetailProductInfo,
+    getAllSmartphones,
+    getAllHeadphones,
+    getAllPhonecases
 }
