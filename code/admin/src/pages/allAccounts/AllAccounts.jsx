@@ -156,6 +156,7 @@ const AllAccounts = () => {
             <Tooltip TransitionComponent={Zoom} title="Cập Nhật" followCursor>
               <IconButton
                 color="warning"
+                onClick={() => navigate(`/updateAccount/${params.row.id}`)}
               >
                 <UpgradeIcon />
               </IconButton>

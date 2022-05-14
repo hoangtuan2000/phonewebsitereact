@@ -130,7 +130,7 @@ const registerAdmin = async (req, res) => {
             if (err) {
                 status.registerAdminMessage = 'Lỗi Hệ Thống (Lỗi: registerAdmin 123)'
                 res.send(status)
-    
+
             } else {
                 // create account
                 const sql =
@@ -152,7 +152,7 @@ const registerAdmin = async (req, res) => {
                                 status.registerAdminStatus = true
                                 status.registerAdminMessage = 'Tạo Tài Khoản Thành Công'
                                 res.send(status)
-    
+
                             } else {
                                 status.registerAdminMessage = 'Lỗi Hệ Thống (Lỗi: registerAdmin 789)'
                                 res.send(status)
@@ -167,7 +167,141 @@ const registerAdmin = async (req, res) => {
         status.registerAdminMessage = req.emailExistMessage
         res.send(status)
 
-    }    
+    }
+}
+
+const emailExistUpdateAccount = async (req, res, next) => {
+
+    let accountEmail = req.body.accountEmail
+    let idAccount = req.body.idAccount
+
+    const sql = 'SELECT * FROM `nhanvien` WHERE email_nv = ? AND id_nv != ?'
+
+    db.query(sql, [accountEmail, idAccount], (errCheck, resCheck) => {
+        if (errCheck) {
+            req.emailExistUpdateAccountStatus = true
+            req.emailExistUpdateAccountMessage = 'Lỗi Hệ Thống (Lỗi: emailExistUpdateAccount 123)'
+            next()
+
+        } else {
+            if (resCheck.length > 0) {
+                // email exist
+                req.emailExistUpdateAccountStatus = true
+                req.emailExistUpdateAccountMessage = 'Email đã tồn tại. Hãy chọn email khác'
+                next()
+
+            } else {
+                // email not exist
+                req.emailExistUpdateAccountStatus = false
+                next()
+            }
+
+        }
+    })
+}
+
+const updateAccountAdmin = async (req, res) => {
+    let status = {
+        updateAccountAdminStatus: false,
+        updateAccountAdminMessage: ''
+    }
+
+    let {
+        idAccount, accountName, accountPhone, accountAddress, accountEmail,
+        accountWard, accountPassword, accountPosition, accountActiveStatus
+    } = req.body
+
+    const saltRounds = 5
+
+    // check email not exist
+    if (req.emailExistUpdateAccountStatus == false) {
+
+        // nếu có đổi mật khẩu
+        if (accountPassword != '') {
+            bcrypt.hash(accountPassword, saltRounds, (err, hashPassword) => {
+                if (err) {
+                    status.updateAccountAdminMessage = 'Lỗi Hệ Thống (Lỗi: updateAccountAdmin 123)'
+                    res.send(status)
+
+                } else {
+                    // update account
+                    const sql =
+                        `UPDATE 
+                            nhanvien 
+                        SET 
+                            ten_nv= ?, sdt_nv= ?, dia_chi_nv= ?, 
+                            email_nv= ?, id_xp= ?, password_nv= ?,
+                            id_cv= ?, id_tthd= ? 
+                        WHERE id_nv = ?`
+                    db.query(sql,
+                        [
+                            accountName, accountPhone, accountAddress, accountEmail,
+                            accountWard, hashPassword, accountPosition, accountActiveStatus,
+                            idAccount
+                        ],
+                        (errAccount, resultAccount) => {
+                            if (errAccount) {
+                                console.log('updateAccountAdmin', errAccount);
+                                status.updateAccountAdminMessage = 'Lỗi Hệ Thống (Lỗi: updateAccountAdmin 456)'
+                                res.send(status)
+                            }
+                            else {
+                                if (resultAccount.affectedRows > 0) {
+                                    status.updateAccountAdminStatus = true
+                                    status.updateAccountAdminMessage = 'Cập Nhật Tài Khoản Thành Công'
+                                    res.send(status)
+
+                                } else {
+                                    status.updateAccountAdminMessage = 'Lỗi Hệ Thống (Lỗi: updateAccountAdmin 789)'
+                                    res.send(status)
+                                }
+                            }
+                        })
+                }
+            })
+
+        } else {
+            // nếu không đổi mật khẩu
+            const sql =
+                `UPDATE 
+                nhanvien 
+            SET 
+                ten_nv= ?, sdt_nv= ?, dia_chi_nv= ?, 
+                email_nv= ?, id_xp= ?,
+                id_cv= ?, id_tthd= ? 
+            WHERE id_nv = ?`
+            db.query(sql,
+                [
+                    accountName, accountPhone, accountAddress, accountEmail,
+                    accountWard, accountPosition, accountActiveStatus,
+                    idAccount
+                ],
+                (errAccount, resultAccount) => {
+                    if (errAccount) {
+                        console.log('updateAccountAdmin', errAccount);
+                        status.updateAccountAdminMessage = 'Lỗi Hệ Thống (Lỗi: updateAccountAdmin 901)'
+                        res.send(status)
+                    }
+                    else {
+                        if (resultAccount.affectedRows > 0) {
+                            status.updateAccountAdminStatus = true
+                            status.updateAccountAdminMessage = 'Cập Nhật Tài Khoản Thành Công'
+                            res.send(status)
+
+                        } else {
+                            status.updateAccountAdminMessage = 'Lỗi Hệ Thống (Lỗi: updateAccountAdmin 012)'
+                            res.send(status)
+                        }
+                    }
+                })
+        }
+
+    } else if (req.emailExistUpdateAccountStatus == true) {
+        // check email exist
+        status.updateAccountAdminMessage = req.emailExistUpdateAccountMessage
+        res.send(status)
+
+    }
 }
 
 
@@ -176,5 +310,7 @@ module.exports = {
     loginAdmin,
     getLoginAdmin,
     registerAdmin,
-    emailExist
+    emailExist,
+    emailExistUpdateAccount,
+    updateAccountAdmin
 }

@@ -70,8 +70,8 @@ const AddAccount = () => {
         setWards([])
         document.getElementById('AddAccountWard').setAttribute('disabled', true)
         //reset state DistrictRegister empty
-        // setDistrictRegister('')
-        // setWardRegister('')
+        setAddAccountDistrict('')
+        setAddAccountWard('')
       })
       .catch((err) => {
         console.log('AddAccount => /getDatabaseRouterAdmin/getDistrictsProvince', err);

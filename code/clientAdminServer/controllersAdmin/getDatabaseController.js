@@ -134,6 +134,33 @@ const getWardsDistrict = async (req, res) => {
     })
 }
 
+const getAllActiveStatus = async (req, res) => {
+    let status = {
+        getAllActiveStatusStatus: false,
+        getAllActiveStatusData: '',
+        getAllActiveStatusMessage: ''
+    }
+
+    const sql = 'SELECT * FROM trangthaihoatdong'
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            status.getAllActiveStatusMessage = 'Lỗi Hệ Thống (Lỗi: getAllActiveStatus 123)'
+            res.send(status)
+        } else {
+            if (result.length > 0) {
+                status.getAllActiveStatusStatus = true
+                status.getAllActiveStatusData = result
+                res.send(status)
+                
+            } else {
+                status.getAllActiveStatusMessage = 'Lỗi Hệ Thống (Lỗi: getAllActiveStatus 456)'
+                res.send(status)
+            }
+        }
+    })
+}
+
 
 module.exports = {
     getAllPositions,
@@ -141,5 +168,6 @@ module.exports = {
     getAllDistricts,
     getAllWards,
     getDistrictsProvince,
-    getWardsDistrict
+    getWardsDistrict,
+    getAllActiveStatus
 }

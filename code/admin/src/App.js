@@ -14,6 +14,7 @@ import ProtectRoutesAdmin from './components/ProtectRoutesAdmin';
 import Home from "./pages/home/Home";
 import AllAccounts from "./pages/allAccounts/AllAccounts";
 import AddAccount from "./pages/addAccount/AddAccount";
+import UpdateAccount from "./pages/updateAccount/UpdateAccount";
 import Smartphones from "./pages/smartphones/Smartphones";
 import AllProducts from "./pages/allProducts/AllProducts";
 import Headphones from "./pages/headphones/Headphones";
@@ -72,6 +73,7 @@ function App() {
               <Route path="addProduct/:productType" element={<AddProduct />} />
               <Route path="allAccounts" element={<AllAccounts />} />
               <Route path="addAccount" element={<AddAccount />} />
+              <Route path="updateAccount/:idAccount" element={<UpdateAccount />} />
             </Route>
           </Route>
         </Routes>
