@@ -36,25 +36,73 @@ const Sidebar = () => {
       <div className="center">
         <ul>
 
-         
-          <p className="title">TÀI KHOẢN</p>
-          <li>
-            <NavLink
-              style={({ isActive }) => {
-                return {
-                  width: '100%',
-                  borderRadius: '5px',
-                  padding: '2px',
-                  textDecoration: 'none',
-                  backgroundColor: isActive ? "#d4e6f9" : "",
-                };
-              }}
-              to='/allAccounts'
-            >
-              <PersonOutlineIcon className="icon" />
-              <span>Tất Cả Tài Khoản</span>
-            </NavLink>
-          </li>     
+          {
+            userLoginAdmin.id_cv == 'AD' || userLoginAdmin.id_cv == 'QT' ?
+              <>
+                <p className="title">TÀI KHOẢN</p>
+                {
+                  userLoginAdmin.id_cv == 'AD' ?
+                    <>
+                      <li>
+                        <NavLink
+                          style={({ isActive }) => {
+                            return {
+                              width: '100%',
+                              borderRadius: '5px',
+                              padding: '2px',
+                              textDecoration: 'none',
+                              backgroundColor: isActive ? "#d4e6f9" : "",
+                            };
+                          }}
+                          to='/allAccounts'
+                        >
+                          <PersonOutlineIcon className="icon" />
+                          <span>Tất Cả Tài Khoản</span>
+                        </NavLink>
+                      </li>
+                    </>
+                    : <></>
+                }
+
+                <li>
+                  <NavLink
+                    style={({ isActive }) => {
+                      return {
+                        width: '100%',
+                        borderRadius: '5px',
+                        padding: '2px',
+                        textDecoration: 'none',
+                        backgroundColor: isActive ? "#d4e6f9" : "",
+                      };
+                    }}
+                    to='/allManagementAccounts'
+                  >
+                    <PersonOutlineIcon className="icon" />
+                    <span>Tài Khoản Quản Trị</span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    style={({ isActive }) => {
+                      return {
+                        width: '100%',
+                        borderRadius: '5px',
+                        padding: '2px',
+                        textDecoration: 'none',
+                        backgroundColor: isActive ? "#d4e6f9" : "",
+                      };
+                    }}
+                    to='/allStaffAccounts'
+                  >
+                    <PersonOutlineIcon className="icon" />
+                    <span>Tài Khoản Nhân Viên</span>
+                  </NavLink>
+                </li>
+              </>
+              : <></>
+          }
+
 
           <p className="title">SẢN PHẨM</p>
           <li>

@@ -13,6 +13,8 @@ import { URL } from './config/config'
 import ProtectRoutesAdmin from './components/ProtectRoutesAdmin';
 import Home from "./pages/home/Home";
 import AllAccounts from "./pages/allAccounts/AllAccounts";
+import AllStaffAccounts from "./pages/allStaffAccounts/AllStaffAccounts";
+import AllManagementAccounts from "./pages/allManagementAccounts/AllManagementAccounts";
 import AddAccount from "./pages/addAccount/AddAccount";
 import UpdateAccount from "./pages/updateAccount/UpdateAccount";
 import Smartphones from "./pages/smartphones/Smartphones";
@@ -72,6 +74,8 @@ function App() {
               <Route path="updateProduct/:idProduct" element={<UpdateProduct />} />
               <Route path="addProduct/:productType" element={<AddProduct />} />
               <Route path="allAccounts" element={<AllAccounts />} />
+              <Route path="allStaffAccounts" element={<AllStaffAccounts />} />
+              <Route path="allManagementAccounts" element={<AllManagementAccounts />} />
               <Route path="addAccount" element={<AddAccount />} />
               <Route path="updateAccount/:idAccount" element={<UpdateAccount />} />
             </Route>
