@@ -1,4 +1,3 @@
-
 //hàm xóa ký tự đầu tiên 
 function deleteCharFist(string) {
     //xóa ký tự đầu
@@ -90,7 +89,7 @@ function validateProductNumber(price, showPriceElement, notificationElement, ele
 
     // //nếu dữ liệu khi nhập có dấu xóa bỏ để thêm dấu lại cho chính xác
     let numberDeleteDots = deleteDots(price);
-    
+
     const regex = /^\d{1,10}$/gi
     if (numberDeleteDots != 0) {
         if (regex.test(numberDeleteDots)) {
@@ -124,11 +123,73 @@ const validateSelect = (select, selectElement) => {
     }
 }
 
+const validateFullname = (fullname, notificationElement) => {
+    if (fullname.length > 0 && fullname.length < 50) {
+        document.getElementById(notificationElement).innerHTML = ''
+        return true
+    } else {
+        document.getElementById(notificationElement).innerHTML = 'Họ tên từ 1 - 50 ký tự'
+        return false
+    }
+}
+
+const validatePhoneNumber = (phoneNumber, notificationElement) => {
+    const reg = /^0\d{9}$/i
+    if (reg.test(phoneNumber)) {
+        document.getElementById(notificationElement).innerHTML = ''
+        return true
+    } else {
+        document.getElementById(notificationElement).innerHTML = 'Số điện thoại không hợp lệ (Bắt đầu từ số 0 và gồm 10 chữ số)'
+        return false
+    }
+}
+
+const validateEmail = (email, notificationElement) => {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/i //note: * (from 0 - more); + (from 1 - more);
+    if (reg.test(email)) {
+        if (email.length < 100) {
+            document.getElementById(notificationElement).innerHTML = ''
+            return true
+        } else {
+            document.getElementById(notificationElement).innerHTML = 'Email dưới 100 ký tự'
+            return false
+        }
+    } else {
+        document.getElementById(notificationElement).innerHTML = 'Email không hợp lệ'
+        return false
+    }
+}
+
+const validatePassword = (password, notificationElement) => {
+    if (password.length >= 5 && password.length <= 20) {
+        document.getElementById(notificationElement).innerHTML = ''
+        return true
+    } else {
+        document.getElementById(notificationElement).innerHTML = 'Mật khẩu từ 5 - 20 ký tự'
+        return false
+    }
+}
+
+const validateAddress = (address, notificationElement) => {
+    // console.log(address.length);
+    if (address.length > 0 && address.length <= 100) {
+        document.getElementById(notificationElement).innerHTML = ''
+        return true
+    } else {
+        document.getElementById(notificationElement).innerHTML = 'Địa chỉ từ 1 - 100 ký tự'
+        return false
+    }
+}
 
 export {
     validateProductName,
     validateProductPrice,
     validateProductNumber,
     validateSelect,
-    deleteDots
+    deleteDots,
+    validateFullname,
+    validatePhoneNumber,
+    validateEmail,
+    validatePassword,
+    validateAddress
 }

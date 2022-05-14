@@ -98,6 +98,14 @@ app.use('/addProductAdmin', addProductRouterAdmin)
 const updateProductRouterAdmin = require('./clientAdminServer/routersAdmin/updateProductRouterAdmin.js')
 app.use('/updateProductAdmin', updateProductRouterAdmin)
 
+//account Router
+const accountsRouterAdmin = require('./clientAdminServer/routersAdmin/accountsRouterAdmin.js')
+app.use('/accountsAdmin', accountsRouterAdmin)
+
+//get database Router
+const getDatabaseRouterAdmin = require('./clientAdminServer/routersAdmin/getDatabaseRouterAdmin')
+app.use('/getDatabaseRouterAdmin', getDatabaseRouterAdmin)
+
 
 
 

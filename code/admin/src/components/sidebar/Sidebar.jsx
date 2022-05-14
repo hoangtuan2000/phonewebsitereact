@@ -18,9 +18,12 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import { Link, NavLink } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
+import { useSelector } from 'react-redux'
+
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
+  const userLoginAdmin = useSelector((state) => state.userLoginAdmin.infoUserAdmin)
 
   return (
     <div className="sidebar">
@@ -34,13 +37,24 @@ const Sidebar = () => {
         <ul>
 
          
-          <p className="title">LISTS</p>
-          <Link to="/users" style={{ textDecoration: "none" }}>
-            <li>
+          <p className="title">TÀI KHOẢN</p>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/allAccounts'
+            >
               <PersonOutlineIcon className="icon" />
-              <span>Users</span>
-            </li>
-          </Link>       
+              <span>Tất Cả Tài Khoản</span>
+            </NavLink>
+          </li>     
 
           <p className="title">SẢN PHẨM</p>
           <li>

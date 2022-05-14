@@ -79,18 +79,7 @@ const AllProducts = () => {
   // Table DataGrid MUI Colums
   const columns = [
     { field: 'id', headerName: 'ID', width: 70, },
-    {
-      field: 'typeProduct', headerName: 'Loại', width: 100,
-      renderCell: (params) => {
-        return (
-          <>
-            <Tooltip TransitionComponent={Zoom} title={params.row.typeProduct} followCursor>
-              <span>{params.row.typeProduct}</span>
-            </Tooltip>
-          </>
-        )
-      }
-    },
+    { field: 'typeProduct', headerName: 'Loại', width: 100, },
     {
       field: 'imageProduct',
       headerName: 'Ảnh',
@@ -112,54 +101,10 @@ const AllProducts = () => {
         )
       }
     },
-    {
-      field: 'nameProduct', headerName: 'Tên Sản Phẩm', width: 130, flex: 1,
-      renderCell: (params) => {
-        return (
-          <>
-            <Tooltip TransitionComponent={Zoom} title={params.row.nameProduct} followCursor>
-              <span>{params.row.nameProduct}</span>
-            </Tooltip>
-          </>
-        )
-      }
-    },
-    {
-      field: 'priceProduct', headerName: 'Giá', width: 130, flex: 1,
-      renderCell: (params) => {
-        return (
-          <>
-            <Tooltip TransitionComponent={Zoom} title={params.row.priceProduct + ' VNĐ'} followCursor>
-              <span>{params.row.priceProduct} VNĐ</span>
-            </Tooltip>
-          </>
-        )
-      }
-    },
-    {
-      field: 'promotionProduct', headerName: 'Khuyến Mãi', width: 130,
-      renderCell: (params) => {
-        return (
-          <>
-            <Tooltip TransitionComponent={Zoom} title={params.row.promotionProduct} followCursor>
-              <span>{params.row.promotionProduct}</span>
-            </Tooltip>
-          </>
-        )
-      }
-    },
-    {
-      field: 'statusProduct', headerName: 'Trạng Thái', width: 130,
-      renderCell: (params) => {
-        return (
-          <>
-            <Tooltip TransitionComponent={Zoom} title={params.row.statusProduct} followCursor>
-              <span>{params.row.statusProduct}</span>
-            </Tooltip>
-          </>
-        )
-      }
-    },
+    { field: 'nameProduct', headerName: 'Tên Sản Phẩm', width: 130, flex: 1 },
+    { field: 'priceProduct', headerName: 'Giá', width: 130, flex: 1 },
+    { field: 'promotionProduct', headerName: 'Khuyến Mãi', width: 130 },
+    { field: 'statusProduct', headerName: 'Trạng Thái', width: 130 },
     {
       field: 'tools',
       headerName: 'Công Cụ',
@@ -173,6 +118,7 @@ const AllProducts = () => {
               </IconButton>
             </Tooltip>
             <Tooltip TransitionComponent={Zoom} title="Cập Nhật" followCursor>
+              {/* <IconButton color="warning" onClick={() => navigate(`/updateProduct/${params.row.typeProduct}`)}> */}
               <IconButton
                 color="warning"
                 onClick={() => {
