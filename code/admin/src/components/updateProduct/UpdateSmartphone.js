@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Grid, Button } from '@mui/material';
-// import UpdatePhotoAlternateIcon from '@mui/icons-material/UpdatePhotoAlternate';
 import { Form } from 'react-bootstrap'
 import Axios from 'axios'
 import SunEditor from "suneditor-react";
@@ -24,8 +23,6 @@ function UpdateSmartphone() {
     const params = useParams()
 
     // modal
-    // const [modalSelectDefaultImage, setModalSelectDefaultImage] = useState(false)
-    // const [modalSelectImages, setModalSelectImages] = useState(false)
     const [modalContentIntro, setModalContentIntro] = useState(false)
     const [modalUpdateProductStatus, setModalUpdateProductStatus] = useState(false)
 
@@ -291,39 +288,37 @@ function UpdateSmartphone() {
                 && checkProductMemory(productMemoryUpdate) && checkProductRam(productRamUpdate)
                 && checkProductTrademark(productTrademarkUpdate) && checkProductOperatingSystem(productOperatingSystemUpdate)
                 && checkProductDesign(productDesignUpdate) && checkProductChip(productChipUpdate)
-                && checkProductSize(productSizeUpdate) && checkProductPromotion(productPromotionUpdate)
+                && checkProductSize(productSizeUpdate) && checkProductPromotion(productPromotionUpdate) && checkProductStatus(productStatusUpdate)
             ) {
                 // create form 
                 const formData = new FormData();
                 formData.append("productDefaultImage", productDefaultImage.defaultImage[0])
-                // formData.append("productDefaultImage", productDefaultImage.defaultImage.length > 0 ? productDefaultImage.defaultImage[0] : [])
-                
-                // if(productImages.images.length > 0){
-                    for (const key of Object.keys(productImages.images)) {
-                        formData.append('productImages', productImages.images[key])
-                    }
+                for (const key of Object.keys(productImages.images)) {
+                    formData.append('productImages', productImages.images[key])
+                }
 
-                // }
-                // else{
-                //     formData.append('productImages', [])
-                // }
+                for (var value of formData.values()) {
+                    console.log('form', value);
+                }
 
+                formData.append("idProduct", params.idProduct);
                 formData.append("productName", productNameUpdate);
-                formData.append("productPrice", productPriceUpdate);
-                formData.append("productNumber", productNumberUpdate);
+                formData.append("productPrice", deleteDots(productPriceUpdate));
+                formData.append("productNumber", deleteDots(productNumberUpdate));
                 formData.append("productOrigin", productOriginUpdate);
                 formData.append("productMemory", productMemoryUpdate);
                 formData.append("productRam", productRamUpdate);
                 formData.append("productTrademark", productTrademarkUpdate);
+                formData.append("productStatus", productStatusUpdate);
                 formData.append("productOperatingSystem", productOperatingSystemUpdate);
                 formData.append("productDesign", productDesignUpdate);
                 formData.append("productChip", productChipUpdate);
                 formData.append("productSize", productSizeUpdate);
                 formData.append("productPromotion", productPromotionUpdate);
                 formData.append("productIntro", productIntroduceUpdate);
-                for (var value of formData.values()) {
-                    console.log('form', value);
-                }
+                // for (var value of formData.values()) {
+                //     console.log('form', value);
+                // }
 
                 Axios.post(URL + '/updateProductAdmin/updateSmartphone',
                     formData,
@@ -333,7 +328,6 @@ function UpdateSmartphone() {
                         }
                     })
                     .then((res) => {
-                        // console.log(res);
                         setUpdateProductStatus(res.data)
                         setModalUpdateProductStatus(true)
                     })
@@ -759,24 +753,7 @@ function UpdateSmartphone() {
                 </Grid>
                 {/* </div> */}
             </Grid>
-
-            {/* call modal Select Default Image */}
-            {/* <ModalNotification
-                show={modalSelectDefaultImage}
-                onHide={() => setModalSelectDefaultImage(false)}
-                status={false}
-                title={'Thất Bại'}
-                message={'Bạn chưa chọn ảnh Avatar'}
-            /> */}
-
-            {/* call modal Select Images */}
-            {/* <ModalNotification
-                show={modalSelectImages}
-                onHide={() => setModalSelectImages(false)}
-                status={false}
-                title={'Thất Bại'}
-                message={'Bạn chưa chọn album ảnh cho sản phẩm'}
-            /> */}
+            
 
             {/* call modal intro */}
             <ModalNotification

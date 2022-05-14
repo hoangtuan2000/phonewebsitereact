@@ -1,9 +1,7 @@
 const uploadMultipleImagesController = require('../controllersAdmin/uploadImageController')
-const updateProductController = require('../controllersAdmin/updateProductControllerAdmin')
+const updateSmartphoneController = require('../controllersAdmin/updateProductControlller/updateSmartphoneControllerAdmin')
 const router = require('express').Router()
 
-router.post('/updateSmartphone', uploadMultipleImagesController.uploadAvatarAndImages, updateProductController.updateSmartphone)
-// router.post('/updateHeadphone', uploadMultipleImagesController.uploadAvatarAndImages, updateProductController.updateHeadphone)
-// router.post('/updatePhonecase', uploadMultipleImagesController.uploadAvatarAndImages, updateProductController.updatePhonecase)
+router.post('/updateSmartphone', uploadMultipleImagesController.uploadAvatarAndImages, updateSmartphoneController.updateSmartphone)
 
 module.exports = router
