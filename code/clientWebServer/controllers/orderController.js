@@ -195,6 +195,7 @@ const changeNumberProductOrder = async (req, res) => {
     })
 }
 
+// ****************** mua => nút mua ******************
 const orderProduct = async (req, res) => {
     let status = {
         orderProductStatus: false,
@@ -300,9 +301,87 @@ const orderProduct = async (req, res) => {
     }
 }
 
+// *******************************************
+const getOrderInfo = async (req, res) => {
+
+    let status = {
+        getOrderInfoStatus: false,
+        getOrderInfoData: '',
+        getOrderInfoMessage: ''
+    }
+
+    let idOrder = req.body.idOrder
+
+    const sql =
+        `SELECT 
+            dh.id_dh,
+            dh.nguoi_nhan,
+            dh.so_dien_thoai,
+            CONVERT(dh.ngay_dat, char) as ngay_dat,
+            dh.dia_chi_giao,
+            dh.ghi_chu,
+            ttdh.id_ttdh,
+            ttdh.ten_ttdh
+        FROM 
+            donhang as dh,
+            trangthaidonhang as ttdh
+        WHERE
+            dh.id_dh = ?
+            AND dh.id_ttdh = ttdh.id_ttdh`
+
+    db.query(sql, idOrder, (err, result) => {
+        if (err) {
+            status.getOrderInfoMessage = 'Lỗi Hệ Thống (Lỗi: getOrderInfo 123)'
+            res.send(status)
+        } else {
+            if (result.length > 0) {
+
+                // get product info
+                const sqlProduct =
+                    `SELECT 
+                        sp.id_sp,
+                        sp.ten_sp,
+                        sp.anh_sp,
+                        ctdh.gia,
+                        ctdh.so_luong,
+                        ctdh.khuyen_mai
+                    FROM 
+                        chitietdonhang as ctdh,
+                        sanpham as sp
+                    WHERE 
+                        id_dh = ?
+                        AND ctdh.id_sp = sp.id_sp`
+                db.query(sqlProduct, idOrder, (errProduct, resProduct) => {
+                    if (errProduct) {
+                        status.getOrderInfoMessage = 'Lỗi Hệ Thống (Lỗi: getOrderInfo 456)'
+                        res.send(status)
+
+                    } else {
+                        if (resProduct.length > 0) {
+                            status.getOrderInfoStatus = true
+                            status.getOrderInfoData = result[0]
+                            status.getOrderInfoData.products = resProduct
+                            res.send(status)
+
+                        } else {
+                            status.getOrderInfoMessage = 'Lỗi Hệ Thống (Lỗi: getOrderInfo 789)'
+                            res.send(status)
+                        }
+                    }
+                })
+
+            } else {
+                status.getOrderInfoMessage = 'Lỗi Hệ Thống (Lỗi: getOrderInfo 901)'
+                res.send(status)
+            }
+        }
+    })
+}
+
 module.exports = {
     orderProductInCart,
     getProductInfoOrder,
     orderProduct,
-    changeNumberProductOrder
+    changeNumberProductOrder,
+    getOrderInfo
 }

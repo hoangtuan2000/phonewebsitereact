@@ -51,7 +51,7 @@ function App() {
           <Route path='register' element={<Register />} />
 
           {/* protected router */}
-          <Route element={<ProtectRoutes />}>
+          {/* <Route element={<ProtectRoutes />}> */}
             <Route path='cart' element={<Cart />} />
             <Route path='order-cart' element={<OrderCart />} />
             <Route path='order-product/:orderIdProduct' element={<OrderProduct />} />
@@ -60,7 +60,7 @@ function App() {
               <Route path='account-information' element={<>abc</>} />
               <Route path='account-order' element={<>dfsdfs</>} />
             </Route>
-          </Route>
+          {/* </Route> */}
 
           <Route path='policy' element={<Policy />} />
           <Route path='product-detail/:idProduct' element={<ProductDetail />} />

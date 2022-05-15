@@ -5,5 +5,6 @@ router.post('/orderProductInCart', orderController.orderProductInCart)
 router.post('/getProductInfoOrder', orderController.getProductInfoOrder)
 router.post('/orderProduct', orderController.orderProduct)
 router.post('/changeNumberProductOrder', orderController.changeNumberProductOrder)
+router.post('/getOrderInfo', orderController.getOrderInfo)
 
 module.exports = router
