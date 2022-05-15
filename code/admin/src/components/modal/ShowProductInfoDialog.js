@@ -26,7 +26,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 export default function ShowProductDetailDialog(props) {
 
   const screenHeight = window.innerHeight
-  const product = props.basicProductInfo
+  let product = props.basicProductInfo
 
   return (
     <div>

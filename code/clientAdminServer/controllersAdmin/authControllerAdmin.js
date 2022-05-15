@@ -68,6 +68,13 @@ const loginAdmin = async (req, res) => {
     }
 }
 
+const logoutAdmin = async (req, res) => {
+    req.session.destroy()
+    authLogin.isLogin = false
+    authLogin.user = {}
+    res.send(authLogin)
+}
+
 const getLoginAdmin = async (req, res) => {
     // console.log('user admin: ', req.session.userAdmin);
     if (req.session.userAdmin) {
@@ -312,5 +319,6 @@ module.exports = {
     registerAdmin,
     emailExist,
     emailExistUpdateAccount,
-    updateAccountAdmin
+    updateAccountAdmin,
+    logoutAdmin
 }

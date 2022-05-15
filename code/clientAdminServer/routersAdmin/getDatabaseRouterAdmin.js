@@ -8,5 +8,6 @@ router.get('/getAllWards', getDatabaseController.getAllWards)
 router.post('/getDistrictsProvince', getDatabaseController.getDistrictsProvince)
 router.post('/getWardsDistrict', getDatabaseController.getWardsDistrict)
 router.get('/getAllActiveStatus', getDatabaseController.getAllActiveStatus)
+router.get('/getAllOrdersStatus', getDatabaseController.getAllOrdersStatus)
 
 module.exports = router

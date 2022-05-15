@@ -102,6 +102,10 @@ app.use('/updateProductAdmin', updateProductRouterAdmin)
 const accountsRouterAdmin = require('./clientAdminServer/routersAdmin/accountsRouterAdmin.js')
 app.use('/accountsAdmin', accountsRouterAdmin)
 
+//orders Router
+const ordersRouterAdmin = require('./clientAdminServer/routersAdmin/ordersRouterAdmin.js')
+app.use('/ordersAdmin', ordersRouterAdmin)
+
 //get database Router
 const getDatabaseRouterAdmin = require('./clientAdminServer/routersAdmin/getDatabaseRouterAdmin')
 app.use('/getDatabaseRouterAdmin', getDatabaseRouterAdmin)

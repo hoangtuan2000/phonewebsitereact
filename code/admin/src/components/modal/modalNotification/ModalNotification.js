@@ -10,6 +10,7 @@ function ModalNotification(props) {
                 show={props.show}
                 onHide={props.onHide}
                 size="xs"
+                style={{zIndex: '99999'}}
             >
                 <Modal.Header bsPrefix={props.status ? styles.modalTittleSuccess : styles.modalTittleFail}>
                     <Modal.Title>{props.title}</Modal.Title>

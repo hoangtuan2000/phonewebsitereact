@@ -25,10 +25,10 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 export default function ShowAccountInfoDialog(props) {
 
-  const screenHeight = window.innerHeight
-  const status = props.accountInfo.getAccountInfoStatus
-  const data = props.accountInfo.getAccountInfoData
-  const message = props.accountInfo.getAccountInfoMessage
+  let screenHeight = window.innerHeight
+  let status = props.accountInfo.getAccountInfoStatus
+  let data = props.accountInfo.getAccountInfoData
+  let message = props.accountInfo.getAccountInfoMessage
 
   return (
     <div>

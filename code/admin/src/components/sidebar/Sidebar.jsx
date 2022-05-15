@@ -15,15 +15,35 @@ import BorderAllIcon from '@mui/icons-material/BorderAll';
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import BrowserNotSupportedIcon from '@mui/icons-material/BrowserNotSupported';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { Link, NavLink } from "react-router-dom";
-import { DarkModeContext } from "../../context/darkModeContext";
+// import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteUserLoginAdmin } from "../../redux/userSlice";
+import Axios from "axios";
 
 
 const Sidebar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  // const { dispatch2 } = useContext(DarkModeContext);
+  const dispatch = useDispatch()
   const userLoginAdmin = useSelector((state) => state.userLoginAdmin.infoUserAdmin)
+
+  const logoutAdmin = () => {
+    const URL = 'http://localhost:3001/authAdmin/logoutAdmin'
+    Axios.post(URL)
+      .then(function (response) {
+        // props.deleteInfoUser()
+        dispatch(deleteUserLoginAdmin())
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
 
   return (
     <div className="sidebar">
@@ -33,76 +53,10 @@ const Sidebar = () => {
         </Link>
       </div>
       <hr />
-      <div className="center">
+      <div className="center mb-5">
         <ul>
 
-          {
-            userLoginAdmin.id_cv == 'AD' || userLoginAdmin.id_cv == 'QT' ?
-              <>
-                <p className="title">TÀI KHOẢN</p>
-                {
-                  userLoginAdmin.id_cv == 'AD' ?
-                    <>
-                      <li>
-                        <NavLink
-                          style={({ isActive }) => {
-                            return {
-                              width: '100%',
-                              borderRadius: '5px',
-                              padding: '2px',
-                              textDecoration: 'none',
-                              backgroundColor: isActive ? "#d4e6f9" : "",
-                            };
-                          }}
-                          to='/allAccounts'
-                        >
-                          <PersonOutlineIcon className="icon" />
-                          <span>Tất Cả Tài Khoản</span>
-                        </NavLink>
-                      </li>
-                    </>
-                    : <></>
-                }
-
-                <li>
-                  <NavLink
-                    style={({ isActive }) => {
-                      return {
-                        width: '100%',
-                        borderRadius: '5px',
-                        padding: '2px',
-                        textDecoration: 'none',
-                        backgroundColor: isActive ? "#d4e6f9" : "",
-                      };
-                    }}
-                    to='/allManagementAccounts'
-                  >
-                    <PersonOutlineIcon className="icon" />
-                    <span>Tài Khoản Quản Trị</span>
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink
-                    style={({ isActive }) => {
-                      return {
-                        width: '100%',
-                        borderRadius: '5px',
-                        padding: '2px',
-                        textDecoration: 'none',
-                        backgroundColor: isActive ? "#d4e6f9" : "",
-                      };
-                    }}
-                    to='/allStaffAccounts'
-                  >
-                    <PersonOutlineIcon className="icon" />
-                    <span>Tài Khoản Nhân Viên</span>
-                  </NavLink>
-                </li>
-              </>
-              : <></>
-          }
-
+          {/* Sản phẩm */}
 
           <p className="title">SẢN PHẨM</p>
           <li>
@@ -174,27 +128,206 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-          <p className="title">USER</p>
+          <p className="title">ĐƠN HÀNG</p>
           <li>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/allOrders'
+            >
+              <FactCheckIcon className="icon" />
+              <span>Tất Cả Đơn Hàng</span>
+            </NavLink>
           </li>
           <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/ordersUnprocessed'
+            >
+              <BrowserNotSupportedIcon className="icon" />
+              <span>Chưa Xử Lý</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/ordersProcessed'
+            >
+              <NoteAltIcon className="icon" />
+              <span>Đã Xử Lý</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/ordersTransported'
+            >
+              <LocalShippingIcon className="icon" />
+              <span>Đang Vận Chuyển</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/ordersDelivery'
+            >
+              <CardGiftcardIcon className="icon" />
+              <span>Đang Giao Hàng</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/ordersSuccessDelivery'
+            >
+              <AssignmentTurnedInIcon className="icon" />
+              <span>Giao Hàng Thành Công</span>
+            </NavLink>
+          </li>
+
+          {/* Tài Khoản */}
+
+          <p className="title">TÀI KHOẢN</p>
+          {
+            userLoginAdmin.id_cv == 'AD' || userLoginAdmin.id_cv == 'QT' ?
+              <>
+                {
+                  userLoginAdmin.id_cv == 'AD' ?
+                    <>
+                      <li>
+                        <NavLink
+                          style={({ isActive }) => {
+                            return {
+                              width: '100%',
+                              borderRadius: '5px',
+                              padding: '2px',
+                              textDecoration: 'none',
+                              backgroundColor: isActive ? "#d4e6f9" : "",
+                            };
+                          }}
+                          to='/allAccounts'
+                        >
+                          <PersonOutlineIcon className="icon" />
+                          <span>Tất Cả Tài Khoản</span>
+                        </NavLink>
+                      </li>
+                    </>
+                    : <></>
+                }
+
+                <li>
+                  <NavLink
+                    style={({ isActive }) => {
+                      return {
+                        width: '100%',
+                        borderRadius: '5px',
+                        padding: '2px',
+                        textDecoration: 'none',
+                        backgroundColor: isActive ? "#d4e6f9" : "",
+                      };
+                    }}
+                    to='/allManagementAccounts'
+                  >
+                    <PersonOutlineIcon className="icon" />
+                    <span>Quản Trị</span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    style={({ isActive }) => {
+                      return {
+                        width: '100%',
+                        borderRadius: '5px',
+                        padding: '2px',
+                        textDecoration: 'none',
+                        backgroundColor: isActive ? "#d4e6f9" : "",
+                      };
+                    }}
+                    to='/allStaffAccounts'
+                  >
+                    <PersonOutlineIcon className="icon" />
+                    <span>Nhân Viên</span>
+                  </NavLink>
+                </li>
+              </>
+              : <></>
+          }
+
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to={`/updateAccount/${userLoginAdmin.id_nv}`}
+            >
+              <PersonOutlineIcon className="icon" />
+              <span>Cá Nhân</span>
+            </NavLink>
+          </li>
+
+          {/* hệ thống */}
+
+          <p className="title">Hệ Thống</p>
+          <li>
             <ExitToAppIcon className="icon" />
-            <span>Logout</span>
+            <span onClick={() => logoutAdmin()}>Đăng Xuất</span>
           </li>
 
         </ul>
-      </div>
-      <div className="bottom">
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "LIGHT" })}
-        ></div>
-        <div
-          className="colorOption"
-          onClick={() => dispatch({ type: "DARK" })}
-        ></div>
       </div>
     </div>
   );
