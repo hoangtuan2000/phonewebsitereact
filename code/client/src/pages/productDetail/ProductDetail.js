@@ -167,7 +167,7 @@ function ProductDetail() {
                 {/* show name, price Product */}
                 <Col md={5}>
                     <div className="py-2">
-                        {/* <h5>{nameProduct}</h5> */}
+                        <h5>{objProduct.ten_sp}</h5>
                         <ReactStars
                             count={5}
                             edit={false}
@@ -191,18 +191,29 @@ function ProductDetail() {
                         </div>
 
                         <div className="my-3">
-                            <Button
-                                className="me-2 fw-bold text-white"
-                                style={{ backgroundColor: '#fb6e2e', border: 'none' }}
-                                onClick={orderProduct}
-                            >
-                                <FontAwesomeIcon icon={faHandPointer} className='me-1' />
-                                Mua
-                            </Button>
-                            <Button onClick={handleAddToCarts} variant="primary" className="fw-bold">
-                                <FontAwesomeIcon icon={faCartPlus} className='me-1' />
-                                Thêm Vào Giỏ Hàng
-                            </Button>
+                            {
+                                objProduct.id_ttsp == 'CH' && objProduct.so_luong_sp > 0 ?
+                                    <>
+                                        <Button
+                                            className="me-2 fw-bold text-white"
+                                            style={{ backgroundColor: '#fb6e2e', border: 'none' }}
+                                            onClick={orderProduct}
+                                        >
+                                            <FontAwesomeIcon icon={faHandPointer} className='me-1' />
+                                            Mua
+                                        </Button>
+                                        <Button onClick={handleAddToCarts} variant="primary" className="fw-bold">
+                                            <FontAwesomeIcon icon={faCartPlus} className='me-1' />
+                                            Thêm Vào Giỏ Hàng
+                                        </Button>
+                                    </>
+                                    : objProduct.id_ttsp == 'CH' && objProduct.so_luong_sp <= 0 ?
+                                        <p className="fw-bold" style={{fontSize: '18px', color: 'red'}}>Sản Phẩm Tạm Thời Hết Hàng</p>
+                                        : objProduct.id_ttsp == 'NKD' ?
+                                            <p className="fw-bold" style={{fontSize: '18px', color: 'red'}}>Sản Phẩm Ngưng Kinh Doanh</p> : <></>
+
+                            }
+
                         </div>
 
                         <div className="mt-2 border border-primary rounded-3">

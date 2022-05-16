@@ -36,7 +36,7 @@ const getOneProduct = async (req, res) => {
         `SELECT
                 sp.id_sp, sp.id_lsp, sp.ten_sp, sp.gia_sp,
                 sp.so_luong_sp, sp.anh_sp, sp.gioi_thieu_sp,
-                xx.ten_xx, km.giam_km, ttsp.ten_ttsp, th.ten_th
+                xx.ten_xx, km.giam_km, ttsp.ten_ttsp, th.ten_th, ttsp.id_ttsp
             FROM 
                 sanpham as sp, xuatxu as xx, khuyenmai as km, trangthaisanpham as ttsp, thuonghieu as th
             WHERE 
