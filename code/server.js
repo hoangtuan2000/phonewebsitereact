@@ -70,6 +70,10 @@ app.use('/cart', cartRouter)
 const orderRouter = require('./clientWebServer/routers/orderRouter.js')
 app.use('/order', orderRouter)
 
+//account Router
+const accountRouter = require('./clientWebServer/routers/accountRouter.js')
+app.use('/account', accountRouter)
+
 //get database Router
 const getDatabaseRouter = require('./clientWebServer/routers/getDatabaseRouter.js')
 app.use('/getDatabase', getDatabaseRouter)

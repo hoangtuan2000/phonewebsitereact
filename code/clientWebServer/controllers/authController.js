@@ -129,7 +129,7 @@ const register = async (req, res) => {
         validateUserFullname(fullnameRegister) && validateUserEmail(emailRegister) && validateUserPassword(passwordRegister) &&
         validateUserPhoneNumber(phoneNumberRegister) && validateUserAddress(addressRegister) && validateUserWard(wardRegister)
     ) {
-        // hast password
+        // hash password
         bcrypt.hash(passwordRegister, saltRounds, (err, hash) => {
             if (err) {
                 status.registerMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: Register 123)'

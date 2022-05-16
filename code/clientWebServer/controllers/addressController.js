@@ -11,6 +11,28 @@ const getAllProvinces = async (req, res) => {
     })
 }
 
+const getAllDistricts = async (req, res) => {
+    const sql = 'SELECT * FROM quanhuyen'
+    db.query(sql, (err, result) => {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(result)
+        }
+    })
+}
+
+const getAllWards = async (req, res) => {
+    const sql = 'SELECT * FROM xaphuong'
+    db.query(sql, (err, result) => {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send(result)
+        }
+    })
+}
+
 const getDistrictsProvince = async (req, res) => {
     let idProvince = req.body.idProvince //typeof String => sql not need '?'
 
@@ -73,5 +95,7 @@ module.exports = {
     getAllProvinces,
     getDistrictsProvince,
     getWardsDistrict,
-    getAddressUser
+    getAddressUser,
+    getAllDistricts,
+    getAllWards
 }

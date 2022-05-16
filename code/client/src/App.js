@@ -20,7 +20,8 @@ import Cart from './pages/cart/Cart'
 import OrderCart from './pages/order/OrderCart'
 import OrderProduct from './pages/order/OrderProduct'
 import OrderDetails from './pages/orderDetails/OrderDetails'
-import Account from './pages/account/Account'
+import AccountInfomation from './pages/account/AccountInfomation'
+import AccountOrder from './pages/account/AccountOrder'
 import Policy from './pages/policy/Policy'
 import ProductDetail from './pages/productDetail/ProductDetail'
 import ScrollButton from './components/ScrollButton'
@@ -51,16 +52,14 @@ function App() {
           <Route path='register' element={<Register />} />
 
           {/* protected router */}
-          {/* <Route element={<ProtectRoutes />}> */}
-            <Route path='cart' element={<Cart />} />
-            <Route path='order-cart' element={<OrderCart />} />
-            <Route path='order-product/:orderIdProduct' element={<OrderProduct />} />
-            <Route path='order-details/:idOrder' element={<OrderDetails />} />
-            <Route path='account' element={<Account />}>
-              <Route path='account-information' element={<>abc</>} />
-              <Route path='account-order' element={<>dfsdfs</>} />
-            </Route>
-          {/* </Route> */}
+          <Route element={<ProtectRoutes />}>
+          <Route path='cart' element={<Cart />} />
+          <Route path='order-cart' element={<OrderCart />} />
+          <Route path='order-product/:orderIdProduct' element={<OrderProduct />} />
+          <Route path='order-details/:idOrder' element={<OrderDetails />} />
+          <Route path='account-infomation' element={<AccountInfomation />} />
+          <Route path='account-order' element={<AccountOrder />} />
+          </Route>
 
           <Route path='policy' element={<Policy />} />
           <Route path='product-detail/:idProduct' element={<ProductDetail />} />

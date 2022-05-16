@@ -180,14 +180,14 @@ const changeNumberProductOrder = async (req, res) => {
 
     const sql = 'SELECT so_luong_sp FROM sanpham WHERE id_sp = ?'
     db.query(sql, idProductOrder, (err, result) => {
-        if(err){
+        if (err) {
             status.changeNumberProductOrderMessage = 'Lỗi Hệ Thống (Liên Hệ Chúng Tôi Để Được Hỗ Trợ - Lỗi: changeNumberProductOrder 123)'
             res.send(status)
-        }else{
-            if(numberProductOrder > result[0].so_luong_sp){
+        } else {
+            if (numberProductOrder > result[0].so_luong_sp) {
                 status.changeNumberProductOrderMessage = `Cửa hàng chỉ còn ${result[0].so_luong_sp} sản phẩm`
                 res.send(status)
-            }else{
+            } else {
                 status.changeNumberProductOrderStatus = true
                 res.send(status)
             }
@@ -378,10 +378,60 @@ const getOrderInfo = async (req, res) => {
     })
 }
 
+const getAllOrderAccount = async (req, res) => {
+
+    let status = {
+        getAllOrderAccountStatus: false,
+        getAllOrderAccountData: '',
+        getAllOrderAccountMessage: ''
+    }
+
+    if(req.session.user){
+        let idAccount = req.session.user[0].id_kh
+
+        const sql =
+            `SELECT 
+                dh.id_dh,
+                dh.nguoi_nhan,
+                CONVERT(dh.ngay_dat, char) as ngay_dat,
+                ttdh.ten_ttdh,
+                ROUND(SUM((ctdh.gia - (ctdh.gia*ctdh.khuyen_mai/100))*ctdh.so_luong)) as tong_tien
+            FROM 
+                donhang as dh,
+                chitietdonhang as ctdh,
+                trangthaidonhang as ttdh
+            WHERE
+                dh.id_kh = ?
+                AND dh.id_dh = ctdh.id_dh
+                AND dh.id_ttdh = ttdh.id_ttdh
+            GROUP BY dh.id_dh
+            ORDER BY dh.ngay_dat DESC`
+    
+        db.query(sql, idAccount, (err, result) => {
+            if (err) {
+                status.getAllOrderAccountMessage = 'Lỗi Hệ Thống (Lỗi: getAllOrderAccount 123)'
+                res.send(status)
+            } else {
+                if (result.length > 0) {
+                    console.log(result.length);
+                    status.getAllOrderAccountStatus = true
+                    status.getAllOrderAccountData = result
+                    res.send(status)
+    
+                } else {
+                    status.getAllOrderAccountMessage = 'Lỗi Hệ Thống (Lỗi: getAllOrderAccount 901)'
+                    res.send(status)
+                }
+            }
+        })
+    }
+}
+
 module.exports = {
     orderProductInCart,
     getProductInfoOrder,
     orderProduct,
     changeNumberProductOrder,
-    getOrderInfo
+    getOrderInfo,
+    getAllOrderAccount
 }

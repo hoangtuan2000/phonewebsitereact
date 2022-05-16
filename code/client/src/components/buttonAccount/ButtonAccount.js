@@ -38,7 +38,7 @@ function ButtonAccount(props) {
             </Dropdown.Toggle>
 
             <Dropdown.Menu align="end">
-                <Dropdown.Item as={NavLink} to='account'>
+                <Dropdown.Item as={NavLink} to='/account-infomation'>
                     Tài Khoản
                 </Dropdown.Item>
                 <Dropdown.Item
