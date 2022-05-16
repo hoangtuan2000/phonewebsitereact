@@ -118,6 +118,10 @@ app.use('/ordersAdmin', ordersRouterAdmin)
 const getDatabaseRouterAdmin = require('./clientAdminServer/routersAdmin/getDatabaseRouterAdmin')
 app.use('/getDatabaseRouterAdmin', getDatabaseRouterAdmin)
 
+//analysis Router
+const analysisRouterAdmin = require('./clientAdminServer/routersAdmin/analysisRouterAdmin')
+app.use('/analysisRouterAdmin', analysisRouterAdmin)
+
 
 
 

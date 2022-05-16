@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { URL } from './config/config'
 
 import ProtectRoutesAdmin from './components/ProtectRoutesAdmin';
-import Home from "./pages/home/Home";
+import BasicAnalysis from "./pages/analysis/BasicAnalysis";
 import AllAccounts from "./pages/allAccounts/AllAccounts";
 import AllStaffAccounts from "./pages/allStaffAccounts/AllStaffAccounts";
 import AllManagementAccounts from "./pages/allManagementAccounts/AllManagementAccounts";
@@ -67,7 +67,7 @@ function App() {
           <Route index element={<Login />} />
           {/* protected router */}
           <Route element={<ProtectRoutesAdmin />}>
-            <Route path="home" element={<Home />} />
+            <Route path="basicAnalysis" element={<BasicAnalysis />} />
             <Route path="allProducts" element={<AllProducts />} />
             <Route path="smartphones" element={<Smartphones />} />
             <Route path="headphones" element={<Headphones />} />

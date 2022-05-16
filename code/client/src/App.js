@@ -42,7 +42,6 @@ function App() {
       <BrowserRouter>
 
         <Header></Header>
-        <Breadcrumbs></Breadcrumbs>
 
         <Routes>
           <Route path='/' element={<Home />} />

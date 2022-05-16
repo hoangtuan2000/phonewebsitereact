@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Col, Container, Row, Card, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Col, Container, Row, Card, Badge, OverlayTrigger, Tooltip, Breadcrumb } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Axios from 'axios'
 
@@ -10,6 +10,7 @@ import NoProductsFound from '../../components/noProductsFound/NoProductsFound'
 import { nameProductFormat } from '../../functions/stringFormatFunction'
 import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import { URL } from '../../config/config'
+import Breadcrumbs from '../breadcrumbs/Breadcrumbs'
 
 function Home() {
 
@@ -67,51 +68,54 @@ function Home() {
     }, [])
 
     return (
-        <Container className='my-2'>
+        <>
+            <Breadcrumbs />
+            <Container className='my-2'>
 
-            <Slider />
+                <Slider />
 
-            {
-                promotionalProducts.length > 0
-                &&
-                <PromotionalProducts
-                    titlePromotion={'Sản Phẩm Khuyến Mãi Nổi Bậc'}
-                    promotionalProducts={promotionalProducts}
-                />
-            }
-            
-            {
-                highPriceSmartphones.length > 0
-                &&
-                <MostPopularProducts
-                    titlePromotion={'Điện Thoại Nổi Bậc'}
-                    products={highPriceSmartphones}
-                    page={'smartphone'}
-                />
-            }
+                {
+                    promotionalProducts.length > 0
+                    &&
+                    <PromotionalProducts
+                        titlePromotion={'Sản Phẩm Khuyến Mãi Nổi Bậc'}
+                        promotionalProducts={promotionalProducts}
+                    />
+                }
 
-            {
-                highPriceHeadphones.length > 0
-                &&
-                <MostPopularProducts
-                    titlePromotion={'Tai Nghe Nổi Bậc'}
-                    products={highPriceHeadphones}
-                    page={'headphone'}
-                />
-            }
+                {
+                    highPriceSmartphones.length > 0
+                    &&
+                    <MostPopularProducts
+                        titlePromotion={'Điện Thoại Nổi Bậc'}
+                        products={highPriceSmartphones}
+                        page={'smartphone'}
+                    />
+                }
+
+                {
+                    highPriceHeadphones.length > 0
+                    &&
+                    <MostPopularProducts
+                        titlePromotion={'Tai Nghe Nổi Bậc'}
+                        products={highPriceHeadphones}
+                        page={'headphone'}
+                    />
+                }
 
 
-            {
-                highPricePhonecases.length > 0
-                &&
-                <MostPopularProducts
-                    titlePromotion={'Ốp Lưng Nổi Bậc'}
-                    products={highPricePhonecases}
-                    page={'phonecase'}
-                />
-            }
+                {
+                    highPricePhonecases.length > 0
+                    &&
+                    <MostPopularProducts
+                        titlePromotion={'Ốp Lưng Nổi Bậc'}
+                        products={highPricePhonecases}
+                        page={'phonecase'}
+                    />
+                }
 
-        </Container>
+            </Container>
+        </>
     )
 }
 

@@ -12,6 +12,7 @@ import {
     validateUserProvince, validateUserDistrict, validateUserWard, validateUserAgree
 } from '../../functions/validateFormFunction'
 import ModalRegistrationStatus from "../../modal/modalRegistrationStatus/ModalRegistrationStatus"
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs"
 
 function Register() {
 
@@ -190,6 +191,7 @@ function Register() {
 
     return (
         <>
+            <Breadcrumbs pageName={'Đăng Ký'} />
             <Container>
                 <Row>
                     <Col
@@ -201,6 +203,9 @@ function Register() {
                         <div
                             className="bg-light w-50 p-4 shadow rounded-3"
                         >
+                            <div className="text-center" style={{ fontFamily: 'serif', fontSize: '30px', fontWeight: 'bold' }}>
+                                <p>Đăng Ký Tài Khoản</p>
+                            </div>
                             <Form>
                                 <Form.Group className="mb-2">
                                     <Form.Label htmlFor="fullnameRegister">

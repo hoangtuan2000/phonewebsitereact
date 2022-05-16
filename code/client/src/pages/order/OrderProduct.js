@@ -11,6 +11,7 @@ import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import ModalNotification from '../../modal/modalNotification/ModalNotification'
 import TableOrderProduct from "../../components/tableOrder/TableOrderProduct"
 import { validateUserFullname, validateUserPhoneNumber, validateUserNote } from '../../functions/validateFormFunction'
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs"
 
 function OrderProduct() {
     // get heigth screen => style for height col cart 
@@ -136,6 +137,7 @@ function OrderProduct() {
 
     return (
         <>
+            <Breadcrumbs pageName={'Đặt Hàng'} />
             <Container>
                 <Row>
                     <Col className="bg-light rounded" style={{ minHeight: windowHeight }}>

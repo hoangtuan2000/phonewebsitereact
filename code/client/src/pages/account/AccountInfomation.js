@@ -4,13 +4,15 @@ import { NavLink } from 'react-router-dom'
 import AddressAccount from "../../components/addressAccount/AddressAccount";
 import UpdateAccountInfo from "../../components/updateAccountInfo/UpdateAccountInfo";
 import UpdateAccountPassword from "../../components/updateAccountPassword/UpdateAccountPassword";
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs";
 
 function AccountInfomation() {
     // get heigth screen => style for height col AccountInfomation 
-    const windowHeight = window.innerHeight   
+    const windowHeight = window.innerHeight
 
     return (
         <>
+            <Breadcrumbs pageName={'Thông Tin Tài Khoản'} />
             <Container>
                 <Row className="bg-light rounded" style={{ minHeight: windowHeight }}>
                     <Col md={2} className='p-0'>
@@ -46,12 +48,12 @@ function AccountInfomation() {
 
                             {/* update password */}
                             <Col md={6} className='pt-2 mb-3'>
-                                <UpdateAccountPassword />                                
+                                <UpdateAccountPassword />
                             </Col>
 
                             {/* update address of account */}
                             <Col md={12} className='pt-2 mb-3'>
-                                <AddressAccount />                                
+                                <AddressAccount />
                             </Col>
                         </Row>
                     </Col>
@@ -60,7 +62,7 @@ function AccountInfomation() {
 
 
 
-            
+
         </>
     )
 }

@@ -15,12 +15,6 @@ import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
 
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-// import "./home.scss";
-import Widget from "../../components/widget/Widget";
-import Featured from "../../components/featured/Featured";
-import Chart from "../../components/chart/Chart";
-import Table from "../../components/table/Table";
-import { height } from '@mui/system';
 import ShowAccountInfoDialog from '../../components/modal/ShowAccountInfoDialog';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -156,7 +150,6 @@ const AllManagementAccounts = () => {
             <Tooltip TransitionComponent={Zoom} title="Cập Nhật" followCursor>
               <IconButton
                 color="warning"
-                onClick={() => navigate(`/updateAccount/${params.row.id}`)}
               >
                 <UpgradeIcon />
               </IconButton>

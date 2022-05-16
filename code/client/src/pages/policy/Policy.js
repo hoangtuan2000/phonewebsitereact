@@ -1,8 +1,10 @@
 import { Container, Row, Col } from 'react-bootstrap'
+import Breadcrumbs from '../breadcrumbs/Breadcrumbs'
 
 function Policy() {
     return (
         <>
+            <Breadcrumbs pageName={'Điều Khoản Và Chính Sách'} />
             <Container>
                 <Row>
                     <Col className='bg-light rounded p-4 px-5'>

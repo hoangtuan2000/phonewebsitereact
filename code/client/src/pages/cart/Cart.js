@@ -9,6 +9,7 @@ import { URL } from '../../config/config'
 import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import ModalNotification from '../../modal/modalNotification/ModalNotification'
 import TableOrderCart from "../../components/tableOrder/TableOrderCart"
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs"
 
 function Cart() {
 
@@ -131,6 +132,7 @@ function Cart() {
 
     return (
         <>
+            <Breadcrumbs pageName={'Giỏ Hàng'} />
             <Container>
                 <Row>
                     <Col className="bg-light rounded" style={{ minHeight: windowHeight }}>
@@ -144,7 +146,7 @@ function Cart() {
                                             handleDeleteProductCart={handleDeleteProductCart}
                                             totalPrice={totalPrice}
                                         />
-                                        
+
                                         <NavLink to='/order-cart' className='btn btn-sm btn-danger float-end'>
                                             Thanh Toán
                                         </NavLink>

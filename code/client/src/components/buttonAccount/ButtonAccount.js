@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Dropdown, Image } from 'react-bootstrap'
 import { NavLink, Link } from 'react-router-dom'
 import Axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteUserLogin, saveUserLogin } from '../../redux/userSlice';
 
 import styles from './buttonAccountStyle.module.css';
@@ -10,6 +10,7 @@ import styles from './buttonAccountStyle.module.css';
 function ButtonAccount(props) {
 
     const dispatch = useDispatch()
+    const userLogin = useSelector((state) => state.userLogin.infoUser)
 
     const logout = () => {
         const URL = 'http://localhost:3001/auth/logout'
@@ -27,7 +28,7 @@ function ButtonAccount(props) {
         <Dropdown>
             <Dropdown.Toggle bsPrefix={styles.btnAccount}>
                 <Image
-                    src={require('../../asset/imagePublic/imageFace.jpg')}
+                    src={require('../../asset/imagePublic/user.png')}
                     roundedCircle
                     style={{
                         width: '30px',

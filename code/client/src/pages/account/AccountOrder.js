@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { URL } from "../../config/config";
 import { moneyFormat } from "../../functions/moneyFunction";
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs";
 
 
 function AccountOrder() {
@@ -22,7 +23,7 @@ function AccountOrder() {
     useEffect(() => {
         Axios.post(URL + '/order/getAllOrderAccount')
             .then((res) => {
-                if(res.data.getAllOrderAccountStatus){
+                if (res.data.getAllOrderAccountStatus) {
                     setOrdersInfo(res.data.getAllOrderAccountData);
                 }
             })
@@ -84,7 +85,7 @@ function AccountOrder() {
         {
             field: 'tools',
             headerName: 'Công Cụ',
-            minWidth: 100, 
+            minWidth: 100,
             align: 'center',
             renderCell: (params) => {
                 return (
@@ -119,6 +120,7 @@ function AccountOrder() {
 
     return (
         <>
+            <Breadcrumbs pageName={'Tất Cả Đơn Hàng'} />
             <Container>
                 <Row className="bg-light rounded" style={{ minHeight: windowHeight }}>
                     <Col md={2} className='p-0'>

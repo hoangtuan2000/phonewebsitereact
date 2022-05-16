@@ -36,7 +36,7 @@ const Login = () => {
         //of the [key, value] pairs of a given object's own enumerable string properties.
         if (Object.entries(response.data.user).length !== 0 && response.data.isLogin === true) {
           dispatch(saveUserLoginAdmin(response.data.user))
-          navigate('/home')
+          navigate('/basicAnalysis')
 
         } else {
           if (response.data.message.emailFail) {

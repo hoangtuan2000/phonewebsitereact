@@ -19,6 +19,7 @@ import { moneyFormat, reducedPrice } from '../../functions/moneyFunction'
 import { ButtonNextArrow, ButtonPrevArrow } from "../../components/buttonReactSlick/ButtonReactSlick";
 import { URL } from '../../config/config'
 import ModalNotification from "../../modal/modalNotification/ModalNotification";
+import Breadcrumbs from "../breadcrumbs/Breadcrumbs";
 
 // function of react rating stars component 
 const ratingChanged = (newRating) => {
@@ -140,160 +141,163 @@ function ProductDetail() {
     };
 
     return (
-        <Container>
-            <Row className='bg-light rounded'>
+        <>
+            <Breadcrumbs pageName={'Chi Tiết Sản Phẩm'} />
+            <Container>
+                <Row className='bg-light rounded'>
 
-                {/* show images Product */}
-                <Col md={7}>
-                    <div className="p-3 mb-5">
-                        <Slider {...settings}>
-                            {
-                                objImages.map((val) => {
-                                    return (
-                                        <div className="align-middle" key={val.id_asp}>
-                                            <img
-                                                src={'http://localhost:3001/' + val.anh_asp}
-                                                className='mx-auto w-100'
-                                                style={{ height: '400px', objectFit: 'contain' }}
-                                            />
-                                        </div>
-                                    )
-                                })
-                            }
-                        </Slider>
-                    </div>
-                </Col>
+                    {/* show images Product */}
+                    <Col md={7}>
+                        <div className="p-3 mb-5">
+                            <Slider {...settings}>
+                                {
+                                    objImages.map((val) => {
+                                        return (
+                                            <div className="align-middle" key={val.id_asp}>
+                                                <img
+                                                    src={'http://localhost:3001/' + val.anh_asp}
+                                                    className='mx-auto w-100'
+                                                    style={{ height: '400px', objectFit: 'contain' }}
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </Slider>
+                        </div>
+                    </Col>
 
-                {/* show name, price Product */}
-                <Col md={5}>
-                    <div className="py-2">
-                        <h5>{objProduct.ten_sp}</h5>
-                        <ReactStars
-                            count={5}
-                            edit={false}
-                            onChange={ratingChanged}
-                            size={24}
-                            activeColor="#ffd700"
-                            value={4}
-                        />
-                        <h6 style={{ textDecoration: 'line-through', fontStyle: 'italic', opacity: 0.8 }}>
-                            {oldPrice + ' VNĐ'}
-                        </h6>
+                    {/* show name, price Product */}
+                    <Col md={5}>
+                        <div className="py-2">
+                            <h5>{objProduct.ten_sp}</h5>
+                            <ReactStars
+                                count={5}
+                                edit={false}
+                                onChange={ratingChanged}
+                                size={24}
+                                activeColor="#ffd700"
+                                value={4}
+                            />
+                            <h6 style={{ textDecoration: 'line-through', fontStyle: 'italic', opacity: 0.8 }}>
+                                {oldPrice + ' VNĐ'}
+                            </h6>
+                            <div>
+                                <h4 className="float-start me-2" style={{ color: 'red' }}>
+                                    {newPrice + ' VNĐ'}
+                                </h4>
+                                <Badge className="float-start rounded-pill bg-danger">
+                                    {'Giảm ' + objProduct.giam_km + '%'}
+                                </Badge>
+                                <div className="clearfix"></div>
+
+                            </div>
+
+                            <div className="my-3">
+                                {
+                                    objProduct.id_ttsp == 'CH' && objProduct.so_luong_sp > 0 ?
+                                        <>
+                                            <Button
+                                                className="me-2 fw-bold text-white"
+                                                style={{ backgroundColor: '#fb6e2e', border: 'none' }}
+                                                onClick={orderProduct}
+                                            >
+                                                <FontAwesomeIcon icon={faHandPointer} className='me-1' />
+                                                Mua
+                                            </Button>
+                                            <Button onClick={handleAddToCarts} variant="primary" className="fw-bold">
+                                                <FontAwesomeIcon icon={faCartPlus} className='me-1' />
+                                                Thêm Vào Giỏ Hàng
+                                            </Button>
+                                        </>
+                                        : objProduct.id_ttsp == 'CH' && objProduct.so_luong_sp <= 0 ?
+                                            <p className="fw-bold" style={{ fontSize: '18px', color: 'red' }}>Sản Phẩm Tạm Thời Hết Hàng</p>
+                                            : objProduct.id_ttsp == 'NKD' ?
+                                                <p className="fw-bold" style={{ fontSize: '18px', color: 'red' }}>Sản Phẩm Ngưng Kinh Doanh</p> : <></>
+
+                                }
+
+                            </div>
+
+                            <div className="mt-2 border border-primary rounded-3">
+                                <div className="bg-primary text-center text-white p-1">
+                                    <span>Chính Sách Bảo Hành</span>
+                                </div>
+                                <div className="p-1 px-4">
+                                    <p className="mb-1">
+                                        <FontAwesomeIcon icon={faShieldBlank} className='me-1 text-primary' />
+                                        Bảo hành chính hãng 2 năm
+                                    </p>
+                                    <p className="mb-1">
+                                        <FontAwesomeIcon icon={faScrewdriverWrench} className='me-1 text-primary' />
+                                        Hư gì đổi nấy
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </Col>
+
+                    {/* show informations product */}
+                    <Col md={12}>
                         <div>
-                            <h4 className="float-start me-2" style={{ color: 'red' }}>
-                                {newPrice + ' VNĐ'}
-                            </h4>
-                            <Badge className="float-start rounded-pill bg-danger">
-                                {'Giảm ' + objProduct.giam_km + '%'}
-                            </Badge>
-                            <div className="clearfix"></div>
-
-                        </div>
-
-                        <div className="my-3">
-                            {
-                                objProduct.id_ttsp == 'CH' && objProduct.so_luong_sp > 0 ?
-                                    <>
-                                        <Button
-                                            className="me-2 fw-bold text-white"
-                                            style={{ backgroundColor: '#fb6e2e', border: 'none' }}
-                                            onClick={orderProduct}
-                                        >
-                                            <FontAwesomeIcon icon={faHandPointer} className='me-1' />
-                                            Mua
-                                        </Button>
-                                        <Button onClick={handleAddToCarts} variant="primary" className="fw-bold">
-                                            <FontAwesomeIcon icon={faCartPlus} className='me-1' />
-                                            Thêm Vào Giỏ Hàng
-                                        </Button>
-                                    </>
-                                    : objProduct.id_ttsp == 'CH' && objProduct.so_luong_sp <= 0 ?
-                                        <p className="fw-bold" style={{fontSize: '18px', color: 'red'}}>Sản Phẩm Tạm Thời Hết Hàng</p>
-                                        : objProduct.id_ttsp == 'NKD' ?
-                                            <p className="fw-bold" style={{fontSize: '18px', color: 'red'}}>Sản Phẩm Ngưng Kinh Doanh</p> : <></>
-
-                            }
-
-                        </div>
-
-                        <div className="mt-2 border border-primary rounded-3">
-                            <div className="bg-primary text-center text-white p-1">
-                                <span>Chính Sách Bảo Hành</span>
+                            {/* button show information of product */}
+                            <div>
+                                {
+                                    infoButtonsName.map((button, index) => {
+                                        return (
+                                            <Button
+                                                key={index}
+                                                size="sm"
+                                                className={'btn rounded-pill me-2 border-0' + ' ' + (showInformation === button ? 'bg-primary' : 'bg-secondary')}
+                                                onClick={() => setShowInformation(button)}
+                                            >
+                                                {button}
+                                            </Button>
+                                        )
+                                    })
+                                }
                             </div>
-                            <div className="p-1 px-4">
-                                <p className="mb-1">
-                                    <FontAwesomeIcon icon={faShieldBlank} className='me-1 text-primary' />
-                                    Bảo hành chính hãng 2 năm
-                                </p>
-                                <p className="mb-1">
-                                    <FontAwesomeIcon icon={faScrewdriverWrench} className='me-1 text-primary' />
-                                    Hư gì đổi nấy
-                                </p>
+
+                            {/* Information content of the product  */}
+                            <div>
+                                <div
+                                    style={showInformation === infoButtonsName[0] ? { display: 'block' } : { display: 'none' }}
+                                    className='px-5 py-3'
+                                >
+                                    <ProductIntroduction data={objProduct.gioi_thieu_sp} />
+                                </div>
+                                <div
+                                    style={showInformation === infoButtonsName[1] ? { display: 'block' } : { display: 'none' }}
+                                    className='px-5 py-3'
+                                >
+                                    <ProductConfiguration data={objProduct} />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Col>
+                    </Col>
 
-                {/* show informations product */}
-                <Col md={12}>
-                    <div>
-                        {/* button show information of product */}
-                        <div>
-                            {
-                                infoButtonsName.map((button, index) => {
-                                    return (
-                                        <Button
-                                            key={index}
-                                            size="sm"
-                                            className={'btn rounded-pill me-2 border-0' + ' ' + (showInformation === button ? 'bg-primary' : 'bg-secondary')}
-                                            onClick={() => setShowInformation(button)}
-                                        >
-                                            {button}
-                                        </Button>
-                                    )
-                                })
-                            }
-                        </div>
+                    {/* call tag modal login */}
+                    <ModalLogin
+                        show={modalLoginShow}
+                        onHide={() => setModalLoginShow(false)}
+                    />
 
-                        {/* Information content of the product  */}
-                        <div>
-                            <div
-                                style={showInformation === infoButtonsName[0] ? { display: 'block' } : { display: 'none' }}
-                                className='px-5 py-3'
-                            >
-                                <ProductIntroduction data={objProduct.gioi_thieu_sp} />
-                            </div>
-                            <div
-                                style={showInformation === infoButtonsName[1] ? { display: 'block' } : { display: 'none' }}
-                                className='px-5 py-3'
-                            >
-                                <ProductConfiguration data={objProduct} />
-                            </div>
-                        </div>
-                    </div>
-                </Col>
-
-                {/* call tag modal login */}
-                <ModalLogin
-                    show={modalLoginShow}
-                    onHide={() => setModalLoginShow(false)}
-                />
-
-                {/* call tag modal Notification */}
-                <ModalNotification
-                    show={modalNotificationShow}
-                    onHide={() => setModalNotificationShow(false)}
-                    status={statusAddProductToCart.addCartStatus}
-                    title={
-                        statusAddProductToCart.addCartStatus ?
-                            'Thành Công' : 'Thất Bại'
-                    }
-                    message={statusAddProductToCart.addCartMessage}
-                    gotoPage={'/cart'}
-                    namePage={'Giỏ Hàng'}
-                />
-            </Row>
-        </Container >
+                    {/* call tag modal Notification */}
+                    <ModalNotification
+                        show={modalNotificationShow}
+                        onHide={() => setModalNotificationShow(false)}
+                        status={statusAddProductToCart.addCartStatus}
+                        title={
+                            statusAddProductToCart.addCartStatus ?
+                                'Thành Công' : 'Thất Bại'
+                        }
+                        message={statusAddProductToCart.addCartMessage}
+                        gotoPage={'/cart'}
+                        namePage={'Giỏ Hàng'}
+                    />
+                </Row>
+            </Container >
+        </>
     )
 }
 

@@ -20,6 +20,7 @@ import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 import { Link, NavLink } from "react-router-dom";
 // import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
@@ -56,8 +57,26 @@ const Sidebar = () => {
       <div className="center mb-5">
         <ul>
 
-          {/* Sản phẩm */}
+          <p className="title">THỐNG KÊ</p>
+          <li>
+            <NavLink
+              style={({ isActive }) => {
+                return {
+                  width: '100%',
+                  borderRadius: '5px',
+                  padding: '2px',
+                  textDecoration: 'none',
+                  backgroundColor: isActive ? "#d4e6f9" : "",
+                };
+              }}
+              to='/basicAnalysis'
+            >
+              <AnalyticsIcon className="icon" />
+              <span>Thống Kê Cơ Bản</span>
+            </NavLink>
+          </li>
 
+          {/* Sản phẩm */}
           <p className="title">SẢN PHẨM</p>
           <li>
             <NavLink

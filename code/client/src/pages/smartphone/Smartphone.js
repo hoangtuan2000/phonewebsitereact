@@ -10,6 +10,7 @@ import NoProductsFound from '../../components/noProductsFound/NoProductsFound'
 import { nameProductFormat } from '../../functions/stringFormatFunction'
 import { reducedPrice, moneyFormat } from '../../functions/moneyFunction'
 import { URL } from '../../config/config'
+import Breadcrumbs from '../breadcrumbs/Breadcrumbs'
 
 function Smartphone() {
 
@@ -54,6 +55,7 @@ function Smartphone() {
 
     return (
         <>
+            <Breadcrumbs pageName={'Điện Thoại'} />
             <Container className='my-2'>
 
                 {
