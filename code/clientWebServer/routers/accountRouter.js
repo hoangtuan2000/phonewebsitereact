@@ -7,5 +7,6 @@ router.post('/updateAccountPassword', accountController.updateAccountPassword)
 router.post('/addAddressAccount', accountController.addAddressAccount)
 router.get('/getAllAddressAccount', accountController.getAllAddressAccount)
 router.post('/deleteAddressAccount', accountController.deleteAddressAccount)
+router.post('/updateAddressDefaultAccount', accountController.updateAddressDefaultAccount)
 
 module.exports = router

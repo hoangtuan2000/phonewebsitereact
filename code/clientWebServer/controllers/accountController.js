@@ -284,7 +284,9 @@ const getAllAddressAccount = async (req, res) => {
                 qh.id_qh,
                 ttp.id_ttp,
                 qh.ten_qh,
-                xp.ten_xp
+                xp.ten_xp,
+                ttp.id_ttp,
+                ttp.ten_ttp
             FROM 
                 diachi as dc,
                 xaphuong as xp,
@@ -364,6 +366,59 @@ const deleteAddressAccount = async (req, res) => {
     }
 }
 
+const updateAddressDefaultAccount = async (req, res) => {
+    let status = {
+        updateAddressDefaultAccountStatus: false,
+        updateAddressDefaultAccountMessage: ''
+    }
+
+    let {
+        idAddress
+    } = req.body
+
+    if (req.session.user) {
+        let idAccount = req.session.user[0].id_kh
+
+        // xóa địa chỉ mặc định cũ => thành địa chỉ thường
+        const sqlAddressDefaultOld =
+            `UPDATE diachi SET mac_dinh= 0 WHERE id_kh = ? AND mac_dinh = 1`
+        db.query(sqlAddressDefaultOld, idAccount, (errAddressDefaultOld, resAddressDefaultOld) => {
+            if (errAddressDefaultOld) {
+                status.updateAddressDefaultAccountMessage = 'Lỗi Hệ Thống (Lỗi: updateAddressDefaultAccount 123)'
+                res.send(status)
+            } else {
+                if (resAddressDefaultOld.changedRows > 0) {
+                    //cập nhật lại địa chỉ mặc định
+                    const sqlAddressDefaultNew =
+                        `UPDATE diachi SET mac_dinh = 1 WHERE id_kh = ? AND id_dc = ?`
+                    db.query(sqlAddressDefaultNew, [idAccount, idAddress], (errUpdate, resUpdate) => {
+                        if (errUpdate) {
+                            status.updateAddressDefaultAccountMessage = 'Lỗi Hệ Thống (Lỗi: updateAddressDefaultAccount 456)'
+                            res.send(status)
+                        } else {
+                            if (resUpdate.changedRows > 0) {
+                                status.updateAddressDefaultAccountStatus = true
+                                status.updateAddressDefaultAccountMessage = 'Đặt Địa Chỉ Mặc Định Thành Công'
+                                res.send(status)
+                            } else {
+                                status.updateAddressDefaultAccountMessage = 'Lỗi Hệ Thống (Lỗi: updateAddressDefaultAccount 789)'
+                                res.send(status)
+                            }
+                        }
+                    })
+                } else {
+                    status.updateAddressDefaultAccountMessage = 'Lỗi Hệ Thống (Lỗi: updateAddressDefaultAccount 901)'
+                    res.send(status)
+                }
+            }
+        })
+
+    } else {
+        status.updateAddressDefaultAccountMessage = 'Lỗi Chưa Đăng Nhập (Lỗi: updateAddressDefaultAccount 012)'
+        res.send(status)
+    }
+}
+
 
 module.exports = {
     getAccountInfo,
@@ -372,5 +427,6 @@ module.exports = {
     updateAccountPassword,
     addAddressAccount,
     getAllAddressAccount,
-    deleteAddressAccount
+    deleteAddressAccount,
+    updateAddressDefaultAccount
 }

@@ -10,17 +10,19 @@ function UpdateAddressAccount(props) {
 
     // const [modalUpdateAddressAccountStatus, setModalUpdateAddressAccountStatus] = useState(false);
     const [modalDeleteAddressAccountStatus, setModalDeleteAddressAccountStatus] = useState(false);
+    const [modalUpdateAddressDefaultAccountStatus, setModalUpdateAddressDefaultAccountStatus] = useState(false);
 
     // const [updateAddressStatus, setUpdateAddressStatus] = useState({})
     const [deleteAddressStatus, setDeleteAddressStatus] = useState({})
+    const [updateAddressDefaultStatus, setUpdateAddressDefaultStatus] = useState({})
 
-    const [provinces, setProvinces] = useState([])
-    const [districts, setDistricts] = useState([])
-    const [wards, setWards] = useState([])
+    // const [provinces, setProvinces] = useState([])
+    // const [districts, setDistricts] = useState([])
+    // const [wards, setWards] = useState([])
 
-    const [accountProvinceUpdate, setAccountProvinceUpdate] = useState('')
-    const [accountDistrictUpdate, setAccountDistrictUpdate] = useState('')
-    const [accountWardUpdate, setAccountWardUpdate] = useState('')
+    // const [accountProvinceUpdate, setAccountProvinceUpdate] = useState('')
+    // const [accountDistrictUpdate, setAccountDistrictUpdate] = useState('')
+    // const [accountWardUpdate, setAccountWardUpdate] = useState('')
     const [accountAddressUpdate, setAccountAddressUpdate] = useState('')
 
     const [accountAddressInfo, setAccountAddressInfo] = useState([])
@@ -50,64 +52,64 @@ function UpdateAddressAccount(props) {
         getAllAddressAccount()
 
         //get all provinces
-        Axios.get(URL + '/address/getAllProvinces')
-            .then((res) => {
-                setProvinces(res.data)
-            })
-            .catch((err) => {
-                console.log('setProvinces', err);
-            })
+        // Axios.get(URL + '/address/getAllProvinces')
+        //     .then((res) => {
+        //         setProvinces(res.data)
+        //     })
+        //     .catch((err) => {
+        //         console.log('setProvinces', err);
+        //     })
 
     }, [])
 
-    const getDistrictsProvince = (e) => {
-        const idProvince = e.target.value
-        Axios.post(URL + '/address/getDistrictsProvince', { idProvince: idProvince })
-            .then((res) => {
-                setDistricts(res.data)
-                document.getElementById('accountDistrictUpdate').removeAttribute('disabled')
-                setWards([])
-                document.getElementById('accountWardUpdate').setAttribute('disabled', true)
-                //reset state accountDistrictUpdate, accountWardUpdate empty
-                setAccountDistrictUpdate('')
-                setAccountWardUpdate('')
-            })
-            .catch((err) => {
-                console.log('getDistrictsProvince', err);
-            })
-    }
+    // const getDistrictsProvince = (e, index) => {
+    //     const idProvince = e.target.value
+    //     Axios.post(URL + '/address/getDistrictsProvince', { idProvince: idProvince })
+    //         .then((res) => {
+    //             setDistricts(res.data)
+    //             document.getElementById(`accountDistrictUpdate${index}`).removeAttribute('disabled')
+    //             setWards([])
+    //             document.getElementById(`accountWardUpdate${index}`).setAttribute('disabled', true)
+    //             //reset state accountDistrictUpdate, accountWardUpdate empty
+    //             setAccountDistrictUpdate('')
+    //             setAccountWardUpdate('')
+    //         })
+    //         .catch((err) => {
+    //             console.log('getDistrictsProvince', err);
+    //         })
+    // }
 
-    const getWardsDistrict = (e) => {
-        const idDistrict = e.target.value
-        Axios.post(URL + '/address/getWardsDistrict', { idDistrict: idDistrict })
-            .then((res) => {
-                setWards(res.data)
-                document.getElementById('accountWardUpdate').removeAttribute('disabled')
-            })
-            .catch((err) => {
-                console.log('getWardsDistrict', err);
-            })
-    }
+    // const getWardsDistrict = (e, index) => {
+    //     const idDistrict = e.target.value
+    //     Axios.post(URL + '/address/getWardsDistrict', { idDistrict: idDistrict })
+    //         .then((res) => {
+    //             setWards(res.data)
+    //             document.getElementById(`accountWardUpdate${index}`).removeAttribute('disabled')
+    //         })
+    //         .catch((err) => {
+    //             console.log('getWardsDistrict', err);
+    //         })
+    // }
 
     // ================= check address Update
-    const checkProvinceUpdate = (province) => {
-        setAccountProvinceUpdate(province);
-        return validateUserProvince(province, 'accountProvinceUpdate')
-    }
+    // const checkProvinceUpdate = (province, index) => {
+    //     setAccountProvinceUpdate(province);
+    //     return validateUserProvince(province, `accountProvinceUpdate${index}`)
+    // }
 
-    const checkDistrictUpdate = (district) => {
-        setAccountDistrictUpdate(district);
-        return validateUserDistrict(district, 'accountDistrictUpdate')
-    }
+    // const checkDistrictUpdate = (district, index) => {
+    //     setAccountDistrictUpdate(district);
+    //     return validateUserDistrict(district, `accountDistrictUpdate${index}`)
+    // }
 
-    const checkWardUpdate = (ward) => {
-        setAccountWardUpdate(ward);
-        return validateUserWard(ward, 'accountWardUpdate')
-    }
+    // const checkWardUpdate = (ward, index) => {
+    //     setAccountWardUpdate(ward);
+    //     return validateUserWard(ward, `accountWardUpdate${index}`)
+    // }
 
-    const checkAddressUpdate = (address) => {
+    const checkAddressUpdate = (address, index) => {
         setAccountAddressUpdate(address);
-        return validateUserAddress(address, 'noptificationAccountAddressUpdateFail')
+        return validateUserAddress(address, `noptificationAccountAddressUpdateFail${index}`)
     }
 
     //delete address account
@@ -119,13 +121,32 @@ function UpdateAddressAccount(props) {
                 setDeleteAddressStatus(res.data)
                 setModalDeleteAddressAccountStatus(true)
 
-                if(res.data.deleteAddressAccountStatus) {
+                if (res.data.deleteAddressAccountStatus) {
                     getAllAddressAccount()
                 }
 
             })
             .catch((err) => {
-                console.log('addAddressAccount', err);
+                console.log('deleteAddressAccount', err);
+            })
+    }
+
+    //update address default Account
+    const updateAddressDefaultAccount = (idAddress) => {
+        Axios.post(URL + '/account/updateAddressDefaultAccount', {
+            idAddress: idAddress
+        })
+            .then((res) => {
+                setUpdateAddressDefaultStatus(res.data)
+                setModalUpdateAddressDefaultAccountStatus(true)
+
+                if (res.data.updateAddressDefaultAccountStatus) {
+                    getAllAddressAccount()
+                }
+
+            })
+            .catch((err) => {
+                console.log('updateAddressDefaultAccount', err);
             })
     }
 
@@ -148,150 +169,53 @@ function UpdateAddressAccount(props) {
                             return (
                                 <Form className='d-flex justify-content-center' key={address.id_dc}>
 
-                                    <div className="mb-1 me-3 float-start w-25">
+                                    <div className="mb-1 me-3 float-start w-75">
                                         <Form.Group>
-                                            <Form.Label htmlFor="accountAddressUpdate" style={{ fontSize: '14px' }}>Nhập Địa Chỉ:</Form.Label>
                                             <Form.Control
-                                                id="accountAddressUpdate"
                                                 type="text"
                                                 size='sm'
+                                                disabled
                                                 style={{ fontSize: '14px' }}
-                                                value={address.dia_chi}
-                                                onChange={(e) => checkAddressUpdate(e.target.value)}
+                                                value={
+                                                    address.mac_dinh == 1 ?
+                                                        address.dia_chi + ' - ' + address.ten_xp + ' - ' + address.ten_qh + ' - ' + address.ten_ttp + ' (Mặc Định)'
+                                                        :
+                                                        address.dia_chi + ' - ' + address.ten_xp + ' - ' + address.ten_qh + ' - ' + address.ten_ttp
+                                                }
                                             />
-                                            <Form.Text id="noptificationAccountAddressUpdateFail" className="text-danger" style={{ fontSize: '12px' }}></Form.Text>
                                         </Form.Group>
                                     </div>
 
-                                    <div className="mb-1 me-3 float-start">
-                                        <Form.Label htmlFor="accountProvinceUpdate">
-                                            Tỉnh Thành Phố
-                                        </Form.Label>
-                                        <Form.Select
-                                            id="accountProvinceUpdate"
-                                            className="mb-2"
-                                            size="sm"
-                                            style={{ width: '180px' }}
-                                            onChange={(e) => {
-                                                getDistrictsProvince(e);
-                                                checkProvinceUpdate(e.target.value)
-                                            }}
-                                        >
-                                            <option value='' disabled>Chọn tỉnh thành phố</option>
-                                            {
-                                                provinces.map((province) => {
-                                                    if (province.id_ttp == address.id_ttp) {
-                                                        return (
-                                                            <option selected value={province.id_ttp} key={province.id_ttp}>{province.ten_ttp}</option>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <option value={province.id_ttp} key={province.id_ttp}>{province.ten_ttp}</option>
-                                                        )
-                                                    }
-                                                })
-                                            }
-                                        </Form.Select>
-                                    </div>
-
-                                    <div className="mb-1 me-3 float-start">
-                                        <Form.Label htmlFor="accountDistrictUpdate">
-                                            Quận Huyện
-                                        </Form.Label>
-                                        <Form.Select
-                                            id="accountDistrictUpdate"
-                                            // value={accountDistrictUpdate}
-                                            className="mb-2"
-                                            size="sm"
-                                            style={{ width: '180px' }}
-                                            disabled
-                                            onChange={(e) => {
-                                                getWardsDistrict(e);
-                                                checkDistrictUpdate(e.target.value)
-                                            }}
-                                        >
-                                            {
-                                                districts.length > 0 ?
-                                                    <option value=''>Chọn quận huyện</option>
-                                                    :
-                                                    <option value={address.id_qh}>{address.ten_qh}</option>
-                                            }
-                                            {
-                                                districts.map((district) => {
-                                                    return (
-                                                        <option value={district.id_qh} key={district.id_qh}>{district.ten_qh}</option>
-                                                    )
-                                                })
-                                            }
-                                        </Form.Select>
-                                    </div>
-
-                                    <div className="mb-1 me-3 float-start">
-                                        <Form.Label htmlFor="accountWardUpdate">
-                                            Xã Phường
-                                        </Form.Label>
-                                        <Form.Select
-                                            id="accountWardUpdate"
-                                            // value={accountWardUpdate}
-                                            className="mb-2"
-                                            style={{ width: '180px' }}
-                                            size="sm"
-                                            disabled
-                                            onChange={(e) => checkWardUpdate(e.target.value)}
-                                        >
-                                            {
-                                                districts.length > 0 ?
-                                                    <option value=''>Chọn xã phường</option>
-                                                    :
-                                                    <option value={address.id_qh}>{address.ten_qh}</option>
-                                            }
-                                            {
-                                                wards.map((ward) => {
-                                                    return (
-                                                        <option value={ward.id_xp} key={ward.id_xp}>{ward.ten_xp}</option>
-                                                    )
-                                                })
-                                            }
-                                        </Form.Select>
-                                    </div>
-
-                                    <div className="text-center mt-3 mb-1 me-3 pt-3 float-start">
-                                        <DropdownButton title="Quản Lý" size='sm'>
-                                            <Dropdown.Item
-                                                className="bg-warning my-1 rounded btn btn-sm p-0 text-center"
-                                                as="button"
-                                                value={address.id_dc}
-                                                onClick={
-                                                    (e) => { e.preventDefault(); console.log(e.target.value); }
-                                                }
-                                            >
-                                                Cập Nhật
-                                            </Dropdown.Item>
-                                            {
-                                                address.mac_dinh != 1 ?
-                                                    <Dropdown.Item
-                                                        className="bg-success my-1 rounded text-white btn btn-sm p-0 text-center"
-                                                        as="button"
-                                                        value={address.id_dc}
-                                                        onClick={
-                                                            (e) => { e.preventDefault(); console.log(e.target.value); }
-                                                        }
-                                                    >
-                                                        Đặt Mặc Định
-                                                    </Dropdown.Item>
-                                                    : <></>
-                                            }
-                                            <Dropdown.Item
-                                                className="bg-danger my-1 rounded text-white btn btn-sm p-0 text-center"
-                                                as="button"
-                                                value={address.id_dc}
-                                                onClick={
-                                                    (e) => { e.preventDefault(); deleteAddressAccount(e.target.value); }
-                                                }
-                                            >
-                                                Xóa
-                                            </Dropdown.Item>
-                                        </DropdownButton>
+                                    <div className="text-center me-3 float-start">
+                                        {
+                                            address.mac_dinh != 1 ?
+                                                <>
+                                                    <DropdownButton title="Quản Lý" size='sm'>
+                                                        <Dropdown.Item
+                                                            className="bg-success my-1 rounded text-white btn btn-sm p-0 text-center"
+                                                            as="button"
+                                                            value={address.id_dc}
+                                                            onClick={
+                                                                (e) => { e.preventDefault(); updateAddressDefaultAccount(e.target.value); }
+                                                            }
+                                                        >
+                                                            Đặt Mặc Định
+                                                        </Dropdown.Item>
+                                                        <Dropdown.Item
+                                                            className="bg-danger my-1 rounded text-white btn btn-sm p-0 text-center"
+                                                            as="button"
+                                                            value={address.id_dc}
+                                                            onClick={
+                                                                (e) => { e.preventDefault(); deleteAddressAccount(e.target.value); }
+                                                            }
+                                                        >
+                                                            Xóa
+                                                        </Dropdown.Item>
+                                                    </DropdownButton>
+                                                </>
+                                                :
+                                                <DropdownButton title="Quản Lý" size='sm' disabled />
+                                        }
                                     </div>
 
                                 </Form>
@@ -324,6 +248,18 @@ function UpdateAddressAccount(props) {
                         'Thành Công' : 'Thất Bại'
                 }
                 message={deleteAddressStatus.deleteAddressAccountMessage}
+            />
+
+            {/* modalDeleteAddressAccountStatus */}
+            <ModalNotification
+                show={modalUpdateAddressDefaultAccountStatus}
+                onHide={() => setModalUpdateAddressDefaultAccountStatus(false)}
+                status={updateAddressDefaultStatus.updateAddressDefaultAccountStatus}
+                title={
+                    updateAddressDefaultStatus.updateAddressDefaultAccountStatus ?
+                        'Thành Công' : 'Thất Bại'
+                }
+                message={updateAddressDefaultStatus.updateAddressDefaultAccountMessage}
             />
         </div>
     )
