@@ -127,9 +127,35 @@ const getImagesProduct = async (req, res) => {
     })
 }
 
+const searchProduct = async (req, res) => {
+    const productName = req.params.productName
+    let sql =
+        `SELECT
+            sp.id_sp,
+            sp.ten_sp,
+            sp.gia_sp,
+            sp.anh_sp,
+            km.giam_km
+        FROM 
+            sanpham as sp,
+            khuyenmai as km
+        WHERE 
+            ten_sp LIKE '%${productName}%'
+            AND sp.id_km = km.id_km`
+
+    db.query(sql, (errSearch, resSearch) => {
+        if (errSearch) {
+            console.log('searchProduct', errSearch);
+        } else {
+            res.send(resSearch)
+        }
+    })
+}
+
 module.exports = {
     getAllProducts,
     getPromotionalProducts,
     getOneProduct,
     getImagesProduct,
+    searchProduct
 }

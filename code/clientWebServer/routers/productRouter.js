@@ -5,5 +5,6 @@ router.get('/getAllProducts', productController.getAllProducts)
 router.get('/getPromotionalProducts', productController.getPromotionalProducts)
 router.get('/getOneProduct/:idProduct', productController.getOneProduct)
 router.get('/getImagesProduct/:idProduct', productController.getImagesProduct)
+router.get('/searchProduct/:productName', productController.searchProduct)
 
 module.exports = router

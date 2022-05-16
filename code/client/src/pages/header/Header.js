@@ -10,6 +10,7 @@ import { saveUserLogin } from '../../redux/userSlice'
 import { URL } from '../../config/config'
 import ModalLogin from '../../modal/modalLogin/ModalLogin'
 import ButtonAccount from '../../components/buttonAccount/ButtonAccount'
+import SearchProduct from '../../components/searchProduct/SearchProduct'
 
 function Header() {
 
@@ -38,24 +39,9 @@ function Header() {
             })
     }, [])
 
-    // const test = () => {
-    //     const url = URL + '/auth/test'
-    //     Axios.post(url)
-    //         .then((response) => {
-    //             console.log(response);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         })
-    // }
-
     return (
         <Navbar className='p-0 backgroundBlue' collapseOnSelect expand='lg' variant='dark'>
             <Container>
-
-                {/* <button onClick={test}>
-                    test
-                </button> */}
 
                 <NavLink className="navbar-brand my-1" to='/'>
                     HT Shop
@@ -65,12 +51,13 @@ function Header() {
                 <Navbar.Collapse id='responsive-navbar-nav'>
                     {/* input search */}
                     <Nav className='me-auto'>
-                        <InputGroup size='sm'>
-                            <FormControl htmlSize='40' />
+                        <SearchProduct />
+                        {/* <InputGroup size='sm'>
+                            <FormControl htmlSize='40' placeholder='Tìm Kiếm Sản Phẩm' />
                             <Button variant='primary' size='sm'>
                                 <FontAwesomeIcon icon={faSearch} />
                             </Button>
-                        </InputGroup>
+                        </InputGroup> */}
                     </Nav>
 
                     {/* button menu */}
