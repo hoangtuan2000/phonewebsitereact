@@ -214,7 +214,7 @@ function OrderProduct() {
                                                         : <></>
                                                 }
                                             </Form.Select>
-                                            <NavLink to='/account' className='btn btn-primary'>
+                                            <NavLink to='/account-infomation' className='btn btn-primary'>
                                                 Thêm Địa Chỉ
                                             </NavLink>
                                         </InputGroup>

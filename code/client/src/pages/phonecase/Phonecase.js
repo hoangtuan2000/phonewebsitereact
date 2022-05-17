@@ -67,7 +67,7 @@ function Phonecase() {
                     />
                 }
 
-                <Row>
+                <Row className='bg-white rounded'>
                     {
                         products.length !== 0 ?
                             <>

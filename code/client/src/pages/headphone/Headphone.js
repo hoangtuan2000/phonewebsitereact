@@ -67,7 +67,7 @@ function Headphone() {
                     />
                 }
 
-                <Row>
+                <Row className='bg-white rounded'>
                     {
                         products.length !== 0 ?
                             <>

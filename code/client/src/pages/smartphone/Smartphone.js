@@ -67,7 +67,7 @@ function Smartphone() {
                     />
                 }
 
-                <Row>
+                <Row className='bg-white rounded'>
                     {
                         products.length !== 0 ?
                             <>
