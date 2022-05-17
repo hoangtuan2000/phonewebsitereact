@@ -179,16 +179,25 @@ function ProductDetail() {
                                 activeColor="#ffd700"
                                 value={4}
                             />
-                            <h6 style={{ textDecoration: 'line-through', fontStyle: 'italic', opacity: 0.8 }}>
-                                {oldPrice + ' VNĐ'}
-                            </h6>
+                            {
+                                objProduct.giam_km > 0 ?
+                                    <h6 style={{ textDecoration: 'line-through', fontStyle: 'italic', opacity: 0.8 }}>
+                                        {oldPrice + ' VNĐ'}
+                                    </h6>
+                                    : <></>
+                            }
+
                             <div>
                                 <h4 className="float-start me-2" style={{ color: 'red' }}>
                                     {newPrice + ' VNĐ'}
                                 </h4>
-                                <Badge className="float-start rounded-pill bg-danger">
-                                    {'Giảm ' + objProduct.giam_km + '%'}
-                                </Badge>
+                                {
+                                    objProduct.giam_km > 0 ?
+                                        <Badge className="float-start rounded-pill bg-danger">
+                                            {'Giảm ' + objProduct.giam_km + '%'}
+                                        </Badge>
+                                        : <></>
+                                }
                                 <div className="clearfix"></div>
 
                             </div>

@@ -25,6 +25,7 @@ import AccountOrder from './pages/account/AccountOrder'
 import Policy from './pages/policy/Policy'
 import ProductDetail from './pages/productDetail/ProductDetail'
 import ScrollButton from './components/ScrollButton'
+import ResultSearch from './pages/resultSearch/ResultSearch';
 
 // init AOS library
 AOS.init({
@@ -49,6 +50,7 @@ function App() {
           <Route path='headphone' element={<Headphone />} />
           <Route path='phonecase' element={<Phonecase />} />
           <Route path='register' element={<Register />} />
+          <Route path='search' element={<ResultSearch />} />
 
           {/* protected router */}
           <Route element={<ProtectRoutes />}>
