@@ -30,7 +30,7 @@ const WidgetTotalMoneyYesterdayOrder = () => {
       <div className="left">
         <span className="title">Doanh Thu Hôm Qua</span>
         <span className="counter">
-          {moneyFormat(totalMoney)} VNĐ
+        { totalMoney != 0 ? moneyFormat(totalMoney) : 0} VNĐ
         </span>
       </div>
       {/* <div className="right">
